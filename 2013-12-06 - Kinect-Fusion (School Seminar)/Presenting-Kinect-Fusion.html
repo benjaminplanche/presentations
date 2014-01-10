@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Benjamin (Bill) Planche - About KinectFusion</title>
+		<meta charset="utf-8">
+    
+		<meta name="author" content="Benjamin Planche" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		
+		<script type="text/javascript" src="three.js/build/three.min.js"></script>
+		<script type="text/javascript" src="three.js/examples/js/loaders/ColladaLoader.js"></script>
+		<script type="text/javascript" src="three.js/examples/js/Detector.js"></script>
+		<script type="text/javascript" src="js/tween.js"></script>
+
+		<script src="three.js/examples/fonts/optimer_bold.typeface.js"></script>
+		<script src="three.js/examples/fonts/optimer_regular.typeface.js"></script>
+		
+		<script src="http://code.jquery.com/jquery.js"></script>
+		<style>
+			body {
+				font-family: Monospace;
+				background-color: #E6F9FF;
+				color: #fff;
+				margin: 0px;
+				overflow: hidden;
+			}
+			#info {
+				color: #fff;
+				position: absolute;
+				top: 10px;
+				width: 100%;
+				text-align: center;
+				z-index: 100;
+				display:block;
+			}
+			#info a, .button { color: #f00; font-weight: bold; text-decoration: underline; cursor: pointer }
+		</style>
+	</head>
+
+	<body">
+		
+		<p style="position:fixed; bottom: 0px; text-align:center; color: #eee; width: 100%;">benpla-3 | <span id="currentSlide">1</span>/<span id="numSlides">1</span> | <span id="keywords">#welcome #3rd #dim</span></p>
+		<div id="webgl" style="position:fixed; top:0; width:100%;   height: 100%; z-index:-1;"></div>
+		
+		<script>
+// GLOBALS
+var container, scene, camera, renderer, controls, stats, group, group_rot = 0;
+var materialGreen, materialWhite, materialBlack;
+var projector = new THREE.Projector();
+
+function init() {   
+    if (!Detector.webgl) Detector.addGetWebGLMessage();
+    
+    // SCENE
+    scene = new THREE.Scene();    
+    
+    // CAMERA
+    camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 20000);    
+    camera.position.set( 0, 50, 800 );
+    scene.add(camera);    
+    
+    // RENDERER
+    if ( Detector.webgl) {
+		renderer = new THREE.WebGLRenderer( {antialias:true} );
+    } else {
+		renderer = new THREE.CanvasRenderer(); 
+    }
+	
+	renderer.setClearColorHex( 0x4444444, 1 );
+    
+    // CONTAINER
+    container = document.getElementById('webgl');
+    container.appendChild(renderer.domElement);
+    
+    
+	// add subtle ambient lighting
+	var ambientLight = new THREE.AmbientLight(0x8888888);
+	scene.add(ambientLight);
+
+	// directional lighting
+	var directionalLight = new THREE.DirectionalLight(0xffffff);
+	directionalLight.position.set(1, 1, 1).normalize();
+	scene.add(directionalLight);   
+
+	// Fog:
+	scene.fog = new THREE.FogExp2( 0x4444444, 0.0004 );
+    
+	group = new THREE.Object3D();
+	scene.add(group);
+	
+    // COLLADA  
+    var loader = new THREE.ColladaLoader();
+    var loader2 = new THREE.ColladaLoader();
+    // loader.options.convertUpAxis = true;
+	
+    loader.load('models/Kinect2.dae', function colladaReady( collada ) {
+		var kinectCol = collada.scene.children[0];
+		var kinect = loadKinect(kinectCol);
+		kinect.position.z = - 1000;
+		kinect.position.y = - 100;
+		kinect.scale.set(2, 2, 2);
+		group.add(kinect);
+		var kinect2 = loadKinect(kinectCol);   
+		kinect2.rotation.y = Math.PI/3;          
+	    kinect2.updateMatrix();        
+        kinect2.position.set(-600, 360, -500);    //kinect.position.y = 200; furniture.position.z = 50;
+        kinect2.scale.set(0.4, 0.4, 0.4);       // kinect.scale.x = furniture.scale.y = furniture.scale.z = 35;
+		group.add(kinect2);
+		var kinect3 = loadKinect(kinectCol);   
+		kinect3.rotation.y = -Math.PI/3;          
+	    kinect3.updateMatrix();        
+        kinect3.position.set(500, -300, -300);    //kinect.position.y = 200; furniture.position.z = 50;
+        kinect3.scale.set(0.4, 0.4, 0.4);       // kinect.scale.x = furniture.scale.y = furniture.scale.z = 35;
+		group.add(kinect3);
+	});
+	
+	materialGreen = new THREE.MeshFaceMaterial( [ 
+					new THREE.MeshPhongMaterial( { color: 0x44A82A, shading: THREE.FlatShading } ), // front
+					new THREE.MeshPhongMaterial( { color: 0x004400, shading: THREE.SmoothShading } ) // side
+				] );
+	materialWhite = new THREE.MeshFaceMaterial( [ 
+					new THREE.MeshPhongMaterial( { color: 0xeeeeee, shading: THREE.FlatShading } ), // front
+					new THREE.MeshPhongMaterial( { color: 0xcccccc, shading: THREE.SmoothShading } ) // side
+				] );
+	materialBlack = new THREE.MeshFaceMaterial( [ 
+					new THREE.MeshPhongMaterial( { color: 0x222222, shading: THREE.FlatShading } ), // front
+					new THREE.MeshPhongMaterial( { color: 0x333333, shading: THREE.SmoothShading } ) // side
+				] );
+				
+	// Landscape
+	var materialBuilding = new THREE.MeshPhongMaterial( { color: 0x222222, shading: THREE.FlatShading } );
+	var landscape = new THREE.Mesh(new THREE.CubeGeometry( 1000, 3000, 1000 ), materialBuilding);
+	landscape.position.set(500, 0, -7000);        
+	landscape.updateMatrix();    
+	landscape.rotation.y = -Math.PI/4;      
+	group.add(landscape);
+	landscape = new THREE.Mesh(new THREE.CubeGeometry( 500, 3000, 1000 ), materialBuilding);
+	landscape.position.set(2500, 0, -800);        
+	landscape.updateMatrix();    	
+	group.add(landscape);
+	    
+	group.add(landscape);
+	landscape = new THREE.Mesh(new THREE.CubeGeometry( 500, 2000, 500 ), materialBuilding);
+	landscape.position.set(2600, -500, -1800);        
+	landscape.updateMatrix();    	
+	group.add(landscape);
+	    
+	group.add(landscape);
+	landscape = new THREE.Mesh(new THREE.CubeGeometry( 800, 4000, 500 ), materialBuilding);
+	landscape.position.set(2600, 500, -2500);        
+	landscape.updateMatrix();    	
+	group.add(landscape);
+	    
+	group.add(landscape);
+	landscape = new THREE.Mesh(new THREE.CubeGeometry( 500, 1000, 1000 ), materialBuilding);
+	landscape.position.set(1500, -1000, -2000);        
+	landscape.updateMatrix();    	
+	group.add(landscape);
+	
+	group.add(landscape);
+	landscape = new THREE.Mesh(new THREE.CubeGeometry( 500, 500, 500 ), materialBuilding);
+	landscape.position.set(1500, -1250, -1000);        
+	landscape.updateMatrix();    	
+	group.add(landscape);
+	
+	group.add(landscape);
+	landscape = new THREE.Mesh(new THREE.CubeGeometry( 1000, 500, 1000 ), materialBuilding);
+	landscape.position.set(200, -1250, -1000);        
+	landscape.updateMatrix();    	
+	group.add(landscape);
+	
+	group.add(landscape);
+	landscape = new THREE.Mesh(new THREE.CubeGeometry( 500, 500, 1000 ), materialBuilding);
+	landscape.position.set(200, -1250, -3000);        
+	landscape.updateMatrix();    	
+	group.add(landscape);
+	group.add(landscape);
+	landscape = new THREE.Mesh(new THREE.CubeGeometry( 500, 1500, 500 ), materialBuilding);
+	landscape.position.set(1000, -750, -3500);        
+	landscape.updateMatrix();    	
+	group.add(landscape);
+	
+	group.add(landscape);
+	landscape = new THREE.Mesh(new THREE.CubeGeometry( 500, 500, 500 ), materialBuilding);
+	landscape.position.set(1500, -1250, -200);        
+	landscape.updateMatrix();    	
+	group.add(landscape);
+	
+	group.add(landscape);
+	landscape = new THREE.Mesh(new THREE.CubeGeometry( 2000, 5000, 2000 ), materialBuilding);
+	landscape.position.set(2800, 1000, -4000);        
+	landscape.updateMatrix();    	
+	group.add(landscape);
+	
+				
+	// Slide 1
+	createText(group, "KinectFusion", materialGreen, new THREE.Vector3(0, 200, 0), new THREE.Vector3(0,0,0), 70, 5, "optimer", "bold", "normal", 4, 2, 1.5, 30, false);
+	createText(group, "Real-time 3D Reconstruction and Interaction Using a Moving Depth Camera", materialGreen, new THREE.Vector3(0, 160, 0), new THREE.Vector3(0,0,0), 20, 5, "optimer", "bold", "normal", 4, 2, 1.5, 30, false);
+	createText(group, "Shahram Izadi", materialWhite, new THREE.Vector3(-200, -20, 0), new THREE.Vector3(0,0,0), 15, 5, "optimer", "bold", "normal", 4, 2, 1.5, 30, false);
+	createText(group, "David Kim", materialWhite, new THREE.Vector3(-200, -50, 0), new THREE.Vector3(0,0,0), 15, 5, "optimer", "bold", "normal", 4, 2, 1.5, 30, false);
+	createText(group, "Otmar Hilliges", materialWhite, new THREE.Vector3(-200, -80, 0), new THREE.Vector3(0,0,0), 15, 5, "optimer", "bold", "normal", 4, 2, 1.5, 30, false);
+	createText(group, "David Molyneaux", materialWhite, new THREE.Vector3(-200, -110, 0), new THREE.Vector3(0,0,0), 15, 5, "optimer", "bold", "normal", 4, 2, 1.5, 30, false);
+	createText(group, "Richard Newcombe", materialWhite, new THREE.Vector3(-200, -140, 0), new THREE.Vector3(0,0,0), 15, 5, "optimer", "bold", "normal", 4, 2, 1.5, 30, false);
+	createText(group, "Pushmeet Kohli", materialWhite, new THREE.Vector3(200, -20, 0), new THREE.Vector3(0,0,0), 15, 5, "optimer", "bold", "normal", 4, 2, 1.5, 30, false);
+	createText(group, "Jamie Shotton", materialWhite, new THREE.Vector3(200, -50, 0), new THREE.Vector3(0,0,0), 15, 5, "optimer", "bold", "normal", 4, 2, 1.5, 30, false);
+	createText(group, "Steve Hodges", materialWhite, new THREE.Vector3(200, -80, 0), new THREE.Vector3(0,0,0), 15, 5, "optimer", "bold", "normal", 4, 2, 1.5, 30, false);
+	createText(group, "Dustin Freemank", materialWhite, new THREE.Vector3(200, -110, 0), new THREE.Vector3(0,0,0), 15, 5, "optimer", "bold", "normal", 4, 2, 1.5, 30, false);
+	createText(group, "Andrew Davison", materialWhite, new THREE.Vector3(200, -140, 0), new THREE.Vector3(0,0,0), 15, 5, "optimer", "bold", "normal", 4, 2, 1.5, 30, false);
+	createText(group, "Andrew Fitzgibbon", materialWhite, new THREE.Vector3(0, -170, 0), new THREE.Vector3(0,0,0), 15, 5, "optimer", "bold", "normal", 4, 2, 1.5, 30, false);
+	createText(group, "UIST’11, October 16-19, 2011, Santa Barbara, CA, USA", materialWhite, new THREE.Vector3(0, -200, 0), new THREE.Vector3(0,0,0), 10, 5, "optimer", "bold", "normal", 4, 2, 1.5, 30, false);
+
+	// Slide 2
+	var groupSlide2 = new THREE.Object3D();
+	group.add(groupSlide2);
+	var img = new THREE.MeshBasicMaterial({
+        map:THREE.ImageUtils.loadTexture('img/me.jpg')
+    });
+    // plane
+    var plane = new THREE.Mesh(new THREE.CubeGeometry( 50, 50, 50 ),img);
+    plane.overdraw = true;
+	plane.position.set(400, 300, -400);          
+	plane.updateMatrix();    
+	plane.rotation.y = -Math.PI/8; 
+	plane.rotation.x = -Math.PI/5; 
+	plane.rotation.z = -Math.PI/6;  
+    groupSlide2.add(plane);
+	
+    img.map.needsUpdate = true;
+	createText(groupSlide2, "Who am I?", materialGreen, new THREE.Vector3(250, 360, -400), new THREE.Vector3(0,0,0), 20, 5, "optimer", "bold", "normal", 4, 2, 1.5, 30, false);
+	createText(groupSlide2, "Benjamin (Bill) Planche", materialWhite, new THREE.Vector3(250, 310, -400), new THREE.Vector3(0,0,0), 13, 2, "optimer", "bold", "normal", 4, 2, 1.5, 30, false);
+	createText(groupSlide2, "CS Master 2", materialWhite, new THREE.Vector3(250, 280, -400), new THREE.Vector3(0,0,0), 10, 2, "optimer", "normal", "normal", 4, 2, 1.5, 30, false);
+	createText(groupSlide2, "French", materialWhite, new THREE.Vector3(250, 260, -400), new THREE.Vector3(0,0,0), 15, 2, "optimer", "normal", "normal", 4, 2, 1.5, 30, false);
+	createText(groupSlide2, "aldream.net", materialWhite, new THREE.Vector3(250, 240, -400), new THREE.Vector3(0,0,0), 10, 2, "optimer", "normal", "normal", 4, 2, 1.5, 30, false);
+
+	groupSlide2.rotation.y = -Math.PI/4;
+	
+	
+	// Slide 3
+	var groupSlide3 = new THREE.Object3D();
+	group.add(groupSlide3);
+	img = new THREE.MeshBasicMaterial({
+        map:THREE.ImageUtils.loadTexture('img/microsoft.jpg')
+    });
+    // plane
+    var plane = new THREE.Mesh(new THREE.CubeGeometry( 50, 50, 50 ),img);
+    plane.overdraw = true;
+	plane.position.set(400, 50, -400);          
+	plane.updateMatrix();    
+	plane.rotation.y = -Math.PI/6; 
+	plane.rotation.x = -Math.PI/3; 
+	plane.rotation.z = -Math.PI/2;   
+    groupSlide3.add(plane);
+	
+    img.map.needsUpdate = true;
+	createText(groupSlide3, "Who are they?", materialGreen, new THREE.Vector3(250, 100, -400), new THREE.Vector3(0,0,0), 20, 5, "optimer", "bold", "normal", 4, 2, 1.5, 30, false);
+	createText(groupSlide3, "Microsoft Researchers", materialWhite, new THREE.Vector3(250, 50, -400), new THREE.Vector3(0,0,0), 13, 2, "optimer", "bold", "normal", 4, 2, 1.5, 30, false);
+	createText(groupSlide3, "2012 - Release of Windows Kinect", materialWhite, new THREE.Vector3(250, 10, -400), new THREE.Vector3(0,0,0), 10, 2, "optimer", "normal", "normal", 4, 2, 1.5, 30, false);
+
+	groupSlide3.rotation.y = -Math.PI/4;	
+	
+	
+	// Slide 4
+	var groupSlide4 = new THREE.Object3D();
+	group.add(groupSlide4);
+    img.map.needsUpdate = true;
+	createText(groupSlide4, "Kinect", materialGreen, new THREE.Vector3(-5, -220, -650), new THREE.Vector3(0,0,0), 20, 5, "optimer", "bold", "normal", 4, 2, 1.5, 30, false);
+	createText(groupSlide4, "RGB camera", materialWhite, new THREE.Vector3(-105, -330, -650), new THREE.Vector3(0,0,0), 10, 2, "optimer", "normal", "normal", 4, 2, 1.5, 30, false);
+	createText(groupSlide4, "IR depth sensor", materialGreen, new THREE.Vector3(100, -350, -650), new THREE.Vector3(0,0,0), 13, 5, "optimer", "bold", "normal", 4, 2, 1.5, 30, false);
+	createText(groupSlide4, "Mic", materialWhite, new THREE.Vector3(-105, -350, -650), new THREE.Vector3(0,0,0), 10, 2, "optimer", "normal", "normal", 4, 2, 1.5, 30, false);
+	createText(groupSlide4, "Motorized Tilt", materialWhite, new THREE.Vector3(-105, -370, -650), new THREE.Vector3(0,0,0), 10, 2, "optimer", "normal", "normal", 4, 2, 1.5, 30, false);
+
+	groupSlide4.rotation.y = -Math.PI/3;
+    
+	
+	// Slide 5
+	var groupSlide5 = new THREE.Object3D();
+	group.add(groupSlide5);
+	img = new THREE.MeshBasicMaterial({
+        map:THREE.ImageUtils.loadTexture('img/structuredLight.jpg')
+    });
+    // plane
+    var plane = new THREE.Mesh(new THREE.PlaneGeometry( 350, 230 ),img);
+    plane.overdraw = true;
+	plane.position.set(250, -290, -160);          
+	plane.updateMatrix();    
+	plane.rotation.y = 2*Math.PI/3;
+    img.map.needsUpdate = true;
+    groupSlide5.add(plane);
+	
+	createText(groupSlide4, "Structured Light", materialGreen, new THREE.Vector3(187, -400, -350), new THREE.Vector3(0,Math.PI,0), 20, 5, "optimer", "bold", "normal", 4, 2, 1.5, 30, false);
+
+	groupSlide4.rotation.y = -Math.PI/3;
+	
+	// Slide 6
+	var groupSlide6 = new THREE.Object3D();
+	group.add(groupSlide6);
+	
+	createText(groupSlide6, "KinectFusion Process", materialGreen, new THREE.Vector3(-730, -450, -1200), new THREE.Vector3(0,0,0), 40, 5, "optimer", "bold", "normal", 4, 2, 1.5, 30, false);
+	createText(groupSlide6, "Depth Map", materialWhite, new THREE.Vector3(-800, -550, -800), new THREE.Vector3(0,0,0), 10, 4, "optimer", "normal", "normal", 4, 2, 1.5, 30, false);
+	createText(groupSlide6, "Conversion", materialWhite, new THREE.Vector3(-800, -562, -800), new THREE.Vector3(0,0,0), 10, 4, "optimer", "normal", "normal", 4, 2, 1.5, 30, false);
+	createText(groupSlide6, "Camera", materialWhite, new THREE.Vector3(-700, -600, -950), new THREE.Vector3(0,0,0), 10, 4, "optimer", "normal", "normal", 4, 2, 1.5, 30, false);
+	createText(groupSlide6, "Tracking", materialWhite, new THREE.Vector3(-700, -612, -950), new THREE.Vector3(0,0,0), 10, 4, "optimer", "normal", "normal", 4, 2, 1.5, 30, false);
+	createText(groupSlide6, "Integration", materialWhite, new THREE.Vector3(-600, -650, -1100), new THREE.Vector3(0,0,0), 10, 4, "optimer", "normal", "normal", 4, 2, 1.5, 30, false);
+	createText(groupSlide6, "Volumetric", materialWhite, new THREE.Vector3(-600, -662, -1100), new THREE.Vector3(0,0,0), 10, 4, "optimer", "normal", "normal", 4, 2, 1.5, 30, false);
+	createText(groupSlide6, "Raycasting", materialWhite, new THREE.Vector3(-500, -700, -1250), new THREE.Vector3(0,0,0), 10, 4, "optimer", "normal", "normal", 4, 2, 1.5, 30, false);
+	createText(groupSlide6, "Rendering", materialWhite, new THREE.Vector3(-500, -712, -1250), new THREE.Vector3(0,0,0), 10, 4, "optimer", "normal", "normal", 4, 2, 1.5, 30, false);
+	var cylinder = new THREE.Mesh(new THREE.CylinderGeometry(40, 40, 5, 50, 50, false), materialBlack);
+	cylinder.position.set(-800, -565, -800);
+    cylinder.overdraw = true;
+    groupSlide6.add(cylinder);
+	
+	cylinder = new THREE.Mesh(new THREE.CylinderGeometry(40, 40, 6, 50, 50, false), materialBlack);
+	cylinder.position.set(-700, -615, -950);
+    cylinder.overdraw = true;
+    groupSlide6.add(cylinder)
+	
+	cylinder = new THREE.Mesh(new THREE.CylinderGeometry(40, 40, 6, 50, 50, false), materialBlack);
+	cylinder.position.set(-600, -665, -1100);
+    cylinder.overdraw = true;
+    groupSlide6.add(cylinder)
+	
+	cylinder = new THREE.Mesh(new THREE.CylinderGeometry(40, 40, 6, 50, 50, false), materialBlack);
+	cylinder.position.set(-500, -715, -1250);
+    cylinder.overdraw = true;
+    groupSlide6.add(cylinder);
+	
+	
+	// Slide 7
+	var groupSlide7 = new THREE.Object3D();
+	group.add(groupSlide7);
+	
+	img = new THREE.MeshBasicMaterial({
+        map:THREE.ImageUtils.loadTexture('img/physics.jpg')
+    });
+    // plane
+    var plane = new THREE.Mesh(new THREE.PlaneGeometry( 150, 50 ),img);
+    plane.overdraw = true;
+	plane.position.set(-750, -150, -900);          
+	plane.updateMatrix();
+    img.map.needsUpdate = true;
+    groupSlide7.add(plane);
+	
+	createText(groupSlide7, "Simulating Real-World Physics", materialGreen, new THREE.Vector3(-750, 0, -1400), new THREE.Vector3(0,0,0), 40, 5, "optimer", "bold", "normal", 4, 2, 1.5, 30, false);
+	createText(groupSlide7, '"Particles, particles everywhere..."', materialWhite, new THREE.Vector3(-750, -180, -800), new THREE.Vector3(0,0,0), 5, 2, "optimer", "normal", "normal", 4, 2, 1.5, 30, false);
+	
+	// Slide 8
+	var groupSlide8 = new THREE.Object3D();
+	group.add(groupSlide8);
+	
+	img = new THREE.MeshBasicMaterial({
+        map:THREE.ImageUtils.loadTexture('img/dynamic.jpg')
+    });
+    // plane
+    var plane = new THREE.Mesh(new THREE.PlaneGeometry( 150, 50 ),img);
+    plane.overdraw = true;
+	plane.position.set(-750, -150, -2400);          
+	plane.updateMatrix();
+    img.map.needsUpdate = true;
+    groupSlide8.add(plane);
+	
+	createText(groupSlide8, "Challenge", materialGreen, new THREE.Vector3(-750, 25, -2900), new THREE.Vector3(0,0,0), 40, 5, "optimer", "bold", "normal", 4, 2, 1.5, 30, false);
+	createText(groupSlide8, "Dealing with dynamic elements", materialGreen, new THREE.Vector3(-750, -25, -2900), new THREE.Vector3(0,0,0), 40, 5, "optimer", "bold", "normal", 4, 2, 1.5, 30, false);
+	createText(groupSlide8, 'What if elements are moving?', materialWhite, new THREE.Vector3(-750, -180, -2300), new THREE.Vector3(0,0,0), 5, 2, "optimer", "normal", "normal", 4, 2, 1.5, 30, false);
+	
+	// Slide 9
+	var groupSlide9 = new THREE.Object3D();
+	group.add(groupSlide9);
+	
+	createText(groupSlide9, "Conclusion", materialGreen, new THREE.Vector3(-150, 650, -400), new THREE.Vector3(0,0,0), 50, 5, "optimer", "bold", "normal", 4, 2, 1.5, 30, false);
+	createText(groupSlide9, "Making the best of the sensor", materialWhite, new THREE.Vector3(-250, 500, -800), new THREE.Vector3(0,0,0), 40, 5, "optimer", "bold", "normal", 4, 2, 1.5, 30, false);
+	createText(groupSlide9, "Nice tool for AR", materialWhite, new THREE.Vector3(-250, 550, -1200), new THREE.Vector3(0,0,0), 40, 5, "optimer", "bold", "normal", 4, 2, 1.5, 30, false);
+	createText(groupSlide9, "Good paper, but no test", materialWhite, new THREE.Vector3(-250, 650, -1600), new THREE.Vector3(0,0,0), 40, 5, "optimer", "bold", "normal", 4, 2, 1.5, 30, false);
+	groupSlide9.rotation.y = Math.PI/3;
+    
+    // RESIZE
+    window.addEventListener('resize', resizeHandler, false);
+    resizeHandler();
+	
+	// SLIDES
+	var slides = [{position: {x: 0, y: 0, z: 800}, rotation: {x: 0, y:0, z:0}, keywords:'#welcome #3rd #dim'}, {position: {x: 300, y: 300, z: -150}, rotation: {x: 0, y: Math.PI/4, z:0}, keywords:'#me #aldream.net', fogDensity:0.0003}, {position: {x: 300, y: 50, z: -150}, rotation: {x: 0, y: Math.PI/4, z:0}, keywords:'#authors #microsoft #api'}, {position: {x: -5, y: -300, z: -350}, rotation: {x: 0, y: Math.PI/3, z:0}, keywords:'#kinect #cheap #depth'}, {position: {x: 5, y: -450, z: 550}, rotation: {x: Math.PI/6, y: -2*Math.PI/3, z:0}, keywords:'#IR #light #pattern'}, {position: {x: -700, y: -550, z: -550}, rotation: {x:0, y: 0, z:0}, keywords:'depth image -> 3D points'}, {position: {x: -600, y: -600, z: -700}, rotation: {x:0, y: 0, z:0}, keywords:'cam.newPos = cam.prevPos + cam.deltaMov'}, {position: {x: -500, y: -650, z: -850}, rotation: {x:0, y: 0, z:0}, keywords:'no mesh / dist func'}, {position: {x: -400, y: -700, z: -1000}, rotation: {x:0, y: 0, z:0}, keywords:'#raycast'}, {position: {x: -750, y: -150, z: -650}, rotation: {x:0, y: 0, z:0}, keywords:'#physics #particles #collisions'}, {position: {x: -750, y: -150, z: -2150}, rotation: {x:0, y: 0, z:0}, keywords:'#move #segmentation #feature'}, {position: {x: -180, y: 600, z: 0}, rotation: {x:0, y: -Math.PI/3, z:0}, keywords:'#end'}, {position: {x: 0, y: 0, z: 800}, rotation: {x: 0, y:0, z:0}, keywords:'\\o/'}, {position: {x: -1500, y: 0, z: 4000}, rotation: {x: 0, y:Math.PI/6, z:0}, keywords:'#questions? #42', time:30000}];
+	var currentSlide = 0;
+	$('#numSlides').text(slides.length+'');
+	$(document).keydown(function(e){
+		var consumed = false;
+		if (e.keyCode == 37 || e.keyCode == 32) { // Left or Space
+		   currentSlide = currentSlide==0?(slides.length-1):currentSlide-1;
+		   consumed = true;
+		}
+		else if (e.keyCode == 39) { // Right
+		   currentSlide = currentSlide==(slides.length-1)?0:currentSlide+1;
+		   consumed = true;
+		}
+		
+		if (consumed) {
+			TWEEN.removeAll();
+			var t = slides[currentSlide].time? slides[currentSlide].time: 1500;
+			var tween1 = new TWEEN.Tween(camera.position).to(slides[currentSlide].position, t).easing(TWEEN.Easing.Cubic.InOut).start();
+			var tween2 = new TWEEN.Tween(group.rotation).to(slides[currentSlide].rotation, t).easing(TWEEN.Easing.Cubic.InOut).start();
+			if (slides[currentSlide].fogDensity)
+				var tween3 = new TWEEN.Tween(scene.fog.density).to(slides[currentSlide].fogDensity, t).easing(TWEEN.Easing.Cubic.InOut).start();
+			$('#currentSlide').text((currentSlide+1)+'');
+			$('#keywords').text(slides[currentSlide].keywords);
+		}
+		return !consumed;
+	});
+	$(document).click(function(e){
+		var vector = new THREE.Vector3((e.clientX / window.innerWidth) * 2 - 1, -(e.clientY / window.innerHeight) * 2 + 1, 0.5);
+		projector.unprojectVector(vector, camera);
+
+		var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
+
+		var intersects = raycaster.intersectObjects(scene);
+		if (intersects.length > 0 && intersects[0].object) {
+			if (intersects[0].object.userData.url) {
+				var features = 'resizable= yes; status= no; scroll= no; help= no; center= yes;width=460;height=140;menubar=no;directories=no;location=no;modal=yes';
+				window.open(intersects[0].object.userData.url, 'name', features, false);
+				return false;
+			}
+		}
+	
+		currentSlide = currentSlide==(slides.length-1)?0:currentSlide+1;
+		TWEEN.removeAll();
+		var t = slides[currentSlide].time? slides[currentSlide].time: 1000;
+		var tween1 = new TWEEN.Tween(camera.position).to(slides[currentSlide].position, t).easing(TWEEN.Easing.Cubic.InOut).start();
+		var tween2 = new TWEEN.Tween(group.rotation).to(slides[currentSlide].rotation, t).easing(TWEEN.Easing.Cubic.InOut).start();
+		$('#currentSlide').text((currentSlide+1)+'');
+		$('#keywords').text(slides[currentSlide].keywords);
+	});
+    
+    // ANIMATE
+    animate();
+}
+
+
+function loadKinect(piece){
+	var newKinectGroup = new THREE.Object3D();
+	var newPiece = new THREE.Object3D();
+	piece.traverse( function ( child ) {
+
+		//check if child has children but exclude the main group. This is custom part and must be addpted for each DAE to be clonned
+		if(child.children.length > 0 && child.children.length < 5){
+
+			//create the group
+			var newPieceChildren = new THREE.Object3D();
+			//
+			child.traverse( function ( child ) {
+				var newMesh = new THREE.Mesh(child.geometry, child.material);
+				//this will apply all transformations to the piece
+				newMesh.applyMatrix( child.matrix)
+				newPieceChildren.add(newMesh);
+
+			});
+			//this will apply all transformations to the group
+			newPieceChildren.applyMatrix( child.matrix);
+			newPiece.add(newPieceChildren);
+
+		//se if it is an isolated child with no children and if it has not been included in the subgroups
+		}else if(child.children.length == 0){
+			var newMesh = new THREE.Mesh(child.geometry, child.material);
+			//this will apply all transformations to the piece
+			newMesh.applyMatrix( child.matrix)
+			newPiece.add(newMesh);
+		}
+
+	} );
+	
+	newPiece.rotation.x = -Math.PI/2;        
+	newPiece.rotation.z = Math.PI;        
+	newPiece.updateMatrix();        
+	newPiece.position.set(283, 0, -130);    //kinect.position.y = 200; furniture.position.z = 50;
+	newPiece.scale.set(50, 50, 50);       // kinect.scale.x = furniture.scale.y = furniture.scale.z = 35;
+	newKinectGroup.add(newPiece);
+	
+	var cylinder = new THREE.Mesh(new THREE.CylinderGeometry(100, 100, 10, 50, 50, false), materialGreen);
+	cylinder.position.set(10, -4, -60);
+    cylinder.overdraw = true;
+    newKinectGroup.add(cylinder);
+	var cylinder2 = new THREE.Mesh(new THREE.CylinderGeometry(60, 60, 10, 50, 50, false), materialBlack);
+	cylinder2.position.set(10, -40, -60);
+    cylinder2.overdraw = true;
+    newKinectGroup.add(cylinder2);
+	var cylinder3 = new THREE.Mesh(new THREE.CylinderGeometry(30, 30, 10, 50, 50, false), materialGreen);
+	cylinder3.position.set(10, -70, -60);
+    cylinder3.overdraw = true;
+    newKinectGroup.add(cylinder3);
+	var cylinder4 = new THREE.Mesh(new THREE.CylinderGeometry(15, 15, 10, 50, 50, false), materialBlack);
+	cylinder4.position.set(10, -100, -60);
+    cylinder4.overdraw = true;
+    newKinectGroup.add(cylinder4);
+	var cylinder5 = new THREE.Mesh(new THREE.CylinderGeometry(5, 5, 10, 50, 50, false), materialGreen);
+	cylinder5.position.set(10, -140, -60);
+    cylinder5.overdraw = true;
+    newKinectGroup.add(cylinder5);
+	
+	return newKinectGroup;
+}
+                       
+function resizeHandler() {
+   camera.aspect = window.innerWidth / window.innerHeight;
+   camera.updateProjectionMatrix();
+   renderer.setSize(window.innerWidth, window.innerHeight);
+    
+   render();
+}
+
+function animate() {
+    requestAnimationFrame(animate);
+    // rotate group
+    //group.rotation.y = group_rot +=0.0001 * ROT_SPEED;
+    
+    TWEEN.update();
+    render();
+}
+
+function render() {
+    renderer.render( scene, camera );    
+}
+
+function createText(group, text, material, position, rotation, size, height, font, weight, style, curveSegments, bevelThickness, bevelSize, bevelSegments, bevelEnabled) {
+
+	var textGeo = new THREE.TextGeometry( text, {
+
+		size: size,
+		height: height,
+		curveSegments: curveSegments,
+
+		font: font,
+		weight: weight,
+		style: style,
+
+		bevelThickness: bevelThickness,
+		bevelSize: bevelSize,
+		bevelEnabled: bevelEnabled,
+
+		material: 0,
+		extrudeMaterial: 1
+
+	});
+
+	textGeo.computeBoundingBox();
+	textGeo.computeVertexNormals();
+
+	// "fix" side normals by removing z-component of normals for side faces
+	// (this doesn't work well for beveled geometry as then we lose nice curvature around z-axis)
+
+	if ( ! bevelEnabled ) {
+
+		var triangleAreaHeuristics = 0.1 * ( height * size );
+
+		for ( var i = 0; i < textGeo.faces.length; i ++ ) {
+
+			var face = textGeo.faces[ i ];
+
+			if ( face.materialIndex == 1 ) {
+
+				for ( var j = 0; j < face.vertexNormals.length; j ++ ) {
+
+					face.vertexNormals[ j ].z = 0;
+					face.vertexNormals[ j ].normalize();
+
+				}
+
+				var va = textGeo.vertices[ face.a ];
+				var vb = textGeo.vertices[ face.b ];
+				var vc = textGeo.vertices[ face.c ];
+
+				var s = THREE.GeometryUtils.triangleArea( va, vb, vc );
+
+				if ( s > triangleAreaHeuristics ) {
+
+					for ( var j = 0; j < face.vertexNormals.length; j ++ ) {
+
+						face.vertexNormals[ j ].copy( face.normal );
+
+					}
+
+				}
+
+			}
+
+		}
+	}
+	var centerOffset = -0.5 * ( textGeo.boundingBox.max.x - textGeo.boundingBox.min.x );
+
+	var textMesh1 = new THREE.Mesh( textGeo, material );
+
+	textMesh1.position.x = centerOffset+position.x;
+	textMesh1.position.y = position.y;
+	textMesh1.position.z = position.z;
+
+	textMesh1.rotation.x = rotation.x;
+	textMesh1.rotation.y = Math.PI * 2 + rotation.y;
+	textMesh1.rotation.z = rotation.z;
+
+	group.add( textMesh1 );
+
+}
+	
+// Init
+window.addEventListener('load', init, false);
+
+		</script>
+	</body>
+</html>

@@ -1,0 +1,169 @@
+KinectFusion: Real-time 3D Reconstruction and Interaction Using a Moving Depth Camera
+==================================================
+
+Shahram Izadi, David Kim, Otmar Hilliges, David Molyneaux, Richard Newcombe, Pushmeet Kohli, Jamie Shotton, Steve Hodges, Dustin Freemank, Andrew Davison, Andrew Fitzgibbon
+2011
+
+Slides there => aldream.net/slides
+
+( Today I'll present a paper dealing with an interesting project dating from 2011, KinectFusion. The authors describe their method to transform a simple Kinect into a hand-held real-time 3D scanner. )
+
+==================================================
+Who am I?
+==================================================
+
+Benjamin (Bill) Planche
+CS M2 | Computer Graphics + Web + Pervasive Computing
+aldream.net | github.com/Aldream | flickr.com/billeroux | twitter.com/b_aldream
+
+(
+Hey! I'm Benjamin Planche, more commonly called Bill.
+French Master student, specializing in Computer Graphics, Web, and Pervasive Computing.
+If you want to know more or start stalking me, feel free to check my website and presence on social platforms.
+)
+
+
+==================================================
+Who are they?
+==================================================
+
+Microsoft Researchers, most of them.
+Hackers exploring the possibility of the Kinect API (2012: Windows release).
+
+(
+But let's focus on the heros here.
+Most of them are Microsoft researchers.
+Fact which coincides with the efforts made by the company to promote the Kinect as not only a gaming device, but also as an interesting device for crazier or more professional applications.
+Indeed, in 2012, Microsoft released a Windows version of its product, with a fresh API/SDK to play with, making the Kinect a new toy for hackers and researchers.
+)
+
+==================================================
+Kinect
+==================================================
+
+Mic + Motorized tilt + RGB camera + **IR depth-finding camera**
+
+(
+Indeed, for a relative cheap price, the Kinect is a really fine sensing device.
+With its mic, its RGB camera, its depth sensor and its motorized tilt tracking movements, it can collect a lot of visual information about its environment.
+However, this paper is focusing on how to make the best of the depth sensor, so let's focus on it.
+)
+
+
+==================================================
+Structured Light Technique
+==================================================
+
+IR Laser projects known speckle pattern.
+IR Sensor infers depth from the deformation of the pattern.
+(http://users.dickinson.edu/~jmac/selected-talks/kinect.pdf)
+
+(
+How is this sensor working?
+It is based on a method called "Structured Light Technique".
+The idea is to use a light (an IR one invisible to the eye) integrated to the sensor to project a known pattern in front of the sensor, which will capture it, with the deformations caused by the relief of the environment. From these deformations (scale, translations, stretching, ...), the sensor will be able to deduct the depth after computation.
+The information is then made available as a depth map or a vertice cloud.
+)
+
+
+==================================================
+KinectFusion
+==================================================
+
+"Our system allows a user to pickup a standard Kinect camera and move rapidly within a room to reconstruct a high-quality, geometrically precise 3D model of the scene"
+- Track the 6DOF pose of the camera
+- Fuse live depth data from the camera into a single global 3D model => more and more details
+**Real-Time**
+
+(
+So the idea these researchers had was to use this sensor to build a 3D representation of the environment, by moving the Kinect around. The keywords here are:
+- "handheld", ie able to use the movements of the user to refine the representation, and that with nothing else to carry (only limitation: the USB cable...)
+- "real-time", ie the system isn't waiting for reaching a given precision before allowing to interact with the 3D models. So it's possible to use it for AR.
+)
+
+
+==================================================
+KinectFusion Process
+==================================================
+
+Depth Map Conversion
+====================
+	
+(
+The live depth map is converted from image coordinates into 3D points (referred to as vertices) and normals in the coordinate space of the camera.
+)
+
+Camera Tracking
+====================
+
+(
+In the tracking phase, a rigid 6DOF transform is computed to closely align the current oriented points with the previous frame, using a GPU implementation of the Iterative Closest Point (ICP) algorithm.
+Relative transforms are incrementally applied to a single transform that defines the global pose of the Kinect.
+)
+
+Volumetric Integration
+====================
+
+(
+Instead of fusing point clouds or creating a mesh, they use a volumetric surface representation. Given the global pose of the camera, oriented points are converted into global coordinates, and a single 3D
+voxel grid is updated.
+Each voxel stores a running average of its distance to the assumed position of a physical surface.
+)
+
+Raycasting
+====================
+
+(
+	Finally, the volume is raycast to extract views of the implicit surface, for rendering to the user.
+)
+
+
+==================================================
+Simulating Real-World Physics
+==================================================
+
+(
+Taking the merging of real and virtual geometries further, the GPU pipeline is extended to support simulation of physically realistic collisions between virtual objects and the reconstructed scene. 
+
+A particle simulation is implemented on the GPU.
+Scene geometry is represented within the simulation by a set of static particles.
+These are spheres of identical size, which remain stationary but can collide with other dynamically simulated particles. 
+
+This pipeline is that it maintains interactive rates despite the overhead of physics simulation, whilst performing real-time camera tracking and reconstruction.
+)
+
+==================================================
+Challenge - Dealing with dynamic elements
+==================================================
+
+(
+The core system described so far makes assumptions that the scene will remain reasonably static.
+Clearly in an interaction context, users want to move freely in front of the sensor, and interact in the scene.
+Problems:
+	- To evaluate the movements of the camera, assumption is made that the scene is static. Moving elements might cause tracking failures.
+	- Since all incoming data is merged in a single 3D scene, moving elements wil create "ghosts" / tails.
+
+To solve this, a step is added before processing the incoming depth map: it is compared to the previous one and segmented to isolate moving features.
+Each segment will then be processed separately, as described before. Moving elements will thus have their own 3D representation, distinct from the static model.
+)
+
+==================================================
+Interactions & Dynamic Scenes
+==================================================
+
+(
+This solution had such compelling results that they have been able to actually implement interactions based on the 3D models of the moving elements.
+Example: detecting touch on surfaces.
+)
+
+==================================================
+Conclusion
+==================================================
+
+(
+KinectFusion, a real-time 3D reconstruction and interaction system using a moving standard Kinect.
+A rich paper, with a lot of contributions:
+	- Impressive GPU pipeline for the real-time scanning
+	- Presentation of various applications: scanning, AR, multi-touch interface
+Only downside : the paper doesn't present a self-evaluation or performance tests.
+	
