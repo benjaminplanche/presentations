@@ -14,11 +14,11 @@
 
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<link rel="stylesheet" href="reveal.js-2.6.1/css/reveal.min.css">
-		<link rel="stylesheet" href="reveal.js-2.6.1/css/theme/sky.css" id="theme">
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/sky.css" id="theme">
 
 		<!-- For syntax highlighting -->
-		<link rel="stylesheet" href="reveal.js-2.6.1/lib/css/zenburn.css">
+		<link rel="stylesheet" href="lib/css/zenburn.css">
 
 		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
 		<script>
@@ -45,8 +45,8 @@
 					</p>
 
 					<aside class="notes">
-						Présentation = Retour d'expérience sur le concours de prog JS1K.
-						Si vous préférez suivre sur votre PC ou si vous voulez récup' les slides, direction Github.
+						Présentation = Retour d'expérience sur le concours de prog JS1K.<br/>
+						Si vous préférez suivre sur votre PC ou si vous voulez récup' les slides, direction Github.<br/>
 						Maintenant, avant toute chose, j'aimerais vous présenter un bout de code et avoir votre avis dessus.
 					</aside>
 				</section>
@@ -57,11 +57,10 @@
 						<p>?</p>
 
 						<aside class="notes">
-							Qu'en pensez-vous ? Une idée du langage, de ce qu'il peut bien faire ?
-							Même le colorateur syntaxique ne sait pas trop comment l'interprêter ...
-							Bon, après, il y a quelques indices hein... Déjà vous êtes à une conf' LyonJS, vous vous doutez que c'est pas du Cobol...
-							Et puis il y a des indices... "eval", "join", "pop", "with" "setInterval", "hsla", ...
-							Mais il y a aussi des aspects vraiment bizarres ... "Math.;", des syntaxes qui semblent ne pas aller du tout...
+							Qu'en pensez-vous ? Une idée du langage, de ce qu'il peut bien faire ?<br/>
+							Même le colorateur syntaxique ne sait pas trop comment l'interprêter ...<br/>
+							Quelques indices hein... conf' LyonJS, "eval", "join", "pop", "with" "setInterval", "hsla", ...<br/>
+							Mais il y a aussi des aspects vraiment bizarres ...
 						</aside>
 					</section>
 					<section>
@@ -92,27 +91,24 @@ _='dgX=R=r2;Y=.6;JL=l=0&[TN,5,Z=9,h=8];(D9&gt;l;){i=p*oO;dh/;(++l]i
 						<p> ... ?</p>
 
 						<aside class="notes">
-							Si on remet ce script dans son contexte, cad au sein de la page web auquel il appartient, est-ce qu'on est plus aidé ... ? Un peu, mais pas des masses.
-							C'est bien du JS ... Il semble autonome, aucun autre script chargé. Juste 3 déclarations permettant d'accéder au body, canvas et context... La page est vraiment dépouillée.
-							On remarque aussi que le code est finalement contenu en grande partie dans une string, d'où le eval final ...
-							Maintenant, que se passe-t-il si on copie-colle le tout et lance dans votre navigateur favori ... ?
+							Au sein de la page web auquel il appartient. Aidé ... ? Un peu, mais pas des masses.<br/>
+							JS autonome, aucun autre script chargé. Juste 3 déclarations. Page dépouillée.<br/>
+							Code = longue string, d'où le eval final ...<br/>
+							<br/>
 							
-							Présentation de la démo :
-							Tout de suite, ca ressemble un peu plus à quelque chose. Donc de quoi s'agit-il ?
-							Un p'tit programme JS capable de générer, de manière pseudo-aléatoire, un paysage.
-							Ce paysage possède diverses caractéristiques ...
-							- Une étendue d'eau, avec un jeu dynamique de lumières et reflets.
-							- Une fine plage de sable blanc au bord de l'eau
-							- Un massif verdoyant
-							- Des sommets rocheux et enneigés
-							L'éclairage est simulé via la notion d'illumination, avec des ombres plus ou moins éclairées / ombragées en fonction de leur orientation.
-							Si vous rechargez la page, un nouveau paysage apparait. Il se dessine dynamiquement, par ajout de p'tits points de couleur.
-							D'où le nom de cette démo, "Pointillism".
-							Cette génération continue permet également d'ajouter une certain dynamique, utilisée pour simuler le passage des saisons :
-							- Jaunissement de la foret
-							- Descente de la neige.
-							- Passage de nuage (ombres projetées)
-							Enfin, il est possible d'interagir avec, de s'y déplacer. Rotation zoom ...
+							Présentation de la démo :<br/>
+							- Une étendue d'eau, avec un jeu dynamique de lumières et reflets.<br/>
+							- Une fine plage de sable blanc au bord de l'eau<br/>
+							- Un massif verdoyant<br/>
+							- Des sommets rocheux et enneigés<br/>
+							Illumination - zones éclairées / ombragées en fonction de leur orient.<br/>
+							Si vous rechargez la page, un nouveau paysage apparait. Il se dessine dynamiquement, par ajout de p'tits points de couleur.<br/>
+							D'où le nom de cette démo, "Pointillism".<br/>
+							Cette génération continue permet également d'ajouter une certain dynamique, utilisée pour simuler le passage des saisons :<br/>
+							- Jaunissement de la foret<br/>
+							- Descente de la neige.<br/>
+							- Passage de nuage (ombres projetées)<br/>
+							Enfin, il est possible d'interagir avec, de s'y déplacer. Rotation zoom ...<br/><br/>
 							
 							Bref, il s'agit donc de ma démo principale proposée pour le concours JS1K 2013. Et quelle est sa particularité ?
 						</aside>
@@ -133,9 +129,9 @@ Ce programme Javascript permet de générer procéduralement des paysages. Ces p
 						</code></pre>
 
 						<aside class="notes">
-							Pour donner une idée, je me suis amusé à mettre à l'écrit la description verbale, en français, de ma démo.
-							En essayant d'éviter tout barratin, en restant concis et pro...
-							Sur 1024 octets (caractères ici par simplification), je n'ai même pas pu faire tenir la moitié.
+							Pour donner une idée, mis l'écrit la description verbale de ma démo.<br/>
+							En essayant d'éviter tout barratin, en restant concis et pro...<br/>
+							Sur 1024 octets (caractères ici), pas pu faire tenir la moitié.
 						</aside>
 					</section>
 					
@@ -147,10 +143,10 @@ Ce programme Javascript permet de générer procéduralement des paysages. Ces p
 						
 
 						<aside class="notes">
-							Ce soucis de concision, c'est l'esprit même du concours JS1K.
-							JS - Javascript, 1K - 1ko, ie 1024 octets, vous l'aurez compris ...
-							Son but est de pousser les programmeurs à faire beaucoup avec peu, à utiliser toute leur connaissance du langage, toute leur imagination et leur astuce pour réaliser quelque chose d'intéressant avec une forte contrainte d'espace.
-							Et donc par la même occasion, de démontrer le pouvoir d'expression du JS ...
+							Ce soucis de concision, c'est l'esprit même du concours JS1K.<br/>
+							JS - Javascript, 1K - 1ko, ie 1024 octets, vous l'aurez compris ...<br/>
+							But : pousser les programmeurs à faire beaucoup avec peu, à utiliser toute leur connaissance du langage, toute leur imagination et leur astuce pour réaliser quelque chose d'intéressant avec une forte contrainte d'espace.<br/>
+							Et donc par la même occasion, de démontrer le pouvoir d'expression du JS ...<br/>
 						</aside>
 					</section>
 				</section>
@@ -168,7 +164,9 @@ Ce programme Javascript permet de générer procéduralement des paysages. Ces p
 						<p>Le JS présenté ici n'est pas conforme W3C.</p>
 
 						<aside class="notes">
-							Premièrement, le code présenté est loin de se conformer à la plupart des règles de bonne pratique. Il n'est pas forcément cross-browser. Il n'est pas aisément maintenable, et carrément illisible.
+							Premièrement, le code présenté est loin de se conformer à la plupart des règles de bonne pratique. <br/>
+							Il n'est pas forcément cross-browser.<br/>
+							Il n'est pas aisément maintenable, et carrément illisible.
 						</aside>
 					</section>
 					
@@ -176,7 +174,8 @@ Ce programme Javascript permet de générer procéduralement des paysages. Ces p
 						<p>A ne pas reproduire en entreprise.</p>
 
 						<aside class="notes">
-							Pour toutes ces raisons, je vous invite fortement à ne pas le reproduire en entreprise. Après je veux pas généraliser hein ... Mais j'aimerais pas être la personne (le stagiaire donc) chargée de maintenir ce genre de script ...
+							Pour toutes ces raisons, je vous invite fortement à ne pas le reproduire en entreprise. Après je veux pas généraliser hein ...<br/>
+							Mais j'aimerais pas être la personne (le stagiaire donc) chargée de maintenir ce genre de script ...
 						</aside>
 					</section>
 					
@@ -187,9 +186,9 @@ Ce programme Javascript permet de générer procéduralement des paysages. Ces p
 						<p>En cas d'effets indésirables, contactez votre lead-developer.</p>
 
 						<aside class="notes">
-							Enfin ... Par rapport au concours même ...
-							Si vous songez à y participer un jour, soyez prévenus ... Vous allez y passer du temps et des larmes.
-							Vous ne verrez probablement plus le JS de la même manière, et risquez d'attraper de très sales habitudes ...
+							Enfin ... Par rapport au concours même ...<br/>
+							Si vous songez à y participer un jour, soyez prévenus ... Vous allez y passer du temps et des larmes.<br/>
+							Vous ne verrez probablement plus le JS de la même manière, et risquez d'attraper de très sales habitudes ...<br/><br/>
 							Cela étant dit ...
 						</aside>
 					</section>
@@ -208,19 +207,16 @@ Ce programme Javascript permet de générer procéduralement des paysages. Ces p
 						<a href="http://js1k.com" title="JS1K"><img src="img/js1k.png" alt="JS1K logo" /></a>
 
 						<aside class="notes">
-							- Montrer le site Web -
+							- Montrer le site Web -<br/><br/>
 							
-							Concours JS débuté en 2010 à l'initative de Peter van der Zee (@kuvos), un web-developeur néerlandais.
-							Il y a déjà eu 5 sessions, à raison de 2 en 2012.
-							Site très simple :
-							- Page d'accueil avec le jury, les prix, les démos gagnantes.
-							- Règles
-							- Liste de toutes les démos
+							Concours JS débuté en 2010par de Peter van der Zee (@kuvos), un web-dev néerlandais.<br/>
+							Il y a déjà eu 5 sessions, à raison de 2 en 2012.<br/>
+							Site très simple : Accueil, Règles, Liste<br/><br/>
 							
-							Les jurys bénévoles sont des grands noms de la scène JS. Paul Irish, Juriy Zaytsev (Fabric.js), ...
-							Le prix est constitué à partir de généreuses donation, et est réparti entre les X premiers (tout pour le 1er en 2013).
-							Les 10 démos nominées par le jury ont la chance de rester à la postérité, en apparaissant direct sur la page d'accueil.
-							Bon, ce n'est donc pas THE concours qui vous fera connaitre dans le monde de la programmation, mais cela reste l'occasion de cotoyer des passionnés - plus ou moins influents -, et de malgré tout se faire un p'tit nom, au moins auprès de ceux-ci.
+							Jury = grands noms de la scène JS. Paul Irish, Juriy Zaytsev (Fabric.js), ...<br/>
+							Prix = généreuses donation, et est réparti entre les X premiers<br/>
+							10 démos nominées par le jur - postérité sur la page d'accueil.<br/>
+							Pas THE concours qui vous fera connaitre dans le monde de la programmation, mais cela reste l'occasion de cotoyer des passionnés - plus ou moins influents -, et de malgré tout se faire un p'tit nom, au moins auprès de ceux-ci.
 						</aside>
 					</section>
 					
@@ -236,12 +232,12 @@ Ce programme Javascript permet de générer procéduralement des paysages. Ces p
 						</ul>
 
 						<aside class="notes">
-							Les principales règles sont on-ne-peut-plus-simples :
-							- JS pur, qui sera intégré dans le template fourni.
-							- 1024o max, ofc
-							- Le script doit fonctionné hors-connexion. Pas de ressources externes (même API)
-							- Cross-browser autant que possible (Chrome, Firefox, Opera)
-							- Rien à faire de la syntaxe et présentation. Ca doit marcher, point.
+							Les principales règles sont on-ne-peut-plus-simples :<br/>
+							- JS pur, qui sera intégré dans le template fourni.<br/>
+							- 1024o max, ofc<br/>
+							- Le script doit fonctionné hors-connexion. Pas de ressources externes (même API)<br/>
+							- Cross-browser autant que possible (Chrome, Firefox, Opera)<br/>
+							- Rien à faire de la syntaxe et présentation. Ca doit marcher, point.<br/>
 						</aside>
 					</section>
 					
@@ -270,8 +266,8 @@ SCRIPT
 &lt;/html&gt;</code></pre>
 
 						<aside class="notes">
-							Le Shim, le template que vous avez déjà pu observer auparavant. Une page dénudée avec un simple canvas. Trois déclarations pouvant aider. Rien d'autre.
-							Libre à vous de modifier le DOM, mais uniquement via le script JS (pas le droit de refermer la balise script pour ajouter du HTML.
+							Le Shim, le template que vous avez déjà pu observer auparavant.<br/>Page dénudée avec un simple canvas.<br/>Trois déclarations pouvant aider. Rien d'autre.<br/>
+							Libre à vous de modifier le DOM, mais uniquement via le script JS (pas le droit de refermer la balise script pour ajouter du HTML.<br/>
 						</aside>
 						
 					</section>
@@ -298,8 +294,8 @@ SCRIPT
 						</ul>
 
 						<aside class="notes">
-							Benjamin Planche, plus communément nommé Bill. Pseudonyme Aldream sur le Web.
-							INSA-Lyon
+							Benjamin Planche, plus communément nommé Bill. Pseudonyme Aldream sur le Web.<br/>
+							INSA-Lyon<br/>
 							Passionné par le Web depuis assez jeune. Aime aussi appliqué les maths ou l'art à l'informatique. J'ai eu l'occasion de bosser dans la robotique, le traitement d'image, la domotique, ...
 						</aside>
 					</section>
@@ -313,10 +309,10 @@ SCRIPT
 						</ul>
 
 						<aside class="notes">
-							J'avais découvert JS1K il y a deux ans, durant la session 2012. J'ai regardé les choses de loin, en admirant les créations postées, sans vraiment m'imaginer, sur le coup, tenter ...
-							Et puis j'ai effectué une année de césure. Malgré le boulot et la visite d'un pays étranger, je me retrouvais soudain avec plus de temps libre que ce dont j'avais l'habitude depuis le début de mes études supérieures.
-							J'ai donc (re)pris l'habitude de coder pour le plaisir, des p'tits projets perso, mon site web, ...
-							C'est aussi à cette époque qu j'ai commencé à me repencher sur un ancien projet. Un programme JS traduit d'un projet scolaire Matlab, qui générait un simple paysage ...
+							Découvert JS1K il y a 2 ans, durant session 2012. Regardé les choses de loin, sans m'imaginer tenter ...<br/>
+							Année de césure. Malgré le boulot + act. exotiques, beaucoup de temps libre<br/>
+							(re)pris l'habitude de coder pour le plaisir, des p'tits projets perso, mon site web, ...<br/>
+							Commencé à me repencher sur un ancien projet. Pogramme JS traduit d'un projet Matlab, qui générait un simple paysage ...<br/>
 						</aside>
 					</section>
 					
@@ -330,8 +326,8 @@ SCRIPT
 						<p class="fragment">Tenter de compresser un script JS codé auparavant</p>
 
 						<aside class="notes">
-							Quand la session 2013 de JS1K a été annoncé en le 1er Février, j'ai donc directement songé à ce projet.
-							Je me suis dit "Il suffirait de le minimiser, de supprimer le surplus, d'inliner certaines fonctions, de ne garder que le nécessaire des librairies utilisées, ..."
+							Quand la session 2013 de JS1K a été annoncé en le 1er Février, j'ai donc directement songé à ce projet.<br/>
+							"Il suffirait de le minimiser, de supprimer le surplus, d'inliner certaines fonctions, de ne garder que le nécessaire des librairies utilisées, ..."<br/>
 							Grave erreur.
 						</aside>
 					</section>
@@ -344,12 +340,12 @@ SCRIPT
 						</ul>
 
 						<aside class="notes">
-							Pourquoi ?
-							Parce que déjà, mon script était foireux de base. Mal codé, un peu buggé, ... Sur le coup, je me suis au moins rendu compte de mes progrès en programmation ...
-							Et puis surtout, parce que ce script n'avait pas été développé de base dans l'optique d'être compact.
-							Et mine de rien, c'est une propriété qui devient intrasèque.
-							Une telle démo doit être codée avec deux optiques : le but même de la démo, et le respect de la taille.
-							Les deux sont à prendre autant en compte et influenceront tout autant la rédaction du code.
+							Pourquoi ?<br/>
+							1 - Mon script était foireux de base. Mal codé, un peu buggé, ... Au moins rendu compte de mes progrès en programmation ...<br/>
+							2 - SURTOUT, ce script n'avait pas été développé de base dans l'optique d'être compact.<br/>
+							Et mine de rien, c'est une propriété qui devient intrasèque.<br/>
+							Une telle démo doit être codée avec deux optiques : le but même de la démo, et le respect de la taille.<br/>
+							Les deux sont à prendre autant en compte et influenceront tout autant la rédaction du code.<br/>
 							Je l'ai compris après 10 jours à galérer ...
 						</aside>
 					</section>
@@ -363,10 +359,10 @@ SCRIPT
 						</ul>
 
 						<aside class="notes">
-							J'ai donc tout mis de côté, et je suis reparti du début.
-							J'ai commencé par revoir les algos destinés à ce que je voulais faire, à les étudier en profondeur, à les comparer.
-							Si vous êtes intéressé par ce genre d'algorithmie et de maths (géométrie 3D, génération procédurale, transormations, fonctions stochastiques, interpolation, ...), on pourra en discuter après ou vous pourrez aller voir un article que j'ai fait. Ce n'est peut-être pas le sujet de cette conférence.
-							Bref, je suis donc reparti de 0. J'ai tout recodé par incrément, jusqu'à satisfaction.
+							J'ai donc tout mis de côté, et je suis reparti du début.<br/>
+							J'ai commencé par revoir les algos destinés à ce que je voulais faire, à les étudier en profondeur, à les comparer.<br/>
+							(géométrie 3D, génération procédurale, transormations, fonctions stochastiques, interpolation, ...), on pourra en discuter après ou vous pourrez aller voir un article que j'ai fait. Ce n'est peut-être pas le sujet de cette conférence.<br/>
+							Bref, je suis donc reparti de 0. J'ai tout recodé par incrément, jusqu'à satisfaction.<br/>
 						</aside>
 					</section>
 				</section>
@@ -376,7 +372,7 @@ SCRIPT
 						<h1>Compression</h1>
 
 						<aside class="notes">
-							En passant dnoc outre le contenu même du code, un aspect très important dans la création de ces démos, c'est la phase de minimisation / compression.
+							En passant dnoc outre le contenu même du code, un aspect très important dans la création de ces démos, c'est la phase de minimisation / compression.<br/>
 							Des techniques et des outils existent pour aider dans cette quête, qui ne se limitent pas au concours JS1K mais peuvent servir plus couramment ...
 						</aside>
 					</section>
@@ -392,18 +388,16 @@ SCRIPT
 						</ol>
 
 						<aside class="notes">
-							Par "atteindre", je veux dire "réduire jusqu'à", ne vous y trompez pas ! Car la concision n'est habituellement pas un soucis, et on a plus l'habitude de prendre ces aises.
-							- Variables et fonction au nom explicite s'étalant sur 30 caractères
-							- Espaces, retour à la ligne et indentation
-							- Commentaires
-							Autant de choses utiles (indispensables) lors de la phase de rédaction du code (juste, par exemple, pour être capable de se relire), mais qui deviennent le Mal quand on est limité à une poignée d'espace mémoire.
-							Alors comment réduire tout ça, descendre sous le kilo-octet ?
-							- En supprimant tout ce que je viens de citer. Plus d'espace ou de comm', 1 char par nom, ...
-							- Puis en jouant sur la syntaxe JS. Il existe des tricks, des astuces que je vais vous présenter.
-							- En jouant aussi sur des concepts mathématiques
-							- Enfin, il existe des outils capables de recompiler votre code JS pour le minifier, voire le compresser.
-							- Après, il reste la douloureuse solution de limiter son ambition, de rogner le code si durement implémenté ...
-							- Et tout cela, vous êtes amenés à le répéter des dizaines, des centaines de fois, à chaque modif' de votre code, pour vous assurer du respect de la limite ...
+							Par "atteindre", je veux dire "réduire jusqu'à", ne vous y trompez pas ! Car la concision n'est habituellement pas un soucis, et on a plus l'habitude de prendre ces aises.<br/>
+							- Variables et fonction au nom à rallonge, Espaces/indentation, Commentaires<br/><br/>
+							-> choses utiles pour rédaction du code, mais le Mal quand on est limité<br/>
+							Alors comment réduire tout ça, descendre sous le kilo-octet ?<br/>
+							- En supprimant tout ce que j'ai de citer.<br/>
+							- Syntaxe JS. Tricks, des astuces que je vais vous présenter.<br/>
+							- En jouant aussi sur des concepts mathématiques<br/>
+							- Outils capables de recompiler votre code JS pour le minifier / le compresser.<br/>
+							- + douloureuse solution de limiter son ambition, de rogner le code si durement implémenté ...<br/>
+							- à répéter des centaines de fois, à chaque modif' de votre code, pour vous assurer du respect de la limite ...<br/>
 							
 						</aside>
 					</section>
@@ -413,9 +407,9 @@ SCRIPT
 						<p>Bible : <a href="">"Byte-saving Techniques"</a>,<br/>	wiki de la communauté <a href="http://www.140byt.es">140bytes</a></p>
 
 						<aside class="notes">
-							Donc, commençons par les astuces syntaxiques.
-							Je ne vais vous en présenter que quelques unes, celles qui m'ont probablement été le plus utiles.
-							Si vous voulez en connaitre plus, je vous invite à consulter ce wiki Github maintenu par la communautés 140bytes. Il s'agit d'une vraie Bible du JS minimaliste.
+							Donc, commençons par les astuces syntaxiques.<br/><br/>
+							Je ne vais vous en présenter que quelques unes, celles qui m'ont probablement été le plus utiles.<br/>
+							Si vous voulez en connaitre plus, je vous invite à consulter ce wiki Github maintenu par la communautés 140bytes. Il s'agit d'une vraie Bible du JS minimaliste.<br/>
 						</aside>
 					</section>
 					
@@ -440,14 +434,14 @@ if(a=this.prop){...}   // après</code></pre>
 						</ul>
 
 						<aside class="notes">
-							Tout d'abord les astuces touchant aux variables.
-							J'ai déjà parlé de les renommer pour ne garder qu'un seul caractère. Mais les outils que je vous présenterai plus loin peuvent le faire automatiquement pour vous.
-							Donc premièrement, dites adieu aux "var". Passez tout en global. C'est généralement unanimement déconseillé. Mais on parle là d'un script de seulement 1024o. Il ne s'agit pas d'un script parmi tant d'autres d'une lourde appli Web. Avec un minimum de prudence, ca ne devrait avoir aucun impact.
+							Renommer -> les outils que je vous présenterai peuvent le faire automatiquement<br/>
+							Adieu "var". Passez tout en global. Généralement unanimement déconseillé. <br/>
+							Mais script de seulement 1024o, pas d'une lourde appli Web.Si prudent, aucun impact.<br/><br/>
 							
-							Déclarer les variables est une perte d'espace. Il existe néanmoins diverses méthodes pour réduire cet impact.
-							La 1ere : profiter des paramètres de fonctions.
+							Déclarer les variables = perte d'espace. Diverses méthodes pour réduire cet impact.<br/>
+							La 1ere : profiter des paramètres de fonctions.<br/>
 							
-							Enfin, il est utile de se rappeler que l'opération d'assigner une valeur à une variable retourne justement cette valeur. Profitez de cela pour faire d'une pierre deux coups autant que possible !
+							Se rappeler : assigner une valeur la retourne justement. Profitez de cela pour faire d'une pierre deux coups autant que possible !<br/>
 						</aside>
 					</section>
 					
@@ -476,11 +470,9 @@ for(i=10;i--;bar())foo();	        // encore après</code></pre>
 						</ul>
 
 						<aside class="notes">
-							Ensuite les boucles. Ce genre de démos en contient forcément pas mal.
+							Boucler par incrémentation, trop mainstream.<br/><br/>
 							
-							Premièrement, décrémentez. Boucler par incrémentation, c'est trop mainstream. Et regardez, vous y gagner 3 caractères ! Et croyez moi, à un moment du concours, vous faites péter le champagne pour chaque octet gagné ...
-							
-							Sinon la principale chose à retenir, c'est que le "for" est votre meilleur ami. Si la syntaxe de son corps peut sembler lourde, elle permet pourtant de gagner de précieux octets, en offrant une maléabilité que ne possède pas while.
+							Principale - "for" = meilleur ami. Syntaxe peut sembler lourde, mais offre + de maléabilité<br/><br/>
 							
 							Autre exemple du pouvoir de "for" : vous pouvez utiliser la dernière partie de son corps, appelée à chaque itération, pour y mettre certaines de vos expressions à itérer ! Vous économisez ainsi en délimitateurs, en utilisant ceux déjà imposés par la syntaxe de la boucle !
 						</aside>
@@ -510,15 +502,12 @@ if(a^123) // après</code></pre>
 						</ul>
 
 						<aside class="notes">
-							Les conditions. Il existe tellement de syntaxes possibles. Il faut savoir bien les utiliser
+							Les conditions, tellement de syntaxes possibles. Il faut savoir bien les utiliser<br/>
+							Exemple tout simple : expressions ternaires à la place d'usuels "if / else" ...<br/><br/> 
 							
-							Exemple tout simple et pourtant tellement efficace : l'utilisation des expressions ternaires à la place d'usuels "if / else" ... 
-							
-							En fait, de manière générale, il faut tout faire pour éviter les "if", et je ne parle même pas des "else" ...
-							Il existe des opérateurs pouvant très bien les remplacés.
-							Si a est faux, foo() ne sera jamais appelé.
-							Si a est vrai,bar() ne le sera pas.
-							C'est très sale, encore une fois déconseillé, par forcément optimal niveau performance / optimisé par le moteur du navigateur, mais le gain de place est absolument non négligeable !
+							Eviter les "if", et je ne parle même pas des "else" ... plein opérateurs pour les remplacer.<br/>
+							Si a est faux, foo() ne sera jamais appelé, Si a est vrai,bar() ne le sera pas.<br/>
+							Très sale, encore une fois déconseillé, par forcément optimal niveau performance / optimisé par le moteur du navigateur<br/><br/>
 							
 							Un dernier exemple prouvant que bien connaitre ses opérateurs est une nécessité. Une façon plus concise de tester l'inégalité numérique.
 						</aside>
@@ -538,15 +527,13 @@ if(a^123) // après</code></pre>
 						</ul>
 
 						<aside class="notes">
-							Quelques autres tricks en vrac ...
+							Maitrise des opérateurs ... Eviter parenthèses inutiles / évitables.<br/><br/>
 							
-							Pour reparler de la maitrise des opérateurs ... Celle peut vous permettre d'économiser de la place en évitant des parenthèses inutiles / évitables.
+							Quand joints avec string, arrays imprimés avec éléments séparés par des virgules.<br/><br/>
 							
-							Autre astuce utile : quand joints avec une string, les arrays sont imprimés avec tous leurs éléments séparés par des virgules ... Très utile pour imprimer des couleurs.
-							
-							Enfin, un trick structurel : inliner autant que possible ! Le mot "function" est trop long pour être appelé sans raison, donc éviter de définir des centaines de fonctions.
-							De même, au lieu de perdre de la place à définir des constantes, utilisez directement leur valeur (si elles sont courtes) ! Plus pénible à modifier/maintenir encore une fois, mais il ne faut rien négliger !
-							Surtout que comme nous le verrons, les répétitions causées par ces "inlines" peuvent être nulifiées par les outils de compression.
+							Trick structurel : inliner autant que possible ! "function" = trop long<br/>
+							Définir des constantes = pertes; utilisez directement leur valeur (si elles sont courtes) ! Plus pénible à modifier/maintenir encore une fois, mais il ne faut rien négliger !<br/>
+							Surtout, les répétitions causées par ces "inlines" peuvent être nulifiées par les outils.<br/><br/>
 							
 							Pour plus d'astuces, vous reportez aux articles web cités ...
 						</aside>
@@ -582,18 +569,18 @@ dix=9           // après (ca paaaaasse!)</code></pre>
 						</ul>
 
 						<aside class="notes">
-							L'expression des nombres. Il y a beaucoup à dire ici.
-							Si l'objet JS "Math" offre de précieuses fonctions, leur appel prend de la place, un gaspillage quand parfois l'opération voulue peut être exprimée directement plus concisement.
-							Un exemple avec l'opération d'arrondi ou de tronquage.
-							Plus technique et approximatif : connaitre les limites et approximations des fonctions usuelles peut aussi s'avérer utile.
-							Savoir que sin(x) ~= x pour les valeurs de x -> 0, ce genre de chose 
-							Pour le coup, ca demande de bien connaitre les cas d'utilisation, les domaines de valeur, mais c'est parfois le cas (voire souvent puisqu'on ne veut pas de mauvaise surprise au sein de sa démo).
+							L'expression des nombres. Il y a beaucoup à dire ici.<br/>
+							"Math" offre de précieuses fonctions, mais appels = couteux<br/>Un gaspillage, parfois l'opération peut être exprimée plus concisement.<br/>
+							Un exemple avec l'opération d'arrondi ou de tronquage.<br/>
+							Plus technique et approximatif : connaitre les limites et approximations des fonctions usuelles<br/>
+							sin(x) ~= x pour les valeurs de x -> 0, ce genre de chose <br/>
+							Doit connaitre les cas d'utilisation, les domaines de valeur, mais puisqu'on veut pas de surprise au sein de sa démo.<br/><br/>
 							
-							Enfin, il est possible de jouer sur la notation des grands nombres. Un exemple pour les nombre décimaux.
-							Pour les binaires, il est aussi possible d'utiliser les opérateur "<" ou ">".
+							EJouer sur la notation des grands nombres.<br/>
+							Pour les binaires, il est aussi possible d'utiliser les opérateur "<" ou ">".<br/><br/>
 							
-							Alors le dernier exemple nécessite probablement une explication. Sachez déjà que cette utilisation est véridique. Cette approximation m'a fait gagner 2-3 précieux octets.
-							J'utilisais la valeur 10 pour définir la hauteur moyenne des montagnes. En passant à 9, celles-ci paraissent légèrement moins escarpées, mais visuellement la différence est minime. Alors que 2-3 octets de gagner, c'est énorme comme gain !
+							Utilisation est véridique. Cette approximation m'a fait gagner 2-3 précieux octets.<br/>
+							J'utilisais la valeur 10 pour définir la hauteur moyenne des montagnes. En passant à 9, celles-ci paraissent légèrement moins escarpées, mais visuellement la différence est minime. Alors que 2-3 octets de gagner, c'est énorme comme gain !<br/>
 							Le message derrière cet exemple, c'est aussi qu'il faut parfois faire preuve de souplesse ...
 						</aside>
 					</section>
@@ -609,20 +596,20 @@ dix=9           // après (ca paaaaasse!)</code></pre>
 						</ul>
 
 						<aside class="notes">
-							Pour conclure sur les maths ... Il s'agit vraiment de votre meilleur ami pour exprimer beaucoup avec peu.
-							- En faisant bon usage de la géométrie
-							- En évitant les opérations matricielles, et donc les arrays, en sachant linéariser et condenser vos calculs
-							- En utilisant des modulos au lieu de formules conditionnelles
-							- ...
+							Pour conclure sur les maths ... Il s'agit vraiment de votre meilleur ami pour exprimer beaucoup avec peu.<br/>
+							- En faisant bon usage de la géométrie<br/>
+							- En évitant les opérations matricielles, et donc les arrays, en sachant linéariser et condenser vos calculs<br/>
+							- En utilisant des modulos au lieu de formules conditionnelles<br/>
+							- ...<br/><br/>
 							
-							Un dernier exemple :
-							Pour définir les transitions de couleur de mon paysage (mer bleue avec des reflets plus ou moins foncés, plage jaune, foret vertes avec ombrage, neige blanche, ...), j'avais une série de conditions ...
-							"Si hauteur du point <= niveau de l'eau, alors couleur du point = bleu;
-							 Si hauteur du point >~ noveau de l'eau, alors couleur = jaune sable"
-							 ... pour chaque palié
-							C'était long et verbeux. Et puis je me suis rappelé mes cours de Maths, et la notion d'interpolation.
-							Après tout, là, mon gradient de couleur, c'est une fonction, exprimée par chaque point de mes conditions.
-							En interpolant, il devrait être possible d'approximer en un seul polynome l'ensemble de la fonction !
+							Un dernier exemple :<br/>
+							Pour définir les transitions de couleur de mon paysage (mer bleue avec des reflets plus ou moins foncés, plage jaune, foret vertes avec ombrage, neige blanche, ...), j'avais une série de conditions ...<br/>
+							"Si hauteur du point <= niveau de l'eau, alors couleur du point = bleu;<br/>
+							 Si hauteur du point >~ noveau de l'eau, alors couleur = jaune sable"<br/>
+							 ... pour chaque palié<br/>
+							C'était long et verbeux. Et puis je me suis rappelé mes cours de Maths, et la notion d'interpolation.<br/>
+							Après tout, là, mon gradient de couleur, c'est une fonction, exprimée par chaque point de mes conditions.<br/>
+							En interpolant, il devrait être possible d'approximer en un seul polynome l'ensemble de la fonction !<br/>
 							Je suis allé sur le site web Wolfgram Alpha, j'ai rentré mes coordonnées (niveau eau, bleu; niveau plage, jaune; ...) et il m'a retourné les possibles interpolations approximant le tout.
 							Gain de place !
 							
@@ -643,9 +630,9 @@ dix=9           // après (ca paaaaasse!)</code></pre>
 						<a href="http://closure-compiler.appspot.com"><img src="img/closure.jpg" alt="Closure" width=800 /></a>
 
 						<aside class="notes">
-							Le premier est plutot connu, il s'agit de Google Closure. Il s'agit d'un outil que vous pouvez faire tourner sur votre PC ou utiliser en ligne.
-							Il est avant tout connu pour recompiler du code JS afin de l'optimiser, en évitant les branches inutiles, ce genre de chose.
-							Puis il compacte votre code, renommant les variables, supprimant les espaces, évitant les formulations inutiles...
+							Outil connu. Tourne sur PC ou en ligne.<br/>
+							Recompile du code JS afin de l'optimiser, en évitant les branches inutiles, ...<br/>
+							Compacte votre code, renommant les var, supprimant les espaces, évitant les formulations inutiles...<br/>
 							Il le compacte. Il le minifie.
 						</aside>
 					</section>
@@ -664,10 +651,10 @@ x=.9  // après</code></pre>
 foo();bar();voila()  // après</code></pre>
 
 						<aside class="notes">
-							Néanmoins, dans l'optique de gagner des caractères, il peut être nécessaire de repasser un peu derrière.
-							Closure a tendance à remettre le zéro optionnel des nombres décimaux.
-							Aussi, nul besoin du point-virgule final ...
-							Mais autrement, il s'agit d'un précieux outil.
+							Néanmoins, dans l'optique de gagner des caractères, il peut être nécessaire de repasser un peu derrière.<br/>
+							Closure a tendance à remettre le zéro optionnel des nombres décimaux.<br/>
+							Aussi, nul besoin du point-virgule final ...<br/>
+							Mais autrement, il s'agit d'un précieux outil.<br/>
 						</aside>
 					</section>
 					
@@ -678,10 +665,10 @@ foo();bar();voila()  // après</code></pre>
 						<a href="http://www.iteral.com/jscrush"><img src="img/jscrush.jpg" alt="Closure" height=400; /></a>
 
 						<aside class="notes">
-							Mais votre meilleur ami, c'est JSCrush.
-							Il s'agit en fait d'une démo codé pour JS1K 2012, qui depuis sert donc à coder les nouvelles démos ... Assez méta.
-							Son créateur est aivopaas, un habitué du concours. Cet outil tient d'ailleurs en moins de 1000o. 972 il me semble.
-							
+							Mais votre meilleur ami, c'est JSCrush.<br/>
+							Il s'agit en fait d'une démo codé pour JS1K 2012, qui depuis sert donc à coder les nouvelles démos ... Assez méta.<br/>
+							Son créateur est aivopaas, un habitué du concours. Cet outil tient d'ailleurs en moins de 1000o. 972 il me semble.<br/>
+							<br/>
 							Et donc le pouvoir de cette application, c'est de compresser votre code déjà minifié.
 						</aside>
 					</section>
@@ -705,13 +692,13 @@ foo();bar();voila()  // après</code></pre>
 							</ol>
 
 						<aside class="notes">
-							Par curiosité, regardons comment cela fonctionne.
-							C'est en fait important de comprendre ce fonctionnement, car ca permet d'en faire le meilleur usage possible. Donc ...
+							Par curiosité, regardons comment cela fonctionne.<br/>
+							C'est en fait important de comprendre ce fonctionnement, car ca permet d'en faire le meilleur usage possible. Donc ...<br/><br/>
 							
-							[Slide explicite]
+							[Slide explicite]<br/><br/>
 							
-							Néanmoins, pour rappel, les démos js1k doivent être self-containing. On ne peut pas faire d'appel extérieur.
-							Donc impossible de lancer une appli externe pour décompresser la chaine obtenu.
+							Néanmoins, pour rappel, les démos js1k doivent être self-containing. On ne peut pas faire d'appel extérieur.<br/>
+							Donc impossible de lancer une appli externe pour décompresser la chaine obtenu.<br/>
 							Mais la magie de JSCrush, c'est justement d'inclure ensuite un bootstrap, un p'tit morceau de JS qui décompressera et lancera votre programme.
 						</aside>
 							
@@ -727,7 +714,7 @@ foo();bar();voila()  // après</code></pre>
 							</ol>
 
 						<aside class="notes">
-							Ce bootstrap, le voici. En vrai, "chaineDelim" est directement remplacée par son contenu. Et "code" est exprimé sur un seul char.
+							Ce bootstrap, le voici. En vrai, "chaineDelim" est directement remplacée par son contenu. Et "code" est exprimé sur un seul char.<br/>
 							Et ce que ce bootstrap fait donc, c'est [explicite].
 						</aside>
 					</section>
@@ -752,16 +739,16 @@ x=function(b,c){...}, y=function(b,c){...} // après</code></pre>
 						</ul>
 
 						<aside class="notes">
-							Maintenant, on sait donc que JSCrush tire son efficacité de la compressions des morceaux de codes répétitifs.
-							Il faut donc chercher au maximum à créer des patterns dans son programme. Comment cela ?
-							- En limitant les nouveaux noms, en réutilisant les variables crées. J'ai fait un p'tit calcul pour évaluer le gain que cela peut avoir pour l'expression des arrays ...
+							Donc JSCrush tire son efficacité de la compressions des morceaux de codes répétitifs.<br/>
+							Il faut donc chercher au maximum à créer des patterns dans son programme. Comment cela ?<br/>
+							- En limitant les nouveaux noms, en réutilisant les variables crées.<br/>
 							
-							- C'est intéressant aussi de réarranger dans la mesure du possible son code, pour faire apparaitre ces patterns.
+							- Réarranger si possible son code, pour faire apparaitre ces patterns.<br/><br/>
 							
-							- Enfin, quelque chose qui du premier abord semble contreproductif : uniformiser les signatures des fonctions en prenant la plus longue comme pattern.
-							Ainsi, l'ensemble "function" + tout ce qu'il y a entre parenthèse sera remplacé par un unique char. "function(...)" n'apparaitra plus qu'une fois dans votre code.
+							- 1er abord contreproductif : uniformiser les signatures des fonctions en prenant la plus longue comme pattern.<br/>
+							Ainsi, l'ensemble "function" + tout ce qu'il y a entre parenthèse sera remplacé par un unique char. "function(...)" n'apparaitra plus qu'une fois dans votre code.<br/><br/>
 							
-							JSCrush est donc un outil très puissant pour ce concours. Il génère un code complétement illisible et inmodifiable cependant !
+							JSCrush est donc un outil très puissant pour ce concours. Il génère un code complétement illisible et inmodifiable cependant !<br/>
 							Il me semble que la quasi totalité des démos gagnantes l'ont utilisé ...
 						</aside>
 					</section>
@@ -773,8 +760,8 @@ x=function(b,c){...}, y=function(b,c){...} // après</code></pre>
 						<a href="https://github.com/Siorki/RegPack">http://github.com/Siorki/RegPack</a>
 
 						<aside class="notes">
-							Cette année, Siorki, un des compétiteurs, développa un nouvel outil encore plus puissant.
-							Basé sur JSCrush, il ajoute une 2nde étape à la compression destinées à exprimer la chaine de tokens sous forme de regex, bien plus courte.
+							Cette année, Siorki, un des compétiteurs, développa un nouvel outil encore plus puissant.<br/>
+							Basé sur JSCrush, 2nde étape à la compression destinées à exprimer la chaine de tokens sous forme de regex, bien plus courte.<br/>
 							Il va surement faire fureur pour la prochaine session js1k ...
 						</aside>
 					</section>
@@ -785,7 +772,7 @@ x=function(b,c){...}, y=function(b,c){...} // après</code></pre>
 						<h1>Workflow</h1>
 
 						<aside class="notes">
-							A ce stade, il devient dur de gratter des octets supplémentaires. Etudions maintenant le workflow général.
+							A ce stade, il devient dur de gratter des octets supplémentaires. Etudions maintenant le workflow général.<br/>
 							Celui que j'ai adopté, mais qui correspond à celui de pas mal d'autres compétiteurs .
 						</aside>
 					</section>
@@ -804,17 +791,17 @@ x=function(b,c){...}, y=function(b,c){...} // après</code></pre>
 							</ol>
 
 						<aside class="notes">
-							Ainsi, on est à peu près tous passé par 3 phases.
+							Ainsi, on est à peu près tous passé par 3 phases.<br/>
 							D'abord on débarque dans le concours, la fleur au fusil. On voit pas trop ce qui pourrait mal se passer. Un peu de réécriture, de minification, et le tour devrait être joué.
-							Pour moi, c'est quand j'ai débuté en voulant reprendre mon vieux code poussiéreux et verbeux ...
+							Pour moi, c'est quand j'ai débuté en voulant reprendre mon vieux code poussiéreux et verbeux ...<br/><br/>
 							
-							Puis rapidement on se mange les dents. La désillusion. L'amertume. On reprend tout du début, mais là encore ca coince. On arrive pas à obtenir quelque chose de correct sur si peu de place.
+							Puis rapidement on se mange les dents. La désillusion. L'amertume. On reprend tout du début, mais là encore ca coince. On arrive pas à obtenir quelque chose de correct sur si peu de place.<br/><br/>
 							
-							Mais doucement, imperceptiblement, par douloureux incréments, après moultes tentatives, ca commence à prendre forme. Le programme, comme nous, devient mature
-							A la fin, les questions que je me posais, ce n'était plus "Je supprime quoi, le zoom ou le dégradé en fond ?", mais plutot "Quelle est la meilleure couleur pour la plage ?".
-							Sur la fin, j'ouvrais plein de micro branches pour tester de légères modifications dans les couleurs, les formes, les interactions, ...
-							Ca devenait du pur perfectionnisme, limite obsessionnel ...
-							Tu connais tellement ton programme par coeur, c'est ton bébé ... Tu repousses le moment de couper le corde, de la soumettre enfin ...
+							Mais doucement, imperceptiblement, par douloureux incréments, après moultes tentatives, ca commence à prendre forme. Le programme, comme nous, devient mature<br/>
+							A la fin, les questions que je me posais, ce n'était plus "Je supprime quoi, le zoom ou le dégradé en fond ?", mais plutot "Quelle est la meilleure couleur pour la plage ?".<br/>
+							Sur la fin, j'ouvrais plein de micro branches pour tester de légères modifications dans les couleurs, les formes, les interactions, ...<br/>
+							Ca devenait du pur perfectionnisme, limite obsessionnel ...<br/>
+							Tu connais tellement ton programme par coeur, c'est ton bébé ... Tu repousses le moment de couper le corde, de la soumettre enfin ...<br/>
 							
 						</aside>
 							
@@ -837,10 +824,10 @@ x=function(b,c){...}, y=function(b,c){...} // après</code></pre>
 							</ol>
 
 						<aside class="notes">
-							Que faut-il normalement faire pour pas refaire mes erreurs / celle du débutant ?
-							Déjà, il faut éviter de participer sans idée préalable de ce que l'on veut faire. Il faut un semblant d'idée, des bases.
-							Autre point préalable, je conseille vivement de jeter un oeil aux précédentes démos, de lire les commentaires de leur créateurs. Beaucoup poste sur leur blogs des explications détaillées qui sont passionnantes. Même sans vouloir participer, si le sujet vous intéresse, c'est vraiment à lire.
-							Enfin, expérimentez. Faites des p'tits tests, des mini-démos. Testez les notions séparemment. Moteur graphique, procédure de génération de terrain, déplacement de caméra, ... Attendez de maitriser suffisamment les concepts et leur implémentations avant de vous jeter dans l'arène.
+							Que faut-il faire pour pas refaire mes erreurs / celle du débutant ?<br/>
+							Eviter de participer sans idée préalable de ce que l'on veut faire. Des bases.<br/>
+							Jeter un oeil aux précédentes démos, de lire les commentaires de leur créateurs. Blogs.<br/>
+							Expérimentez. p'tits tests, des mini-démos. Testez les notions séparemment. Moteur graphique, procédure de génération de terrain, déplacement de caméra, ...<br/>Attendez de maitriser suffisamment les concepts et leur implémentations avant de vous jeter dans l'arène.<br/>
 						</aside>
 							
 					</section>
@@ -872,7 +859,7 @@ x=function(b,c){...}, y=function(b,c){...} // après</code></pre>
 							</ol>
 
 						<aside class="notes">
-							La deuxième étape, la plus dure. C'est une boucle à répéter des centaines de fois. Implémente une fonctionnalité, teste, compresse, pleure parce que ca ne rentre pas, modifie, recommence.
+							La deuxième étape, la plus dure.<br/>C'est une boucle à répéter des centaines de fois. Implémente une fonctionnalité, teste, compresse, pleure parce que ca ne rentre pas, modifie, recommence.<br/>
 							C'est long, c'est douloureux. J'ai planté mon navigateur des dizaines de fois, j'ai réécrit la même fonction des dizaines de fois jusqu'à obtenir le bon résultat, j'avais Closure et JSCrush en permanence ouvert, ...
 						</aside>
 					</section>
@@ -893,7 +880,7 @@ x=function(b,c){...}, y=function(b,c){...} // après</code></pre>
 						<h2>Phase 3</h2>
 
 						<aside class="notes">
-							Et un matin, vous ouvrirez votre projet et verrez que tout tient, et que ca ressemble à quelque chose. Après une bonne cuite méritée, vous vous rendrez cependant compte qu'il y a encore *moyen* d'améliorer ...
+							Et un matin, vous ouvrirez votre projet et verrez que tout tient, et que ca ressemble à quelque chose.<br/>Après une bonne cuite méritée, vous vous rendrez cependant compte qu'il y a encore *moyen* d'améliorer ...
 						</aside>
 					</section>
 					
@@ -907,16 +894,14 @@ x=function(b,c){...}, y=function(b,c){...} // après</code></pre>
 							</ol>
 							
 						<aside class="notes">
-							Donc vous reprenez le processus devenu routine.
-							Mais avec quelques modifs.
-							Déjà, ce n'est plsu vraiment de l'implémentation, c'est plus des modifications, des p'tits tests.
-							Et personnellement, sur la fin j'ai clairement arrêté d'utiliser CLosure.
-							Pourquoi ? Plus besoin.
-							Je bossais direct sur le code minifié. Je codais minifié.
-							Déjà c'est un gain de temps car pas besoin de passer par cette recompilation.
-							En plus, Closure, en recompilant le tout, à la facheuse tendance à modifier la structure du code.
-							Pas des grosses choses, mais assez pour détruire les patterns soigneusement créés pour JSCrush. Donc au lieu de devoir les faire réapparaitre à chaque fois, ca devient plus simple d'arrêter Closure.
-							Et puis ca gêne plus pour coder. A ce point-là, tu connais les ~1200 caractères de ton programme par coeur. (je vous parlais de TOC en début de présentation ...)
+							Donc vous reprenez le processus devenu routine. Mais avec quelques modifs.<br/>
+							Plus de l'implémentation, des modifications, des p'tits tests.<br/>
+							Et personnellement, sur la fin j'ai clairement arrêté d'utiliser CLosure.<br/>
+							Pourquoi ? Plus besoin.<br/>
+							Je bossais direct sur le code minifié. Je codais minifié.<br/>
+							Gain de temps car pas besoin de passer par cette recompilation.<br/>
+							Facheuse tendance à modifier la structure du code -> patterns<br/>
+							Tu connais les ~1200 caractères de ton programme par coeur. (je vous parlais de TOC en début de présentation ...)
 						</aside>
 					</section>
 					
@@ -927,7 +912,7 @@ x=function(b,c){...}, y=function(b,c){...} // après</code></pre>
 							</ul>
 
 						<aside class="notes">
-							Donc là, l'objectif, c'est juste de se faire plaisir, d'optimiser la chose, de pousser la limite, d'être satisfait.
+							Donc là, l'objectif, c'est juste de se faire plaisir, d'optimiser la chose, de pousser la limite, d'être satisfait.<br/>
 							Et surtout de pas louper la deadline (31 Mars).
 						</aside>
 					</section>
@@ -936,7 +921,7 @@ x=function(b,c){...}, y=function(b,c){...} // après</code></pre>
 						<h2>Outils</h2>
 
 						<aside class="notes">
-							Pour compléter sur le workflow, parlons outils ...
+							Pour compléter sur le workflow, parlons outils ...<br/>
 							Qu'est-ce qu'utilisent les développeurs js1k ...
 						</aside>
 					</section>
@@ -945,7 +930,7 @@ x=function(b,c){...}, y=function(b,c){...} // après</code></pre>
 						<p>Personnellement, pas grand chose...</p>
 
 						<aside class="notes">
-							Voilà. Je boassais pas mal de facon nomade, je n'avais pas forcément accès à une distrib Linux, ...
+							Voilà. Je boassais pas mal de facon nomade, je n'avais pas forcément accès à une distrib Linux, ...<br/>
 							Donc pas de réel environnement de travail
 						</aside>
 					</section>
@@ -959,9 +944,9 @@ x=function(b,c){...}, y=function(b,c){...} // après</code></pre>
 						</ul>
 
 						<aside class="notes">
-							Ca se résumait à la base de la base pour le Web développement.
-							- Notepad++ ou Geany, parfois JSBin durant certaines phases où je testais vraiment souvent.
-							- Les navigateurs Web requis
+							Ca se résumait à la base de la base pour le Web développement.<br/>
+							- Notepad++ ou Geany, parfois JSBin durant certaines phases où je testais vraiment souvent.<br/>
+							- Les navigateurs Web requis<br/>
 							- Et bien sûr en plus la suite pour la minification / compression.
 						</aside>
 					</section>
@@ -970,7 +955,7 @@ x=function(b,c){...}, y=function(b,c){...} // après</code></pre>
 						<p>... mais il existe des suites pouvant aider ...</p>
 
 						<aside class="notes">
-							Après, ca ne veut pas dire qu'il n'y a pas des outils plus adapté.
+							Après, ca ne veut pas dire qu'il n'y a pas des outils plus adapté.<br/>
 							Par exemple, certains camarades compétiteurs ont utilisé ...
 						</aside>
 					</section>
@@ -993,7 +978,7 @@ x=function(b,c){...}, y=function(b,c){...} // après</code></pre>
 						<h1>Résultats</h1>
 
 						<aside class="notes">
-							Je passe avoir fait le tour du Workflow.
+							Je passe avoir fait le tour du Workflow.<br/>
 							Voyons maintenant les résultats de tout ce processus, pour les autres et pour moi-même.
 						</aside>
 					</section>
@@ -1009,9 +994,9 @@ x=function(b,c){...}, y=function(b,c){...} // après</code></pre>
 						<h3>Démo alpha - <a href="http://aldream.net/demo#js1k-2013-loom" >Loom</a></h3>
 
 						<aside class="notes">
-							La première implémentée et soumise se dénommait Loom.
-							Elle utilise une version modifiée de l'algo Diamond-Square pour la génération du terrain, et l'algo du Peintre pour l'impression en 2D.
-							Le rendu et les controles sont clairement différent de ma démo finale ...
+							La première implémentée et soumise se dénommait Loom.<br/>
+							Elle utilise une version modifiée de l'algo Diamond-Square pour la génération du terrain, et l'algo du Peintre pour l'impression en 2D.<br/>
+							Le rendu et les controles sont clairement différent de ma démo finale ...<br/>
 							Personnellement je trouvais qu'il manquait quelque chose, d'où le fait que j'ai continuer à expérimenter une fois celle-ci soumise ...
 						</aside>
 					</section>
@@ -1019,14 +1004,14 @@ x=function(b,c){...}, y=function(b,c){...} // après</code></pre>
 						<h3>Démo bis - <a href="http://aldream.net/demo#js1k-2013-morphose" >Morphose</a></h3>
 
 						<aside class="notes">
-							J'ai donc testé 2 pistes.
-							Une où je modifiais l'algo de génération procédurale, pour tester de nouvelles formes.
-							L'autre où je modifiais le moteur 2D pour tester de nouveaux rendus.
-							Le résultat de la 1ere piste, c'est ma démo Morphose.
-							Cette démo réutilise le même moteur de rendu, l'algo du Peintre. Mais elle représente ce coup-ci un mesh mélant de manière pseudo-aléatoire la géométrie d'un cube et d'une sphère.
-							C'était très fun à coder, pas trop prise de tête.
-							Ca ma aussi permis de me rendre compte de certaines différences dans la gestion de l'API du canvas parmi les navigateurs.
-							J'ai du ajouter une condition quand la démo tourne sur Firefox ou Opéra, pour diviser par 4 le nombre de triangles, sinon ca ramait trop sur ceux-ci.
+							J'ai donc testé 2 pistes.<br/><br/>
+							Une où je modifiais l'algo de génération procédurale, pour tester de nouvelles formes.<br/>
+							L'autre où je modifiais le moteur 2D pour tester de nouveaux rendus.<br/><br/>
+							Le résultat de la 1ere piste, c'est ma démo Morphose.<br/>
+							Cette démo réutilise le même moteur de rendu, l'algo du Peintre. Mais elle représente ce coup-ci un mesh mélant de manière pseudo-aléatoire la géométrie d'un cube et d'une sphère.<br/>
+							C'était très fun à coder, pas trop prise de tête.<br/>
+							Ca ma aussi permis de me rendre compte de certaines différences dans la gestion de l'API du canvas parmi les navigateurs.<br/>
+							J'ai du ajouter une condition quand la démo tourne sur Firefox ou Opéra, pour diviser par 4 le nombre de triangles, sinon ca ramait trop sur ceux-ci.<br/>
 							Attention, je ne critique pas (vraiment) ces navigateurs. Pour gagner de la place, je n'ai pas forcément suivi les best-practices quant à l'utilisation du canvas, donc ...
 						</aside>
 					</section>
@@ -1034,8 +1019,8 @@ x=function(b,c){...}, y=function(b,c){...} // après</code></pre>
 						<h3>Démo finale - <a href="http://aldream.net/demo#js1k-2013-pointillism" >Pointillism</a></h3>
 
 						<aside class="notes">
-							Enfin, la version finale de ma démo paysagiste, Pointillism.
-							Plus d'algo du peintre, mais une nouvelle méthode pontilliste, basé sur diverses choses : triangulation, interpolation barycentrique, z-buffering et échantillonnage par méthode de Monte-Carlo (inspirée par un article de Roman Cortes, un fameux js1kiste). Elle avait au final l'avantage d'être plus compact, d'où les ajouts dynamiques ...
+							Enfin, la version finale de ma démo paysagiste, Pointillism.<br/>
+							Plus d'algo du peintre, mais une nouvelle méthode pontilliste, basé sur diverses choses : triangulation, interpolation barycentrique, z-buffering et échantillonnage par méthode de Monte-Carlo (inspirée par un article de Roman Cortes, un fameux js1kiste).<br/>Elle avait au final l'avantage d'être plus compact, d'où les ajouts dynamiques ...
 						</aside>
 					</section>
 					
@@ -1044,9 +1029,9 @@ x=function(b,c){...}, y=function(b,c){...} // après</code></pre>
 						<img src="img/graphEvolDemo.jpg" src="Evolution du code" />
 
 						<aside class="notes">
-							Un résultat intéressant, c'est ce schéma montrant grossièrement l'évolution du programme au cours du temps.
-							Vous voyez ma première tentative amenée à échouer, vite abandonnée ...
-							Ma reprise à zéro, en travaillant par incrément ...
+							Un résultat intéressant, c'est ce schéma montrant grossièrement l'évolution du programme au cours du temps.<br/>
+							Vous voyez ma première tentative amenée à échouer, vite abandonnée ...<br/>
+							Ma reprise à zéro, en travaillant par incrément ...<br/>
 							Puis la longue phase de peaufinage ...
 						</aside>
 					</section>
@@ -1224,7 +1209,7 @@ Paint();</code></pre>
 						<p>10000 octets</p>
 
 						<aside class="notes">
-							Déjà vous avez ici une version "beautifiée" du code de la démo, avec du JS lisible, de l'indentation, des commentaires explicites ... Le concours nous invite à poster une telle version pour les lecteurs. Cette version est limitée à 10000 octets. J'ai été un peu short pour les commentaires du coup ;)
+							Déjà vous avez ici une version "beautifiée" du code de la démo, avec du JS lisible, de l'indentation, des commentaires explicites ...<br/>Le concours nous invite à poster une telle version pour les lecteurs. Cette version est limitée à 10000 octets.<br/>J'ai été un peu short pour les commentaires du coup ;)
 						</aside>
 					</section>
 
@@ -1285,8 +1270,8 @@ onmousewheel=onwheel=function(H,S,L){
 						<p>2061 octets</p>
 
 						<aside class="notes">
-							Ca c'est mon code tel quel en milieu-fin de phase 2. Les noms de variables ont déjà laissé place à leur version mono-caractères, mais l'indentation est toujours là ...
-							Quelques comm' aussi pour m'y retrouver.
+							Ca c'est mon code tel quel en milieu-fin de phase 2. Les noms de variables ont déjà laissé place à leur version mono-caractères, mais l'indentation est toujours là ...<br/>
+							Quelques comm' aussi pour m'y retrouver.<br/>
 							2061 octets ...
 						</aside>
 					</section>
@@ -1307,7 +1292,7 @@ onmousewheel=onwheel=function(H,S,L){
 						<p>1288 octets</p>
 
 						<aside class="notes">
-							Enfin, il s'agit ici de la version finale du code. Celle sur laquelle je codais mes dernières p'tites modifications. Plus besoin de Closure.
+							Enfin, il s'agit ici de la version finale du code. Celle sur laquelle je codais mes dernières p'tites modifications.<br/>Plus besoin de Closure.
 						</aside>
 					</section>
 
@@ -1331,7 +1316,7 @@ onmousewheel=onwheel=function(H,S,L){
 					</section>
 					
 					<section>
-						<img src="img/poker-face-meme.jpg" alt="Poker Face" /> 
+						<img src="img/meme.gif" alt="Poker Face" /> 
 					</section>
 
 					<section>
@@ -1395,11 +1380,11 @@ onmousewheel=onwheel=function(H,S,L){
 						</ul>
 
 						<aside class="notes">
-							Très visuelles, car ca reste le manière moyen d'accrocher un badaud lambda, d'attirer l'attention ... Et puis le canavs est mis à disposition, c'est presque une invitation implicite ...
+							Très visuelles, car ca reste le manière moyen d'accrocher un badaud lambda, d'attirer l'attention ... Et puis le canavs est mis à disposition, c'est presque une invitation implicite ...<br/><br/>
 							
-							Peu d'interactions, car ca prend de la place ! "onmousemove", "onclick", ... Des propriétés longues à écrire, des fonctions à coder pour chaque event, des comportements / objets event différents en fonction des browsers ... Décourageant.
-							Et puis offrir du controle à l'utilisateur, c'est perdre du controle sur sa propre démo. Il vaut peut-être mieux être sûr que tout marche comme on le veut, que ca suive le scénario voulu.
-							Pour vous donner une idée, plus de 10% de mon code - presque 150 octets - sont purement destinés aux controles ...
+							Peu d'interactions, car ca prend de la place ! "onmousemove", "onclick", ... Des propriétés longues à écrire, des fonctions à coder pour chaque event, des comportements / objets event différents en fonction des browsers ... Décourageant.<br/>
+							Et puis offrir du controle à l'utilisateur, c'est perdre du controle sur sa propre démo. Il vaut peut-être mieux être sûr que tout marche comme on le veut, que ca suive le scénario voulu.<br/>
+							Pour vous donner une idée, plus de 10% de mon code - presque 150 octets - sont purement destinés aux controles ...<br/><br/>
 							
 							Peu d'API. Pareil, trop longs d'appeler de telles fonctions, et un comportement pas forcément homogène.
 						</aside>
@@ -1419,7 +1404,7 @@ onmousewheel=onwheel=function(H,S,L){
 						<h2>Demoscene</h2>
 
 						<aside class="notes">
-							Je commencerai par dire que js1k est une extension, voire même s'inscrit dans le Demoscene.
+							Je commencerai par dire que js1k est une extension, voire même s'inscrit dans le Demoscene.<br/>
 							Qu'est-ce que cela ?
 						</aside>
 					</section>
@@ -1428,8 +1413,8 @@ onmousewheel=onwheel=function(H,S,L){
 						<blockquote cite="http://wikipedia.com">Sous-culture informatique ayant pour but la création artistique sous forme de programme, fondée sur les trois domaines que sont : la musique assistée par ordinateur, l’infographie et la programmation.</blockquote>
 
 						<aside class="notes">
-							Vous avez peut-être entendu parlé de ces programmeurs et leur concours ... Des démos tenant sur 4, 16, 64ko, codées sur des disquettes à l'époque, pour des PC mais aussi des Amiga, des Commodore 64, ... A l'époque le matériel informatique en soit était la source de la limitation et donc du challenge.
-							Aujourd'hui, cette limitation se retrouve sur le Web, sand-boxé. Pouet.net, js1K, jsgames13k, ...
+							Vous avez peut-être entendu parlé de ces programmeurs et leur concours ...<br/>Des démos tenant sur 4, 16, 64ko, codées sur des disquettes à l'époque, pour des PC mais aussi des Amiga, des Commodore 64, ... A l'époque le matériel informatique en soit était la source de la limitation et donc du challenge.<br/>
+							Aujourd'hui, cette limitation se retrouve sur le Web, sand-boxé. Pouet.net, js1K, jsgames13k, ...<br/><br/>
 							Le Web est devenu le nouveau far-west des programmeurs en quête de challenges.
 						</aside>
 					</section>
@@ -1438,7 +1423,7 @@ onmousewheel=onwheel=function(H,S,L){
 						<p>Discipline pour <em>Hackers</em></p>
 
 						<aside class="notes">
-							Et donc ce genre de concours, selon moi, est organisés par et pour les Hackers.
+							Et donc ce genre de concours, selon moi, est organisés par et pour les Hackers.<br/>
 							Dans le sens large du terme. Ceux qui recherchent l'astuce, le raccourcis, l'optimisation.
 						</aside>
 					</section>
@@ -1456,9 +1441,9 @@ onmousewheel=onwheel=function(H,S,L){
 						</ul>
 
 						<aside class="notes">
-							Pourquoi ? Parce que ce genre de challenge informatique requiert
-							- De hacker le contenu du code. Le "faire beaucoup avec peu", avec toutes les astuces langagières ou mathématiques que l'on a vues.
-							- Mais aussi de hacker la forme. De ne pas seulement voir ce que fait le code, mais comment est fait le code.
+							Pourquoi ? Parce que ce genre de challenge informatique requiert<br/>
+							- De hacker le contenu du code. Le "faire beaucoup avec peu", avec toutes les astuces langagières ou mathématiques que l'on a vues.<br/>
+							- Mais aussi de hacker la forme. De ne pas seulement voir ce que fait le code, mais comment est fait le code.<br/><br/>
 							C'est un domaine un peu méta, mais tellement intéressant et remplis de challenges. Compression des données, développement / lutter contre de programmes malicieux, ...
 						</aside>
 					</section>
@@ -1479,9 +1464,9 @@ onmousewheel=onwheel=function(H,S,L){
 						</ul>
 
 						<aside class="notes">
-							Ce que ce concours apporte, au dela du prix et de la visibilité ...
-							- Un beau challenge à se donner
-							- Une belle manière d'en apprendre plus sur son langage favori
+							Ce que ce concours apporte, au dela du prix et de la visibilité ...<br/>
+							- Un beau challenge à se donner<br/>
+							- Une belle manière d'en apprendre plus sur son langage favori<br/>
 							- Et enfin l'occasion d'échanger avec des gens partageant votre passion très souvent bien plus experts que vous ...
 						</aside>
 					</section>
@@ -1490,7 +1475,7 @@ onmousewheel=onwheel=function(H,S,L){
 						<blockquote cite="https://twitter.com/salamondani">IMHO best compression scheme: imagination+time+math skills. &mdash; Philippe Deschaseaux (gagnant)</blockquote>
 
 						<aside class="notes">
-							Le mot de la fin, je le laisse au gagnant. Il s'agit de l'extrait d'un de ses tweets, retweeté par pas mal de compétiteurs car c'est l'avis partagé ...
+							Le mot de la fin, je le laisse au gagnant.<br/>Il s'agit de l'extrait d'un de ses tweets, retweeté par pas mal de compétiteurs car c'est l'avis partagé ...
 						</aside>
 					</section>
 				</section>
@@ -1517,8 +1502,8 @@ onmousewheel=onwheel=function(H,S,L){
 
 		</div>
 
-		<script src="reveal.js-2.6.1/lib/js/head.min.js"></script>
-		<script src="reveal.js-2.6.1/js/reveal.min.js"></script>
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
 
 		<script>
 
@@ -1539,12 +1524,12 @@ onmousewheel=onwheel=function(H,S,L){
 
 				// Optional libraries used to extend on reveal.js
 				dependencies: [
-					{ src: 'reveal.js-2.6.1/lib/js/classList.js', condition: function() { return !document.body.classList; } },
-					{ src: 'reveal.js-2.6.1/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: 'reveal.js-2.6.1/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-					{ src: 'reveal.js-2.6.1/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
-					{ src: 'reveal.js-2.6.1/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
-					{ src: 'reveal.js-2.6.1/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
 				]
 			});
 
