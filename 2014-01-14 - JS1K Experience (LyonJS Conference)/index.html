@@ -446,39 +446,6 @@ if(a=this.prop){...}   // après</code></pre>
 					</section>
 					
 					<section>
-						<h3>Boucles</h3>
-						<ul>
-							<li>
-								<p>Décrémenter si possible</p>
-								<pre><code>for (i=0;i<10;i++) // avant
-for (i=10;i--;)    // après</code></pre>
-							</li>
-							<li>
-								<p><code>for</code> > <code>while</code></p>
-								<pre><code>while(1);    // avant
-for(;;);     // après
-
-i=10;while(i--){...} // avant
-for(i=10;i--;){...}  // après</code></pre>
-							</li>
-							<li>
-								<p>Placer certaines expressions dans le corps du <code>for</code></p>
-								<pre><code>for(i=10;i--;){foo(); bar()}	// avant
-for(i=10;i--;bar(),foo());	// après
-for(i=10;i--;bar())foo();	        // encore après</code></pre>
-							</li>
-						</ul>
-
-						<aside class="notes">
-							Boucler par incrémentation, trop mainstream.<br/><br/>
-							
-							Principale - "for" = meilleur ami. Syntaxe peut sembler lourde, mais offre + de maléabilité<br/><br/>
-							
-							Autre exemple du pouvoir de "for" : vous pouvez utiliser la dernière partie de son corps, appelée à chaque itération, pour y mettre certaines de vos expressions à itérer ! Vous économisez ainsi en délimitateurs, en utilisant ceux déjà imposés par la syntaxe de la boucle !
-						</aside>
-					</section>
-					
-					<section>
 						<h3>Conditions</h3>
 						<ul>
 							<li>
@@ -512,6 +479,40 @@ if(a^123) // après</code></pre>
 							Un dernier exemple prouvant que bien connaitre ses opérateurs est une nécessité. Une façon plus concise de tester l'inégalité numérique.
 						</aside>
 					</section>
+					
+					<section>
+						<h3>Boucles</h3>
+						<ul>
+							<li>
+								<p>Décrémenter si possible</p>
+								<pre><code>for (i=0;i<10;i++) // avant
+for (i=10;i--;)    // après</code></pre>
+							</li>
+							<li>
+								<p><code>for</code> > <code>while</code></p>
+								<pre><code>while(1);    // avant
+for(;;);     // après
+
+i=10;while(i--){...} // avant
+for(i=10;i--;){...}  // après</code></pre>
+							</li>
+							<li>
+								<p>Placer certaines expressions dans le corps du <code>for</code></p>
+								<pre><code>for(i=10;i--;){foo(); bar()}	// avant
+for(i=10;i--;bar(),foo());	// après
+for(i=10;i--;bar())foo();	        // encore après</code></pre>
+							</li>
+						</ul>
+
+						<aside class="notes">
+							Boucler par incrémentation, trop mainstream.<br/><br/>
+							
+							Principale - "for" = meilleur ami. Syntaxe peut sembler lourde, mais offre + de maléabilité<br/><br/>
+							
+							Autre exemple du pouvoir de "for" : vous pouvez utiliser la dernière partie de son corps, appelée à chaque itération, pour y mettre certaines de vos expressions à itérer ! Vous économisez ainsi en délimitateurs, en utilisant ceux déjà imposés par la syntaxe de la boucle !
+						</aside>
+					</section>
+
 					
 					<section>
 						<h3>Divers</h3>
@@ -1340,6 +1341,7 @@ onmousewheel=onwheel=function(H,S,L){
 								<li><a href="http://js1k.com/2013-spring/demo/1460" >Winter Wrap</a>, de <a href="http://twitter.com/veubeke" >Arne</a></li>
 								<li><a href="http://js1k.com/2013-spring/demo/1431" >Psychedelic</a>, de <a href="http://twitter.com/ehouais" >Piotr Stosur</a></li>
 							</ol>
+							<small>cf <a href="https://gist.github.com/zz85/5522800">https://gist.github.com/zz85/5522800</a></small>
 					</section>
 					
 					<section>
