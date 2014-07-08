@@ -1,0 +1,3 @@
+[submodule "2014-07-11 - Survey on Random Number Generators (School Seminar)/random-number-generator"]
+	path = 2014-07-11 - Survey on Random Number Generators (School Seminar)/random-number-generator
+	url = git://github.com/Aldream/random-number-generator.git
