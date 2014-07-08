@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 
 	<head>
@@ -24,6 +24,7 @@
 		<script>
 			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
 		</script>
+		<script src="../js/jquery-1.10.2.min.js"></script>
 
 		<!--[if lt IE 9]>
 		<script src="lib/js/html5shiv.js"></script>
@@ -104,7 +105,7 @@
 				</section>
 					
 				<section>
-					<p>Various proposition over the last century...</p>
+					<p>Various propositions over the last century...</p>
 				</section>
 
 				<section>
@@ -112,14 +113,8 @@
 				</section>
 
 				<section>
-
-					<ul>
-						<li>1st attempt at defining algorithmic randomness</li>
-						<li>Based on <b>Theory of Large Numbers</b> </li>
-				</section>
-
-				<section>
-						<p>An infinite sequence can be considered random if:</p>
+						<p>Based on <b>Theory of Large Numbers</b></p>
+						<p class="fragment">An infinite sequence can be considered random if:</p>
 						<ul>
 							<li class="fragment">It has the <i>Frequency Stability Property</i></li>
 							<li class="fragment">Any sub-seq. selected by a <i>proper method</i> isn't biased too</li>
@@ -402,9 +397,9 @@
 			ex: (1, 0, 0, 1) -> f(x) = x^4 + x^3 + 1
         @param seed (int):        Initial value given to the register
         @return                   LFSR Generator */
-    return function lfsrGen() { /** @yield Pseudo-Random value from the defined LFSR */
-        var deg = taps.length(),              // Degree of the feedback polynomial
-            period = Maths.pow(2, deg) - 1,   // Max period of the LFSR
+    return function *lfsrGen() { /** @yield Pseudo-Random value from the defined LFSR */
+        var deg = taps.length,              // Degree of the feedback polynomial
+            period = Math.pow(2, deg) - 1,   // Max period of the LFSR
             value = seed;                     // Initial value
         for (var it = 0; it < period; it++) { // Computing new value of most-significant bit:
             var bit = 0;
@@ -418,6 +413,42 @@
         }
     }
 }</code></pre>
+				</section>
+				
+				<section>
+					<h5>Let's play</h5>
+					<input id="lfsr-poly" name="lfsr-poly" type="text" placeholder="Polynomial" style="width:10em;height:2em;font-size:1.2em;text-align:center;border-radius:10px;margin-right:1em;" />
+					<input id="lfsr-deg" name="lfsr-deg" type="number" placeholder="Reg. Size" style="width:4em;height:2em;font-size:1.2em;text-align:center;border-radius:10px;margin:1em;margin-left:-.5em;" />
+					<input id="lfsr-seed" name="lfsr-seed" type="number" placeholder="Ini. Val." style="width:4em;height:2em;font-size:1.2em;text-align:center;border-radius:10px;margin-left:1em;" />
+					<br/>
+					<button id="lfsr-start" style="width:3em;height:1.7em;font-size:1em;text-align:center;border-radius:10px;margin-right:1em;">Start</button> <button id="lfsr-stop" style="width:3em;height:1.7em;font-size:1em;text-align:center;border-radius:10px;margin-left:1em;">Stop</button>
+					<br/>
+					<textarea id="lfsr-values" name="lfsr-values" style="width:11em;height:6em;font-size:1em;border-radius:10px;margin:1em;"></textarea>
+					<textarea id="lfsr-bits" name="lfsr-bits" style="width:11em;height:6em;font-size:1em;border-radius:10px;margin:1em;"></textarea>
+					
+					<script>
+var lfsrInterval = null;
+$("#lfsr-start").click(function(){
+	$('#lfsr-values').text('');
+	$('#lfsr-bits').text('');
+	if (lfsrInterval) { clearInterval(lfsrInterval); }
+	var taps = binPolyStringToArray($('#lfsr-poly').val(), parseInt($('#lfsr-deg').val()));
+	var seed = parseInt($('#lfsr-seed').val());
+	taps.pop();
+	var lfsr = createLFSRGenerator(taps, seed)();
+	
+	var lfsrFunc = function() {
+		var value = lfsr.next().value;
+		bit = getBitFromInt(value,0);
+		$('#lfsr-values').append(value + ', ');
+		$('#lfsr-bits').append(bit + ', ');
+	};
+	lfsrInterval = setInterval(lfsrFunc, 1500);
+});
+$("#lfsr-stop").click(function(){
+	if (lfsrInterval) { clearInterval(lfsrInterval); }
+});
+					</script>
 				</section>
 			</section>
 				
@@ -461,11 +492,11 @@
         it = 0
         while (it < period): # Computing the new value of the most-significant bit:
             bit = 0
-            for j in range(deg):
-                if len(taps[j]):
-                    # Computing the binary multiplication x^K_0 * x^K_1 * ... * x^K_n with [K_0, K_1, ..., K_n] the j-th taps array
+			for tap in taps:
+                # Computing the binary multiplication x^K_0 * x^K_1 * ... * x^K_n with [K_0, K_1, ..., K_n] the j-th taps array
+                if len(tap):
                     element = 1
-                    for k in taps[j]:
+                    for k in tap:
                         if not (value >> k & 1):
                             element = 0 # Binary multiplication of terms returns 1 iif none of the terms is null.
                             break       # So if we encounter a null bit, we simply return 0, else 1.
@@ -482,24 +513,24 @@
 				
 				<section>
 					<h5>Javascript</h5>
-					<pre><code style="font-size:.8em;">function createNLFSRgenerator(taps, seed):
+					<pre><code style="font-size:.8em;">function createNLFSRgenerator(taps, seed) {
     /** Returns a NLFSR generator, defined by the given combination of taps and initial value.
         @param taps (Tuple[Array[int]]): Sequence of combination of taps defining the non-linear register.
             ex: ([0,0],[],[2],[1,2]) -> f(x) = x^4*x^4 + x^2  + x^1*x^2 + 1 (poor choice)
         @param seed (int):              Initial value given to the register
         @return                         NLFSR Generator */
-    return function nlfsrGen() { /** @yield Pseudo-Random value generated by a pre-defined NLFSR */
-        var deg = len(taps),              // Degree of the feedback polynomial
+    return function *nlfsrGen() { /** @yield Pseudo-Random value generated by a pre-defined NLFSR */
+        var deg = taps.length,              // Degree of the feedback polynomial
             period = Math.pow(2,deg) - 1, // Max Period of the NLFSR (read Warning above)
             value = seed,                 // Initial value
             it = 0
         while (it < period) {             // Computing the new value of the most-significant bit:
             var    bit = 0
-            for (var j = 0; j < deg; j++) {
-                if (taps[j].length) {     // Computing the binary multiplication x^K_0 * x^K_1 * ... * x^K_n with [K_0, K_1, ..., K_n] the j-th taps array
-                    var    element = 1
-                    for (var k in taps[j]) {
-                        if ( !(value >> taps[j][k] & 1)) {
+			for (var j = 0; j < taps.length; j++) {
+				var	element = 1;
+                if (taps[j].length) { // Computing the binary multiplication x^K_0 * x^K_1 * ... * x^K_n with [K_0, K_1, ..., K_n] the j-th taps array
+                    for (var k = 0; k < taps[j].length; k++) {
+                        if (!(value >> taps[j][k] & 1)) {
                             element = 0;  // Binary multiplication of terms returns 1 iif none of the terms is null.
                             break;        // So if we encounter a null bit, we simply return 0, else 1.
                          }
@@ -514,6 +545,43 @@
         }
     }
 }</code></pre>
+				</section>
+				
+				<section>
+					<h5>Let's play</h5>
+					<input id="nlfsr-poly" name="nlfsr-poly" type="text" placeholder="Polynomial" style="width:10em;height:2em;font-size:1.2em;text-align:center;border-radius:10px;margin-right:1em;" />
+					<input id="nlfsr-deg" name="nlfsr-deg" type="number" placeholder="Reg. Size" style="width:4em;height:2em;font-size:1.2em;text-align:center;border-radius:10px;margin:1em;margin-left:-.5em;" />
+					<input id="nlfsr-seed" name="nlfsr-seed" type="number" placeholder="Ini. Val." style="width:4em;height:2em;font-size:1.2em;text-align:center;border-radius:10px;margin-left:1em;" />
+					<br/>
+					<button id="nlfsr-start" style="width:3em;height:1.7em;font-size:1em;text-align:center;border-radius:10px;margin-right:1em;">Start</button> <button id="nlfsr-stop" style="width:3em;height:1.7em;font-size:1em;text-align:center;border-radius:10px;margin-left:1em;">Stop</button>
+					<br/>
+					<textarea id="nlfsr-values" name="nlfsr-values" style="width:11em;height:6em;font-size:1em;border-radius:10px;margin:1em;"></textarea>
+					<textarea id="nlfsr-bits" name="nlfsr-bits" style="width:11em;height:6em;font-size:1em;border-radius:10px;margin:1em;"></textarea>
+					
+					<script>
+var nlfsrInterval = null;
+$("#nlfsr-start").click(function(){
+	$('#nlfsr-values').text('');
+	$('#nlfsr-bits').text('');
+	if (nlfsrInterval) { clearInterval(nlfsrInterval); }
+	var deg = parseInt($('#nlfsr-deg').val());
+	var taps = nlBinPolyStringToArray($('#nlfsr-poly').val(), deg);
+	var seed = parseInt($('#nlfsr-seed').val());
+	taps.pop();
+	var nlfsr = createNLFSRgenerator(taps, deg, seed)();
+	
+	var nlfsrFunc = function() {
+		var value = nlfsr.next().value;
+		bit = getBitFromInt(value,0);
+		$('#nlfsr-values').append(value + ', ');
+		$('#nlfsr-bits').append(bit + ', ');
+	};
+	nlfsrInterval = setInterval(nlfsrFunc, 1500);
+});
+$("#nlfsr-stop").click(function(){
+	if (nlfsrInterval) { clearInterval(nlfsrInterval); }
+});
+					</script>
 				</section>
 			</section>
 				
@@ -741,8 +809,8 @@
             @param L (int):                             Current number of assumed errors
             @return                                     Binary value of the discrepancy */
 		var disc = 0;
-		for (var j = 0; j < L+1; j++) disc += sequence[i-j] & poly[j] // disc = s[i]*p[i] + s[i-1]*p[1] + ... + s[i-L]*p[L]
-		return disc;
+		for (var j = 0; j < L+1; j++) disc += (sequence[i-j] & poly[j]) // disc = s[i]*p[i] + s[i-1]*p[1] + ... + s[i-L]*p[L]
+		return disc%2;
 	}
     
 	function addPoly(poly1, poly2, length) {
@@ -775,9 +843,141 @@
                 f = g; // f get the previous value of F
             } else delta += 1;
 		} else delta += 1;
+	}
 	for (var k = L+1; k < N; k++) { F.pop(); }
     return F; // output the polynomial
 }</code></pre>
+				</section>
+				
+				<section>
+					<h5>Let's play</h5>
+					<textarea id="berle-seq" name="berle-seq" style="width:25em;height:4em;font-size:1em;border-radius:10px;margin:1em;"></textarea><br/>
+					<button id="berle-start" style="width:3em;height:1.7em;font-size:1em;text-align:center;border-radius:10px;margin-right:1em;">Start</button><br/>
+					<input id="berle-poly" name="berle-poly" type="text" placeholder="Polynomial" style="width:16em;height:2em;font-size:1.2em;text-align:center;border-radius:10px;margin-right:.5em;" />
+					<input id="berle-deg" name="berle-deg" type="number" placeholder="Reg. Size" style="width:4em;height:2em;font-size:1.2em;text-align:center;border-radius:10px;margin-top:1em;margin-bottom:1em;" />
+					<p>Iteration <strong id="berle-it">0</strong><br/>$\beta$ = <strong id="berle-disc">0</strong><br/>(<em id="berle-status">stopped</em>)</p>
+					<script>
+					
+function *SequentialBerlekampMasseyAlgorithm(sequence) {
+    /*
+        Applies the Berlekamp-Massey Algorithm to the given sequence of bits;
+        Returns the smallest annihilating polynomial F, ie. the smallest inverse
+        feedback polynomial corresponding to the generating LFSR.( F(sequence) = 0 )
+        @param sequence (Array[int] or Tuple[int]): Sequence of bits to analyze
+        @returns Array defining the computed inverse feedback polynomial
+            ex: [1, 0, 0, 1, 1] represents the inverse polynomial x^4 + x^3 + 1,
+                and thus the feedback polynomial x^4 + x + 1 (taps = (1, 0, 0, 1))
+    */
+    
+    function discrepancy(sequence, poly, i, L) {
+        /*
+            Returns the discrepancy.
+            @param sequence (Array[int] or Tuple[int]): Sequence of bits to analyze
+            @param poly (Array[int]):                   Current version of the inverse polynomial
+            @param i (int):                             Current position in the sequence
+            @param L (int):                             Current number of assumed errors
+            @return                                     Binary value of the discrepancy
+        */
+		var disc = 0;
+		for (var j = 0; j < L+1; j++) {
+			disc += (sequence[i-j] & poly[j]) // disc = s[i]*p[i] + s[i-1]*p[1] + ... + s[i-L]*p[L]
+		}
+		return disc%2;
+	}
+    
+	function addPoly(poly1, poly2, length) {
+        /*
+            Computes the addition of two F2 polynomials.
+            @param poly1 (Array[int]): Array representing the 1st polynomial
+            @param poly2 (Array[int]): Array representing the 2nd polynomial
+            @param length (int):       Length to be covered by the addition (trusting user to avoid testing)
+            @returns                   Resulting Binary Array 
+        */
+		var poly = [];
+		for (var j = 0; j < length; j++) {
+			poly.push(poly1[j] ^ poly2[j]);
+		}
+		return poly;
+	}
+
+    // Notes: the variables names are based on those in the pseudo-code found in
+    //        JOUX, Antoine. Algorithmic cryptanalysis. CRC Press, 2009.,
+    //        Algorithm 2.14, page 56
+    
+    // Initializing: 
+    var N = sequence.length;
+
+    var F = [], f = [] // Polynomials, with F being the one returned at the end (inverse feedback polynomial)
+	for (var i = 0; i < N; i++) { F.push(0); f.push(0); }
+    F[0] = f[0] = 1
+    var L = 0               // Current number of assumed errors
+    var delta = 1           // Number of iterations since last update of L
+
+    // Computing F and L:
+    for (var l = 0; l < N; l++) {
+        var beta = discrepancy(sequence, F, l, L);
+        // If the discrepancy is null, we can assume that F and L are currently correct and can continue with the next term.
+        // Else, we must adjust F:
+        if (beta != 0) {
+            // Adjusting F for this term:
+            var g = F.slice(0);
+			var fShifted = f.slice(0);
+			for (var k = 0; k < delta; k++) { fShifted.unshift(0); }
+            F = addPoly(F, fShifted, N);
+            
+            // L represents the number of error, so the discrepancies will reach 0 before l grows bigger than 2*L
+            // If it is not the case, we must update L (and thus re-initalize delta), and also f:
+            if (2 * L <= l) {
+                L = l + 1 - L; // number of available syndromes used to calculate discrepancies
+                delta = 1;
+                f = g; // f get the previous value of F
+            } else {
+                delta += 1;
+			}
+		} else {
+            delta += 1;
+		}
+		
+		var g = F.slice(0);
+		for (var k = L+1; k < N; k++) { g.pop(); }
+		yield {it:l, poly:g, disc: beta, l:L};
+	}
+
+	for (var k = L+1; k < N; k++) { F.pop(); }
+    // output the polynomial
+    yield {it:l, poly:F, disc: 0, l:L};
+}
+
+
+var berleInterval = null;
+$("#berle-start").click(function(){
+	$('#berle-poly').text('');
+	$('#berle-deg').text('');
+	$('#berle-it').text('0');
+	$('#berle-disc').text('0');
+	$('#berle-status').text('running');
+	if (berleInterval) { clearInterval(berleInterval); }
+	var seq = $('#berle-seq').val().replace(/\s/g,'').split(',');
+	var berle = SequentialBerlekampMasseyAlgorithm(seq);
+	
+	var berleFunc = function() {
+		var value = berle.next().value;
+		if (value) {
+			$('#berle-poly').val(polyToString(value.poly.reverse()));
+			$('#berle-deg').val(value.l);
+			$('#berle-it').text(value.it);
+			$('#berle-disc').text(value.disc);
+		} else {
+			$('#berle-status').text('over!');
+			clearInterval(berleInterval);
+		}
+	};
+	berleInterval = setInterval(berleFunc, 500);
+});
+$("#berle-stop").click(function(){
+	if (berleInterval) { clearInterval(berleInterval); }
+});
+					</script>
 				</section>
 			</section>
 
@@ -833,6 +1033,8 @@
 
 		<script src="lib/js/head.min.js"></script>
 		<script src="js/reveal.min.js"></script>
+		
+		<script type="application/javascript;version=1.7" src="random-number-generator/implementation/prng.js"></script>
 
 		<script>
 
@@ -843,6 +1045,7 @@
 				progress: true,
 				history: true,
 				center: true,
+				width: 1600,
 
 				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
 				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
