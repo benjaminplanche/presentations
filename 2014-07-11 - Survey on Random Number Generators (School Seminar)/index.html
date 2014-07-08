@@ -1,0 +1,875 @@
+﻿<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Survey on Random Number Generators | Benjamin (Bill) Planche</title>
+
+		<meta name="description" content="Survey about Randomness and RNGs + Implementation of some famous algorithms (LFSR, NLFSR, Berlekamp-Massey). Personal work for the seminar The Art of Mathematical Computing (Universität Passau, Faculty of Computer Science, Summer 2014).">
+		<meta name="author" content="Benjamin (Bill) Planche">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/default.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+		<script>
+			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+		<!-- Any section element inside of this container is displayed as a slide -->
+		<div class="slides">
+			<section>
+				<h1>Random<br/>Number<br/>Generators</h1>
+				<h4>The Art of Mathematical Computing</h4>
+				<p>
+					<small>by <a href="http://aldream.net">Benjamin (Bill) Planche</a><br/>
+					feat. Philipp Jovanovic<br/>
+					Slides at <a href="https://github.com/Aldream/presentations">github.com/Aldream/presentations</a></small>
+				</p>
+
+				<aside class="notes">
+				
+				</aside>
+			</section>
+				
+				
+			<section>
+				<section data-background="img/random-word-wall.jpg">
+				</section>
+				<section>
+					<h1>Randomness</h1>
+					<h4 class="fragment" id="subject">... and Random Numbers</h4>
+				</section>
+				<section>
+					<h1>Overview</h1>
+					<h3>Requirements, Solutions, Tests</h3>
+				</section>
+
+				<section>
+					<h1 id="structure">Structure</h1>
+					<ol>
+						<li>Randomness <small>- defs + pseudo-randomness</small></li>
+						<li>RNGs & PRNGs <small>- defs + implementation</small></li>
+						<li>Test Tools <small>- suites + implementation</small></li>
+					</ol>
+				</section>
+			</section>
+
+
+			<section>
+				<section>
+					<h1 id="randomness">Randomness</h1>
+				</section>
+
+
+				<section>
+					<p><i>Lack of pattern, predictability or determinism in events.</i></p>
+				</section>
+				
+				<section>
+					<p><b>However.</b></p>
+					<p class="fragment" ><i>Is it really random?</i></p>
+					<p class="fragment" ><i>Or are we  simply ignorant of the underlying pattern?</i></p>
+				</section>
+					
+				<section>
+					<h2>Random Sequences</h2>
+					<h4>Information Theory</h4>
+				</section>
+				
+				<section>
+					<blockquote>"Sequence of independent random variables"</blockquote>
+					<ul>
+						<li class="fragment">Basic definition</li>
+						<li class="fragment">Formal definition...?</li>
+					</ul>
+				</section>
+					
+				<section>
+					<p>Various proposition over the last century...</p>
+				</section>
+
+				<section>
+					<h2 id="definition-by-von-mises">Definition by Von Mises</h2>
+				</section>
+
+				<section>
+
+					<ul>
+						<li>1st attempt at defining algorithmic randomness</li>
+						<li>Based on <b>Theory of Large Numbers</b> </li>
+				</section>
+
+				<section>
+						<p>An infinite sequence can be considered random if:</p>
+						<ul>
+							<li class="fragment">It has the <i>Frequency Stability Property</i></li>
+							<li class="fragment">Any sub-seq. selected by a <i>proper method</i> isn't biased too</li>
+						</ul>
+				</section>
+
+				<section>
+						<p><b>However.</b></p>
+						
+						<ul>
+							<li class="fragment">How to mathematize this <i>proper method</i> of selection?</li>
+							<li class="fragment">Yields an empty set (demo by Jean Ville in 1939)</li>
+						</ul>
+				</section>
+
+				<section>
+					<h2 id="definition-by-martin-lof">Definition by Martin-Löf</h2>
+				</section>
+
+				<section>
+
+					<blockquote>A Random Sequence has no "exceptional and effectively verifiable" property</blockquote>
+						
+					<ul>
+						<li class="fragment">No properties verifiable by a recursive algorithm</li>
+						<li class="fragment">Frequency / measure-theoretic</li>
+						<li class="fragment">Quite satisfactory</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2 id="definition-by-levinchaitin">Definition by Levin/Chaitin</h2>
+				</section>
+
+				<section>
+					<h3 id="complexity-of-kolmogorov">Complexity of Kolmogorov</h3>
+					<ul>
+						<li>Important measure for Information Theory</li>
+					</ul>
+					
+					<blockquote class="fragment">Length of the shortest program able to generate the sequence.</blockquote>
+				</section>
+					
+				<section>
+					<h3 id="complixity-compressibility-def-of-randomness">Resulting Definition</h3>
+					
+					<blockquote class="fragment">A finite string is random if it requires a program at least as long as itself to be computed</blockquote>
+					<ul>
+						<li class="fragment">"<i>Incomprehensible informational content</i>"</li>
+						<li class="fragment">Complexity / Compressibility approach</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2 id="definition-by-schnorr">Definition by Schnorr</h2>
+				</section>
+
+				<section>
+					<blockquote>A random sequence must not be predictable. No effective strategy should lead to an infinite gain if we bet on the symbols of the sequence.</blockquote>
+					<ul>
+						<li class="fragment">Predictability approach</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2 id="pseudorandomness">Pseudo-Randomness</h2>
+				</section>
+
+				<section>
+					<h3>Statistical Randomness</h3>
+				</section>
+
+				<section>
+					<blockquote>A numeric sequence is statistically random if it contains no recognizable patterns or regularities.</blockquote>
+					<ul>
+						<li class="fragment">Less strict than previous definitions</li>
+						<li class="fragment">Doesn't imply objective unpredictability</li>		
+					</ul>
+				</section>
+				
+				<section>
+					<p>... leaves room to the concept of pseudo-randomness.</p>
+				</section>
+				
+				<section>
+					<h3>Pseudo-Random Sequence</h3>
+					<p class="fragment">Exhibits statistical randomness...</p>
+					<p class="fragment">... though generated by a deterministic causal method.</p>
+				</section>
+			</section>
+
+			<section>
+				<section>
+					<h1 id="random-number-generators">Random Number Generators</h1>
+				</section>
+				
+				<section>
+					<h2 id="definition">Definition</h2>
+				</section>
+
+				<section>
+					<blockquote>Device which can produce a sequence of random numbers, i.e. a without deterministic properties and patterns.</blockquote>
+				</section>
+
+				<section>
+					<h3>Methods of Generation</h3>
+					<ul>
+						<li class="fragment">Physical interactions</li>
+						<li class="fragment">Computations (pseudo-randomness)</li>
+						<li class="fragment">Mix of both</li>
+					</ul>
+				</section>
+			</section>
+				
+				
+			<section>
+
+				<section>
+					<h2 id="categories">Categories</h2>
+				</section>
+			</section>
+				
+				
+			<section>
+
+				<section>
+					<h3 id="generators-based-on-physical-phenomena">Generators based on physical phenomena</h3>
+				</section>
+
+
+				<section>
+					<h4 id="traditionnal-methods">Traditionnal Methods</h4>
+					<p class="fragment">Dice tossing, coin flipping, bird trajectories, ...</p>
+					<ul>
+						<li class="fragment">Often only random in appearances</li>
+						<li class="fragment"><i>Cheating</i> by knowing the rules / initial state</li>
+					</ul>
+				</section>
+					
+				<section>
+					<h4 id="quantic-phenomena">Quantic Phenomena</h4>
+					<p class="fragment">Nuclear decay,<br/>Behavior of photons hitting a semi-transparent mirror,<br/>...</p>
+					<ul>
+						<li class="fragment">Golden solutions</li>
+						<li class="fragment">Globally too costly to be democratized</li>
+					</ul>
+				</section>
+					
+				<section>
+					<h4 id="noisy-phenomena">Noisy Phenomena</h4>
+					<p class="fragment">Thermal signal from transistor,<br/>radio noise,<br/>Analog-to-digital conversion noise,<br/>...</p>
+					<ul>
+						<li class="fragment">Easier to detect</li>
+						<li class="fragment">Offer good results</li>
+					</ul>
+				</section>
+					
+				<section>
+					<h4 id="os-solutions">OS Implementations</h4>
+					<p class="fragment">Based on the unpredictable IO + behavior of the users</p>
+				</section>
+					
+				<section>
+					<h5>Unix Systems</h5>
+					<ul>
+						<li class="fragment">$/dev/urandom$ & $/dev/random$</li>
+						<li class="fragment">Device files probing analog sources
+							<ul><li>mouse, keyboard, disk accesses, etc.</li></ul></li>
+						<li class="fragment">Harvest <b>entropy</b>, Output random bytes</li>
+				</section>
+					
+				<section>
+					<h5>Windows Systems</h5>
+					<ul>
+						<li class="fragment">$CryptGenRandom$</li>
+						<li class="fragment">Gather though CPU counters, env. var, threads IDs, etc.</li>
+				</section>
+					
+				<section>
+						<p>In both cases, entropy decrease during <i>inactivity</i></p>
+						<p class="fragment"><b>... Shortages.</b></p>
+				</section>
+			</section>
+				
+				
+			<section>
+					
+				<section>
+					<h3 id="pseudo-random-number-generators">Pseudo-Random Number Generators</h3>
+				</section>
+					
+				<section>
+					<p>Ramdomness through Determinism...??</p>
+					<img class="fragment" style="border:none; box-shadow:none;" src="http://i.imgur.com/Tx5Ai.png" alt="WTF?!">
+				</section>
+				
+				<section>
+					<p>Pseudo-Random Sequences</p>
+					
+					<ul>
+						<li class="fragment">Clever implementations $\rightarrow$ Long-enough period</li>
+						<li class="fragment">Determinism $\rightarrow$ totally defined by init config<ul class="fragment">
+							<li><i>State</i></li>
+							<li><i>Seed</i></li></ul></li>
+					</ul>
+				</section>
+			</section>
+				
+				
+			<section>
+					
+				<section>
+					<h4 id="lfsr">LFSR</h4>
+					<ul>
+						<li>Sequential shift register</li>
+						<li>Input bit = linear function of its previous state</li>
+						<li>Combinational logic</li>
+						<li>$\mathfrak{F}$ mapping in vector space of binary $n$-tuples</li>
+						<li>$f$ feedback function = boolean operation of $n$ variables</li>
+					</ul>
+					
+					<p>$$\mathfrak{F}:\mathbb{F}_2^n \to \mathbb{F}_2^n$$
+					$$\mathfrak{F}:(x_1, x_2, ..., x_n)\mapsto (x_2, x_3, ..., x_n, f((x_1, x_2, ..., x_n))$$</p>
+				</section>
+				
+				<section>
+					<ul>
+						<li>$f$ $\equiv$ poly mod 2 in finite field arithmetic<ul>
+							<li><i>Feedback polynomial</i></li></ul></li>
+						<li class="fragment"><i>Taps</i> = bits of the register used in the linear operation</li>
+						<li class="fragment">Conditions to maximal-length LFSR (period $2^n-1$):
+						<ul>
+							<li>Having an even number of taps</li>
+							<li>Using a relatively-prime set of taps</li>
+						</ul></li>
+					</ul>
+				</section>
+				
+				<section>
+					<h5>Example</h5>
+					<p class="fragment">$f(x) = x_{16} + x_{14} + x_{13} + x_{11} + 1$ <small>cf <a href="https://en.wikipedia.org/wiki/LFSR">wikipedia</a></small></p>
+					<img class="fragment" alt="lfsr" src="https://upload.wikimedia.org/wikipedia/commons/1/16/LFSR-F16.gif" width=500/>
+				</section>
+				
+				<section>
+					<h5>Implementation</h5>
+				</section>
+				
+				<section>
+					<h5>Python</h5>
+					<pre><code style="font-size:.8em;">def createLFSRgenerator(taps, seed):
+    """ Returns a LFSR generator, defined by the given sequence of taps and initial value.
+        @param taps (Tuple[int]): Sequence of taps defining the register.
+			ex: (1, 0, 0, 1) -> f(x) = x^4 + x^3 + 1
+        @param seed (int):        Initial value given to the register
+        @return                   LFSR Generator """
+    def lfsrGen(): """ @yield Pseudo-Random value from the defined LFSR """
+        deg = len(taps)              # Degree of the feedback polynomial
+        period = math.pow(2,deg) - 1 # Max period of the LFSR
+        value = seed                 # Initial value
+        it = 0
+        while (it < period): # Computing new value of most-significant bit:
+            bit = 0
+            for j in range(deg): # AND-operation between the current value and the taps-tuple
+                if taps[j]:
+                    bit ^= value >> j
+            bit &= 1 # XOR-operation to get the new value of the bit
+            # Final value in register by popping less-sign bit and appending the new most-sign one:
+            value = (value >> 1) | (bit << (deg-1))
+            it += 1
+            yield value
+    return lfsrGen</code></pre>
+				</section>
+				
+				<section>
+					<h5>Javascript</h5>
+					<pre><code style="font-size:.8em;">function createLFSRGenerator(taps, seed) {
+/** Returns a LFSR generator, defined by the given sequence of taps and initial value.
+        @param taps (Tuple[int]): Sequence of taps defining the register.
+			ex: (1, 0, 0, 1) -> f(x) = x^4 + x^3 + 1
+        @param seed (int):        Initial value given to the register
+        @return                   LFSR Generator */
+    return function lfsrGen() { /** @yield Pseudo-Random value from the defined LFSR */
+        var deg = taps.length(),              // Degree of the feedback polynomial
+            period = Maths.pow(2, deg) - 1,   // Max period of the LFSR
+            value = seed;                     // Initial value
+        for (var it = 0; it < period; it++) { // Computing new value of most-significant bit:
+            var bit = 0;
+            for (var j = 0; j < deg; j++) { // AND-operation between the current value and the taps-tuple
+                if (taps[j])
+                    bit ^= value >> j;
+            }
+            bit &= 1; // XOR-operation to get the new value of the bit
+            // Final value in register by popping less-sign bit and appending the new most-sign one:
+            yield (value = (value >> 1) | (bit << (deg - 1)));
+        }
+    }
+}</code></pre>
+				</section>
+			</section>
+				
+				
+			<section>
+					
+				<section>
+					<h4 id="nlfsr">NLFSR</h4>
+					<p class="fragment">Same theory as for LFSRs</p>
+				</section>
+				
+				<section>
+						<p>Only one difference</p>
+						<p class="fragment"><b>The feedback function $f$ is non-linear</b></p>
+						<p class="fragment">ex: $f(x) = x^4 + x^3 + x^2  + x^1 \cdot x^2 + 1$</p>
+				</section>
+				
+				<section>
+					<ul>
+						<li>Makes NLFSRs harder to predict than LFSRs</li>
+						<li class="fragment">Makes it harder to ensure a max period of $2^n-1$ bits.</li>
+					</ul>
+				</section>
+				
+				<section>
+					<h5>Implementation</h5>
+				</section>
+				
+				<section>
+					<h5>Python</h5>
+					<pre><code style="font-size:.8em;">def createNLFSRgenerator(taps, seed):
+    """ Returns a NLFSR generator, defined by the given combination of taps and initial value.
+        @param taps (Tuple[Array[int]]): Sequence of combination of taps defining the non-linear register.
+            ex: ([0,0],[],[2],[1,2]) -> f(x) = x^4*x^4 + x^2  + x^1*x^2 + 1 (poor choice)
+        @param seed (int):              Initial value given to the register
+        @return                         NLFSR Generator """
+    def nlfsrGen(): """ @yield Pseudo-Random value generated by a pre-defined NLFSR """
+        deg = len(taps)              # Degree of the feedback polynomial
+        period = math.pow(2,deg) - 1 # Max Period of the NLFSR (read Warning above)
+        value = seed                 # Initial value
+        it = 0
+        while (it < period): # Computing the new value of the most-significant bit:
+            bit = 0
+            for j in range(deg):
+                if len(taps[j]):
+                    # Computing the binary multiplication x^K_0 * x^K_1 * ... * x^K_n with [K_0, K_1, ..., K_n] the j-th taps array
+                    element = 1
+                    for k in taps[j]:
+                        if not (value >> k & 1):
+                            element = 0 # Binary multiplication of terms returns 1 iif none of the terms is null.
+                            break       # So if we encounter a null bit, we simply return 0, else 1.
+                else:
+                    element = 0
+                bit ^= element # Binary addition of the multiplication results
+            bit &= 1
+            # Getting the final value in the register by popping the less-significant bit and appending the new most-significant one:
+            value = (value >> 1) | (bit << (deg-1))
+            it += 1
+            yield value
+    return nlfsrGen</code></pre>
+				</section>
+				
+				<section>
+					<h5>Javascript</h5>
+					<pre><code style="font-size:.8em;">function createNLFSRgenerator(taps, seed):
+    /** Returns a NLFSR generator, defined by the given combination of taps and initial value.
+        @param taps (Tuple[Array[int]]): Sequence of combination of taps defining the non-linear register.
+            ex: ([0,0],[],[2],[1,2]) -> f(x) = x^4*x^4 + x^2  + x^1*x^2 + 1 (poor choice)
+        @param seed (int):              Initial value given to the register
+        @return                         NLFSR Generator */
+    return function nlfsrGen() { /** @yield Pseudo-Random value generated by a pre-defined NLFSR */
+        var deg = len(taps),              // Degree of the feedback polynomial
+            period = Math.pow(2,deg) - 1, // Max Period of the NLFSR (read Warning above)
+            value = seed,                 // Initial value
+            it = 0
+        while (it < period) {             // Computing the new value of the most-significant bit:
+            var    bit = 0
+            for (var j = 0; j < deg; j++) {
+                if (taps[j].length) {     // Computing the binary multiplication x^K_0 * x^K_1 * ... * x^K_n with [K_0, K_1, ..., K_n] the j-th taps array
+                    var    element = 1
+                    for (var k in taps[j]) {
+                        if ( !(value >> taps[j][k] & 1)) {
+                            element = 0;  // Binary multiplication of terms returns 1 iif none of the terms is null.
+                            break;        // So if we encounter a null bit, we simply return 0, else 1.
+                         }
+                    }
+                } else { element = 0; }
+                bit ^= element;          // Binary addition of the multiplication results:
+            }
+            bit &= 1;
+            // Getting the final value in the register by popping the less-significant bit and appending the new most-significant one:
+            it += 1;
+            yield (value = (value >> 1) | (bit << (deg-1)));
+        }
+    }
+}</code></pre>
+				</section>
+			</section>
+				
+				
+			<section>
+
+				<section>
+					<h2 id="applications-and-uses">Applications and Uses</h2>
+				</section>
+
+				<section>
+					<p>Applications in every area<br/>where unpredictable behavior is desirable/required</p>
+					<small class="fragment">cryptographic systems, gambling applications, statistical sampling, simulation, ...</small>
+				</section>
+				
+				<section>
+					<p>Various applications $ \rightarrow $ Various requirements</p>
+					<ul>
+						<li class="fragment">Crypto-secure RNGs for security applications</li>
+						<li class="fragment">Outputs uniqueness for shuffling methods</li>
+						<li class="fragment">...</li>
+					</ul>
+				</section>
+				
+				<section>
+					<ul>
+						<li>RNGs $ \rightarrow $ ~ safer but less abundant</li>
+						<li class="fragment">PRNGs $ \rightarrow $ ~ weaker but lighter</li>
+						<li class="fragment">RNGs seeded by a strong PRNG</li>
+					</ul>
+				</section>
+			</section>
+
+			<section>
+				<section>
+					<h1 id="testing-randomness">Testing Randomness</h1>
+				</section>
+
+				<section>
+					<p>The definition of randomness is complex and application-dependent...</p>
+				</section>
+				
+				<section>
+					<p>... so are the tests designed for RNGs.</p>
+				</section>
+
+				<section>
+					<h2 id="about-the-difficulty-to-test-randomness">About the Difficulty to Test Randomness</h2>
+				</section>
+
+				<section>
+					<h3>Reasons</h3>
+					<ul>
+						<li class="fragment">Def. depending on the field $ \rightarrow $ <i>Which one to test?</i></li>
+						<li class="fragment">Large number of possibilities $ \rightarrow $ Impossible to fully cover</li>
+					</ul>
+				</section>
+				
+				<section>
+					<h3>Solutions</h3>
+					<ul>
+						<li class="fragment">Statistical tests or complexity evaluations</li>
+						<li class="fragment">Battery of tests to identify statistical bias</li>
+						<li class="fragment">Checking hypothesis of <i>perfect behavior</i></li>
+					</ul>
+				</section>
+				
+				<section>
+					<h3>Limitations</h3>
+					<ul>
+						<li class="fragment">Different tests detect different problems</li>
+						<li class="fragment">Impossible to fully cover $ \rightarrow $ no universal battery of tests</li>
+						<li class="fragment">Good RNGs $ \approx $ pass complicated or numerous tests</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2 id="common-tests">Common Tests</h2>
+				</section>
+
+				<section>
+					<h3 id="diehard-tests">DIEHARD Tests</h3>
+					<ul>
+						<li class="fragment">Developed by George Marsaglia, in 1995</li>
+						<li class="fragment">15 tests run over a large file containing the sequence</li>
+					</ul>
+					<blockquote class="fragment">birthday spacings, overlapping permutations, ranks of 31x31 and 32x32 matrices, ranks of 6x8 matrices, monkey tests, count the 1's, parking lot, minimum distance, random spheres, squeeze, overlapping sums, runs, and craps</blockquote>
+				</section>
+					
+				<section>
+					<h3 id="testu01-suite">TestU01 Suite</h3>
+					<ul>
+						<li class="fragment">Software library, initiated in 1985</li>
+						<li class="fragment">Collection of utilities in ANSI C</li>
+						<li class="fragment">Classical stat tests + others from literature + original ones</li>
+						<li class="fragment">Tools to implement specific stat tests.</li>
+					</ul>
+				</section>
+			</section>
+				
+				
+			<section>
+					
+				<section>
+					<h3 id="berlekamp-massey-algorithm">Berlekamp-Massey Algorithm</h3>
+				</section>
+					
+				<section>
+					<h4 id="definition_1">Definition</h4>
+				</section>
+					
+				<section>
+					<ul>
+						<li>Algo, not really a test</li>
+						<li class="fragment">Created by Elwyn Berlekamp to decode BCH codes</li>
+						<li class="fragment">Adapted + simplified by James Massey</li>
+					</ul>
+				</section>
+				
+				<section>
+					<ul>
+						<li class="fragment">Find the min poly of linearly recurrent sequences in $\mathbb{F}_n$</li>
+						<li class="fragment">Find min degree $L$ + annihilator $F(x)$ of the seq $S$</li>
+					</ul>
+				</section>
+					
+				<section>
+					<h4 id="algorithm">Algorithm</h4>
+				</section>
+					
+				<section>
+					<ul>
+						<li>$F(x)$ uniquely determined by the first $2L$ elements of $S$</li>
+						<li class="fragment">Requires to solve a set of $L$ linear equations</li>
+					</ul>
+				</section>
+					
+				<section>
+					<ul>
+						<li>At each iteration $l$:<ul>
+							<li>Evaluate the <i>discrepancy</i></li>
+							<li>If null:<ul>
+								<li>$F(x)$ and $L$ still correct</li>
+								<li>Go to next iteration</li>
+							</ul></li>
+							<li>Else:<ul>
+								<li>$F(x)$ should be concordantly adjusted</li>
+								<li>Shift & Scale syndromes added since last update</li>
+							</ul></li>
+							<li>If $l > 2L$:<ul>
+								<li>Update $L$ to keep track of progression</li>
+							</ul></li>
+						</ul></li>
+					</ul>
+				</section>
+					
+				<section>
+					<h4 id="implementation">Implementation</h4>
+				</section>
+				
+				<section>
+					<h5>Python</h5>
+					<pre><code style="font-size:.8em;">def BerlekampMasseyAlgorithm(sequence):
+    """ Applies the Berlekamp-Massey Algorithm to the given sequence of bits;
+        Returns the smallest annihilating polynomial F, ie. the smallest inverse
+        feedback polynomial corresponding to the generating LFSR.( F(sequence) = 0 )
+        @param sequence (Array[int] or Tuple[int]): Sequence of bits to analyze
+        @returns Array defining the computed inverse feedback polynomial
+            ex: [1, 0, 0, 1, 1] represents the inverse polynomial x^4 + x^3 + 1,
+                and thus the feedback polynomial x^4 + x + 1 (taps = (1, 0, 0, 1)) """
+    
+    def discrepancy(sequence, poly, i, L):
+        """ Returns the discrepancy.
+            @param sequence (Array[int] or Tuple[int]): Sequence of bits to analyze
+            @param poly (Array[int]):                   Current version of the inverse polynomial
+            @param i (int):                             Current position in the sequence
+            @param L (int):                             Current number of assumed errors
+            @return                                     Binary value of the discrepancy """
+        return sum([sequence[i-j]&poly[j] for j in range(0,L+1)])%2 # = s[i]*p[i] + s[i-1]*p[1] + ... + s[i-L]*p[L]
+    
+    def addPoly(poly1, poly2, length):
+        """ Computes the addition of two F2 polynomials.
+            @param poly1 (Array[int]): Array representing the 1st polynomial
+            @param poly2 (Array[int]): Array representing the 2nd polynomial
+            @param length (int):       Length to be covered by the addition (trusting user to avoid testing)
+            @returns                   Resulting Binary Array  """
+        return [poly1[j]^poly2[j] for j in range(0, length)]
+
+    # Initializing: 
+    N = len(sequence)
+    F, f = [0]*N, [0]*N # Polynomials, with F being the one returned at the end (inverse feedback polynomial)
+    F[0] = f[0] = 1
+    L = 0               # Current number of assumed errors
+    delta = 1           # Number of iterations since last update of L
+    for l in range(N):  # Computing F and L:
+        beta = discrepancy(sequence, F, l, L)
+        if beta != 0:   # Adjusting F for this term:
+            g = F.copy()
+            F = addPoly(F, [0]*delta + f, N)
+            if 2 * L <= l:    # If it is not the case, we must update L (and thus re-initalize delta), and also f:
+                L = l + 1 - L # number of available syndromes used to calculate discrepancies
+                delta = 1
+                f = g # f get the previous value of F
+            else: delta += 1
+        else: delta += 1
+    return F[:L+1] # output the polynomial</code></pre>
+				</section>
+				
+				<section>
+					<h5>Javascript</h5>
+					<pre><code style="font-size:.8em;">function BerlekampMasseyAlgorithm(sequence) {
+    /** Applies the Berlekamp-Massey Algorithm to the given sequence of bits;
+        Returns the smallest annihilating polynomial F, ie. the smallest inverse
+        feedback polynomial corresponding to the generating LFSR.( F(sequence) = 0 )
+        @param sequence (Array[int] or Tuple[int]): Sequence of bits to analyze
+        @returns Array defining the computed inverse feedback polynomial
+            ex: [1, 0, 0, 1, 1] represents the inverse polynomial x^4 + x^3 + 1,
+                and thus the feedback polynomial x^4 + x + 1 (taps = (1, 0, 0, 1)) */
+    
+    function discrepancy(sequence, poly, i, L) {
+        /** Returns the discrepancy.
+            @param sequence (Array[int] or Tuple[int]): Sequence of bits to analyze
+            @param poly (Array[int]):                   Current version of the inverse polynomial
+            @param i (int):                             Current position in the sequence
+            @param L (int):                             Current number of assumed errors
+            @return                                     Binary value of the discrepancy */
+		var disc = 0;
+		for (var j = 0; j < L+1; j++) disc += sequence[i-j] & poly[j] // disc = s[i]*p[i] + s[i-1]*p[1] + ... + s[i-L]*p[L]
+		return disc;
+	}
+    
+	function addPoly(poly1, poly2, length) {
+        /** Computes the addition of two F2 polynomials.
+            @param poly1 (Array[int]): Array representing the 1st polynomial
+            @param poly2 (Array[int]): Array representing the 2nd polynomial
+            @param length (int):       Length to be covered by the addition (trusting user to avoid testing)
+            @returns                   Resulting Binary Array  */
+		var poly = [];
+		for (var j = 0; j < length; j++) poly.push(poly1[j] ^ poly2[j]);
+		return poly;
+	}
+
+    // Initializing: 
+    var N = sequence.length;
+    var F = [], f = [] 		// Polynomials, with F being the one returned at the end (inverse feedback polynomial)
+	for (var i = 0; i < N; i++) { F.push(0); f.push(0); }
+    F[0] = f[0] = 1
+    var L = 0               // Current number of assumed errors
+    var delta = 1           // Number of iterations since last update of L
+    for (var l = 0; l < N; l++) { // Computing F and L:
+        var beta = discrepancy(sequence, F, l, L);
+        if (beta != 0) { // Adjusting F for this term:
+            var g = F.slice(0);
+			var fShifted = f.slice(0); for (var k = 0; k < delta; k++) { fShifted.unshift(0); }
+            F = addPoly(F, fShifted, N);
+            if (2 * L <= l) {
+                L = l + 1 - L; // number of available syndromes used to calculate discrepancies
+                delta = 1;
+                f = g; // f get the previous value of F
+            } else delta += 1;
+		} else delta += 1;
+	for (var k = L+1; k < N; k++) { F.pop(); }
+    return F; // output the polynomial
+}</code></pre>
+				</section>
+			</section>
+
+			<section>
+				<section>
+					<h1 id="conclusion">Conclusion</h1>
+				</section>
+				
+				<section>
+					<p>Overview of a large topic</p>
+					<ul>
+						<li class="fragment">Various characteristics / Various Uses</li>
+						<li class="fragment">Choose wisely!</li>
+						<li class="fragment">Don't implement your own RNG!<ul>
+							<li class="fragment">... especially for crypto!</li>
+							<li class="fragment">... but if you try, test test test!</li></ul></li>
+					</ul>
+				</section>
+			</section>
+
+			<section>
+				<h1>References</h1>
+				<small style="font-size:.5em;">Presentation based on a personal survey: <a href="https://github.com/Aldream/random-number-generator" title="Github Repo">https://github.com/Aldream/random-number-generator</a></small>
+				<ol style="font-size:.5em; line-height:70%;">
+					<li>Downey, R.: Some recent progress in algorithmic randomness. In Mathematical Foundations of Computer Science 2004. Springer Berlin Heidelberg (2004)</li>
+					<li>Wikipedia: Random Number Generation (2014)</li>
+					<li>Aumasson, J.P.: Crypto for Developers - Part 2, Randomness. AppSec Forum Switzerland 2013 (2013)</li>
+					<li>Raymond, S., Andrew, S., Patrick, C., Jason, M.: Linear Feedback Shift Register (2001)</li>
+					<li>Joux, A.: Algorithmic cryptanalysis. CRC Press (2009)</li>
+					<li>Szmidt, J.: The Search and Construction of Nonlinear Feedback Shift Registers. Military Communication Institute, Zegrze, Poland (2013)</li>
+					<li>Wikipedia: Linear Feedback Shift Register (2014)</li>
+					<li>Dubrova, E.: A List of Maximum Period NLFSRs. IACR Cryptology ePrint Archive 2012 (2012) 166</li>
+					<li>Ritter, T.: Randomness Tests: A Literature Survey (2007)</li>
+					<li>L'Ecuyer, P, S.R.: TestU01 - A Software Library in ANSI C for Empirical Testing of Random Number Generators (2002)</li>
+					<li>Marsaglia, G.: The Marsaglia Random Number CDROM including the Diehard Battery of Tests of Randomness (2005)</li>
+					<li>Soto, J.: Statistical Testing of Random Number Generators. Proceedings of the 22nd National Information Systems Security Conference NIST, 1999 (1999)</li>
+					<li>Berlekamp, E.R.: Nonbinary BCH decoding. University of North Carolina. Department of Statistics (1967)</li>
+					<li>Massey, J.L.: Shift-register synthesis and BCH decoding. Information Theory. IEEE Transactions 15(1) (1969) 122-127</li>
+					<li>Feng, G.-L., T.K.: A generalization of the Berlekamp-Massey algorithm for multisequence shift-register. Information Theory, IEEE Transactions 37(5) (2012) 1274-1287</li>
+					<li>Rodrigez, S.: Implementation of a decoding algorithm for codes from algebraic curves in the programming language Sage. diploma thesis, Faculty of San Diego State University (2013)</li>
+				</ol>
+			</section>
+				
+			<section>
+				<h2>Thanks for you attention!</h1>
+				<h4>Questions?</h4>
+				<small><a href="https://twitter.com/b_aldream">@b_aldream</a> | <a href="https://github.com/Aldream">git:Aldream</a> | <a href="http://aldream.net">aldream.net</a></small>
+			</section>
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Parallax scrolling
+				// parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+				// parallaxBackgroundSize: '2100px 900px',
+				
+				
+				math: {
+					mathjax: 'http://cdn.mathjax.org/mathjax/latest/MathJax.js',
+					config: 'TeX-AMS_HTML-full'  // See http://docs.mathjax.org/en/latest/config-files.html
+				},
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+					 { src: 'plugin/math/math.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
