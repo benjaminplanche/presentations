@@ -33,12 +33,15 @@
 
 	<body>
 
+
 		<div class="reveal">
 
 		<!-- Any section element inside of this container is displayed as a slide -->
 		<div class="slides">
+		
+<!-- -->
 			<section>
-				<h1>Random<br/>Number<br/>Generators</h1>
+				<h1>Random Number<br/>Generators</h1>
 				<h4>The Art of Mathematical Computing</h4>
 				<p>
 					<small>by <a href="http://aldream.net">Benjamin (Bill) Planche</a><br/>
@@ -51,29 +54,19 @@
 				</aside>
 			</section>
 				
-				
+		
+<!-- -->				
 			<section>
 				<section data-background="img/random-word-wall.jpg">
-				</section>
-				<section>
-					<h1>Randomness</h1>
-					<h4 class="fragment" id="subject">... and Random Numbers</h4>
-<ul>
+				
+					<aside class="notes">
+		<ul>
 <li>Generation of random numbers = important operation for various computational tasks</li>
 <li>Not all applications have the same requirements about randomness</li>
-</ul>
-					<aside class="notes">
-					
+</ul>			
 					</aside>
-				</section>
-				<section>
-					<h1>Overview</h1>
-					<h3>Requirements, Solutions, Tests</h3>
-Overview of the most common requirements, solutions, test tools
-					<aside class="notes">
-					
-					</aside>
-				</section>
+				</section>		
+<!-- -->
 
 				<section>
 					<h1 id="structure">Structure</h1>
@@ -84,12 +77,14 @@ Overview of the most common requirements, solutions, test tools
 					</ol>
 
 					<aside class="notes">
+Overview of the most common requirements, solutions, test tools
 					
 					</aside>
 				</section>
 			</section>
 
-
+		
+<!-- -->
 			<section>
 				<section>
 					<h1 id="randomness">Randomness</h1>
@@ -117,35 +112,30 @@ Lack of pattern, predictability or determinism in events.
 Is a structure really random, or are we  simply ignorant of a hidden underlying pattern?					
 					</aside>
 				</section>
-					
+		
+<!-- -->					
 				<section>
 					<h2>Random Sequences</h2>
 					<h4>Information Theory</h4>
-				</section>
-studied in Information Theory				
-				<section>
-					<blockquote>"Sequence of independent random variables"</blockquote>
-					<ul>
-						<li class="fragment">Basic definition</li>
-						<li class="fragment">Formal definition...?</li>
-
+					
+					<div class="fragment">Basic definition
+						<blockquote>Sequence of independent random variables</blockquote>
+					</div>
+					
+					<div class="fragment" style="margin-top:1em;">Formal definition
+						<blockquote>???</blockquote>
+					</div>
 					<aside class="notes">
 <ul>
+<li>Studied in Information Theory</li>
 <li>Simple Def: Sequence of independent random variables</li>
 <li>Formal/Mathematical Def -&gt; Subject of many debates and studies during the last century.</li>
 </ul>					
 					</aside>
 					</ul>
 				</section>
-					
-				<section>
-					<p>Various propositions over the last century...</p>
-
-					<aside class="notes">
-					
-					</aside>
-				</section>
-
+		
+<!-- -->
 				<section>
 					<h2 id="definition-by-von-mises">Definition by Von Mises</h2>
 
@@ -155,11 +145,18 @@ studied in Information Theory
 				</section>
 
 				<section>
-						<p>Based on <b>Theory of Large Numbers</b></p>
-						<p class="fragment">An infinite sequence can be considered random if:</p>
+						<small>Based on <b>Theory of Large Numbers</b></small>
+						<p>An infinite sequence can be considered random if:</p>
 						<ul>
-							<li class="fragment">It has the <i>Frequency Stability Property</i></li>
-							<li class="fragment">Any sub-seq. selected by a <i>proper method</i> isn't biased too</li>
+							<li class="fragment"><b>It has the <i>Frequency Stability Property</i></b><ul>
+								<li>$S \in \mathbb{A}^n$ with $\mathbb{A}$ alphabet of $m$ symbols</li>
+								<li>$\forall a \in \mathbb{A}, \lim_{n \to \infty} |\{s, s \in S \land s = a\}| = \frac{1}{m}$</li>
+							</ul></li>
+							<li class="fragment"><b>Any sub-seq. selected by a <i>proper method</i> isn't biased too.</b> ex:<ul>
+								<li>$ S = (1,0,1,0,1,0,1,0) $ not biased</li>
+								<li>$f(X) \to (X^i | \forall i \leq |X| \land i \equiv 0 \pmod 2)$</li>
+								<li> $\implies f(S) \to (1,1,1,1)$ biased</li>
+							</ul></li>
 						</ul>
 
 					<aside class="notes">
@@ -196,12 +193,12 @@ An infinite sequence of symbols can be considered random if :
 </ul>					
 					</aside>
 				</section>
-
+		
+<!-- -->
 				<section>
 					<h2 id="definition-by-martin-lof">Definition by Martin-Löf</h2>
-Swedish statistician Per Martin-LÃ¶f. Def in 1966
 					<aside class="notes">
-					
+Swedish statistician Per Martin-Löf. Def in 1966
 					</aside>
 				</section>
 
@@ -223,7 +220,8 @@ Swedish statistician Per Martin-LÃ¶f. Def in 1966
 </ul>					
 					</aside>
 				</section>
-
+		
+<!-- -->
 				<section>
 					<h2 id="definition-by-levinchaitin">Definition by Levin/Chaitin</h2>
 
@@ -252,22 +250,26 @@ Leonid Anatolievich Levin (1948) and Gregory Chaitin (1947), in 1975
 				<section>
 					<h3 id="complixity-compressibility-def-of-randomness">Resulting Definition</h3>
 					
-					<blockquote class="fragment">A finite string is random if it requires a program at least as long as itself to be computed</blockquote>
+					<blockquote>A finite string is random<br/>if it requires a program at least as long as itself to be computed</blockquote>
+					<p> $\exists c \geq 0$, such as $H(S_0^n) \geq n - c$<br/>with $H$ complexity of Kolmogorov</p>
 					<ul>
 						<li class="fragment">"<i>Incomprehensible informational content</i>"</li>
 						<li class="fragment">Complexity / Compressibility approach</li>
 					</ul>
-
+					
 					<aside class="notes">
 <ul>
+<li>Levin/Chaitin</li>
 <li>Def: random finite string = string which requires a program at least as long as itself to be computed</li>
 <li>Another way to express it is: "a random sequence must have an incomprehensible informational content"
     -&gt; Impossible to make any sense of it, and thus to use a shorter sequence or program to describe it.</li>
 <li>Approach is considered as a complexity / compressibility one.</li>
+<li>Not really complexity of Kolmogorov, but of Chatain (condition: program must be auto-delimited</li>
 </ul>				
 					</aside>
 				</section>
-
+		
+<!-- -->
 				<section>
 					<h2 id="definition-by-schnorr">Definition by Schnorr</h2>
 
@@ -277,7 +279,7 @@ Claus-Peter Schnorr [1943), in 1971
 				</section>
 
 				<section>
-					<blockquote>A random sequence must not be predictable. No effective strategy should lead to an infinite gain if we bet on the symbols of the sequence.</blockquote>
+					<blockquote>A random sequence must not be predictable.<br/>No effective strategy should lead to an infinite gain if we bet on its symbols.</blockquote>
 					<ul>
 						<li class="fragment">Predictability approach</li>
 					</ul>
@@ -289,24 +291,15 @@ Claus-Peter Schnorr [1943), in 1971
 </ul>				
 					</aside>
 				</section>
+		
+<!-- -->
 
 				<section>
-					<h2 id="pseudorandomness">Pseudo-Randomness</h2>
-
-					<aside class="notes">
-					
-					</aside>
-				</section>
-
-				<section>
-					<h3>Statistical Randomness</h3>
-				</section>
-
-				<section>
-					<blockquote>A numeric sequence is statistically random if it contains no recognizable patterns or regularities.</blockquote>
-					<ul>
-						<li class="fragment">Less strict than previous definitions</li>
-						<li class="fragment">Doesn't imply objective unpredictability</li>		
+					<h2>Statistical Randomness</h2>
+					<blockquote class="fragment">A sequence is statistically random if it has no <b>recognizable</b> patterns.</blockquote>
+					<ul class="fragment">
+						<li>Less strict than previous definitions</li>
+						<li>Doesn't imply objective unpredictability</li>		
 					</ul>
 
 					<aside class="notes">
@@ -315,15 +308,15 @@ Numeric sequence = statistically random if it contains no recognizable patterns 
 				</section>
 				
 				<section>
-					<p>... leaves room to the concept of pseudo-randomness.</p>
+					<p>... leaves room to the concept of ...</p>
 
 					<aside class="notes">
 Less strict than prev. defs &amp;  doesn't imply objective unpredictability -&gt; leaves room to the concept of pseudo-randomness.				
 					</aside>
 				</section>
-				
 				<section>
-					<h3>Pseudo-Random Sequence</h3>
+					<h2 id="pseudorandomness">Pseudo-Randomness</h2>
+					<h4>and Pseudo-Random Sequence</h4>
 					<p class="fragment">Exhibits statistical randomness...</p>
 					<p class="fragment">... though generated by a deterministic causal method.</p>
 
@@ -336,7 +329,8 @@ Less strict than prev. defs &amp;  doesn't imply objective unpredictability -&gt
 					</aside>
 				</section>
 			</section>
-
+		
+<!-- -->
 			<section>
 				<section>
 					<h1 id="random-number-generators">Random Number Generators</h1>
@@ -351,12 +345,6 @@ However, they are not all equal / have bias which can be a problem depending on 
 				<section>
 					<h2 id="definition">Definition</h2>
 
-					<aside class="notes">
-					
-					</aside>
-				</section>
-
-				<section>
 					<blockquote>Device which can produce a sequence of random numbers, i.e. a without deterministic properties and patterns.</blockquote>
 
 					<aside class="notes">
@@ -381,7 +369,8 @@ RNG = device which can produce a sequence of random numbers, i.e. a without dete
 					</aside>
 				</section>
 			</section>
-				
+			
+<!-- -->			
 				
 			<section>
 
@@ -408,7 +397,7 @@ RNG = device which can produce a sequence of random numbers, i.e. a without dete
 
 				<section>
 					<h4 id="traditionnal-methods">Traditionnal Methods</h4>
-					<p class="fragment">Dice tossing, coin flipping, bird trajectories, ...</p>
+					<p><small>Dice tossing, coin flipping, bird trajectories, ...</small></p>
 					<ul>
 						<li class="fragment">Often only random in appearances</li>
 						<li class="fragment"><i>Cheating</i> by knowing the rules / initial state</li>
@@ -424,7 +413,7 @@ ex: the face on top before the coin is tossed may have more chances to be the re
 					
 				<section>
 					<h4 id="quantic-phenomena">Quantic Phenomena</h4>
-					<p class="fragment">Nuclear decay,<br/>Behavior of photons hitting a semi-transparent mirror,<br/>...</p>
+					<p><small>Nuclear decay, Behavior of photons hitting a semi-transparent mirror, ...</small></p>
 					<ul>
 						<li class="fragment">Golden solutions</li>
 						<li class="fragment">Globally too costly to be democratized</li>
@@ -444,7 +433,7 @@ Golden solutions, they are globally too costly to be democratized.
 					
 				<section>
 					<h4 id="noisy-phenomena">Noisy Phenomena</h4>
-					<p class="fragment">Thermal signal from transistor,<br/>radio noise,<br/>Analog-to-digital conversion noise,<br/>...</p>
+					<p><small>Thermal signal from transistor, radio noise, Analog-to-digital conversion noise, ...</small></p>
 					<ul>
 						<li class="fragment">Easier to detect</li>
 						<li class="fragment">Offer good results</li>
@@ -462,11 +451,14 @@ Golden solutions, they are globally too costly to be democratized.
 </ul>					
 					</aside>
 				</section>
-					
+		
+<!-- -->					
 				<section>
 					<h4 id="os-solutions">OS Implementations</h4>
-					<p class="fragment">Based on the unpredictable IO + behavior of the users</p>
-
+					<ul>
+					<li class="fragment">Based on the unpredictable IO + behavior of the users</li>
+					<li class="fragment">Harvest <b>entropy</b>, Output random bytes</li>
+					</ul>
 					<aside class="notes">
 					
 					</aside>
@@ -475,39 +467,36 @@ Golden solutions, they are globally too costly to be democratized.
 				<section>
 					<h5>Unix Systems</h5>
 					<ul>
-						<li class="fragment">$/dev/urandom$ & $/dev/random$</li>
-						<li class="fragment">Device files probing analog sources
-							<ul><li>mouse, keyboard, disk accesses, etc.</li></ul></li>
-						<li class="fragment">Harvest <b>entropy</b>, Output random bytes</li>
-
-					<aside class="notes">
-Device files probing analog sources (mouse, keyboard, disk acc, etc.)			
-					</aside>
-				</section>
-					
-				<section>
+						<li>$/dev/urandom$ & $/dev/random$</li>
+						<li>Device files probing analog sources <small>(mouse, keyboard, disk accesses, etc.)</small></li>
+					</ul>
+					<div  class="fragment" style="margin-top:1.5em;">
 					<h5>Windows Systems</h5>
 					<ul>
-						<li class="fragment">$CryptGenRandom$</li>
-						<li class="fragment">Gather though CPU counters, env. var, threads IDs, etc.</li>
+						<li>$CryptGenRandom$</li>
+						<li>Gather through system state <small>(CPU counters, env. var, threads IDs, etc.)</small></li>
+					</ul>
+					</div>
 
 					<aside class="notes">
+Device files probing analog sources (mouse, keyboard, disk acc, etc.)<br/>
 Gather entropy though CPU counters, environment variables, threads IDs, etc.					
 					</aside>
 				</section>
 					
 				<section>
-					<p>In both cases, entropy decrease during <i>inactivity</i></p>
+					<p>In both cases, entropy decreases during <i>inactivity</i></p>
 					<p class="fragment"><b>... Shortages.</b></p>
 
 					<aside class="notes">
 					
-entropy decrease during inactivity -&gt; shortages
+entropy decreases during inactivity -&gt; shortages
 					</aside>
 				</section>
 			</section>
 				
-				
+		
+<!-- -->				
 			<section>
 					
 				<section>
@@ -520,7 +509,7 @@ PRNG are generators based on algorithms.
 					
 				<section>
 					<p>Ramdomness through Determinism...??</p>
-					<img class="fragment" style="border:none; box-shadow:none;" src="http://i.imgur.com/Tx5Ai.png" alt="WTF?!">
+					<img class="fragment" style="border:none; box-shadow:none; background:none;text-shadow:none;" src="http://i.imgur.com/Tx5Ai.png" alt="WTF?!">
 
 					<aside class="notes">
 Seem paradoxical to associate randomness with algorithms, by definition deterministic					
@@ -547,14 +536,18 @@ Seem paradoxical to associate randomness with algorithms, by definition determin
 				</section>
 			</section>
 				
-				
+		
+<!-- -->				
 			<section>
 					
 				<section>
-					<h4 id="lfsr">LFSR</h4>
+					<h2 id="lfsr">LFSR</h2>
+				</section>
+				<section>
+					<h4 id="lfsr">Linear Feedback Shift Register</h4>
 					<ul>
 						<li>Sequential shift register</li>
-						<li>Input bit = linear function of its previous state</li>
+						<li>New bit = linear function of previous state</li>
 						<li>Combinational logic</li>
 						<li>$\mathfrak{F}$ mapping in vector space of binary $n$-tuples</li>
 						<li>$f$ feedback function = boolean operation of $n$ variables</li>
@@ -594,7 +587,7 @@ Seem paradoxical to associate randomness with algorithms, by definition determin
 	</li>
 	<li>To obtain a maximal-length LFSR (period 2^n-1), conditions must be met by the feedback func:<ul>
 		<li>Having an even number of taps</li>
-		<li>Using a relatively-prime set of taps</li>
+		<li>Using a relatively-prime set of taps ( no divisor other than 1 common to all taps )</li>
 	</ul>
 	</li>
 </ul>						
@@ -603,14 +596,15 @@ Seem paradoxical to associate randomness with algorithms, by definition determin
 				
 				<section>
 					<h5>Example</h5>
-					<p class="fragment">$f(x) = x_{16} + x_{14} + x_{13} + x_{11} + 1$ <small>cf <a href="https://en.wikipedia.org/wiki/LFSR">wikipedia</a></small></p>
-					<img class="fragment" alt="lfsr" src="https://upload.wikimedia.org/wikipedia/commons/1/16/LFSR-F16.gif" width=500/>
+					<p>$f(x) = x_{16} + x_{14} + x_{13} + x_{11} + 1$</p>
+					<img alt="lfsr" src="img/lfsr.png" style="border:none; box-shadow:none; background:none;text-shadow:none;" />
 
 					<aside class="notes">
 					
 					</aside>
 				</section>
-				
+		
+<!-- -->				
 				<section>
 					<h5>Implementation</h5>
 
@@ -679,7 +673,8 @@ Porting Python to JS here (ECMAScript 6 / JS 1.7) - Closure, yield & generator)<
 Only syntax sugar
 					</aside>
 				</section>
-				
+		
+<!-- -->				
 				<section>
 					<h5>Let's play</h5>
 					<input id="lfsr-poly" name="lfsr-poly" type="text" placeholder="Polynomial" style="width:10em;height:2em;font-size:1.2em;text-align:center;border-radius:10px;margin-right:1em;" />
@@ -723,11 +718,16 @@ The 'one' in the polynomial does not correspond to a tap – it corresponds to t
 				</section>
 			</section>
 				
-				
+		
+<!-- -->				
 			<section>
 					
+					
 				<section>
-					<h4 id="nlfsr">NLFSR</h4>
+					<h2 id="lfsr">NLFSR</h2>
+				</section>
+				<section>
+					<h4 id="lfsr">Non-Linear Feedback Shift Register</h4>
 					<p class="fragment">Same theory as for LFSRs</p>
 
 					<aside class="notes">
@@ -736,30 +736,29 @@ Same theory as for LFSRs
 				</section>
 				
 				<section>
-						<p>Only one difference</p>
-						<p class="fragment"><b>The feedback function $f$ is non-linear</b></p>
-						<p class="fragment">ex: $f(x) = x^4 + x^3 + x^2  + x^1 \cdot x^2 + 1$</p>
-
-					<aside class="notes">
-Only difference: the feedback function f is non-linear					
-					</aside>
-				</section>
-				
-				<section>
-					<ul>
+					<p>Only one difference</p>
+					<p class="fragment"><b>The feedback function $f$ is non-linear</b></p>
+					<p class="fragment">ex: $f(x) = x^4 + x^1 \cdot x^2 + 1$<br/>
+						<img alt="nlfsr" src="img/nlfsr.png" style="border:none; box-shadow:none; background:none;text-shadow:none;" />
+					</p>
+					
+					<ul class="fragment">
 						<li>Makes NLFSRs harder to predict than LFSRs</li>
-						<li class="fragment">Makes it harder to ensure a max period of $2^n-1$ bits.</li>
+						<li>Makes it harder to ensure a max period of $2^n-1$ bits.</li>
 					</ul>
 
 					<aside class="notes">
 <ul>
+<li>
+Only difference: the feedback function f is non-linear</li>
 <li>It makes NLFSRs harder to predict than LFSRs</li>
 <li>But also imposes extensive carefulness to ensure a maximal period of 2^n-1 bits.</li>
 <li>Lot of papers simply defining those conditions or listing the right config.</li>
 </ul>					
 					</aside>
 				</section>
-				
+			
+<!-- -->			
 				<section>
 					<h5>Implementation</h5>
 				</section>
@@ -841,7 +840,8 @@ Small trick for binary multiplication.
 Same o' same					
 					</aside>
 				</section>
-				
+		
+<!-- -->				
 				<section>
 					<h5>Let's play</h5>
 					<input id="nlfsr-poly" name="nlfsr-poly" type="text" placeholder="Polynomial" style="width:10em;height:2em;font-size:1.2em;text-align:center;border-radius:10px;margin-right:1em;" />
@@ -886,7 +886,8 @@ Better config: x^4 + x^3 + x^2  + x^1*x^2 + 1
 				</section>
 			</section>
 				
-				
+		
+<!-- -->				
 			<section>
 
 				<section>
@@ -899,7 +900,7 @@ Better config: x^4 + x^3 + x^2  + x^1*x^2 + 1
 
 				<section>
 					<p>Applications in every area<br/>where unpredictable behavior is desirable/required</p>
-					<small class="fragment">cryptographic systems, gambling applications, statistical sampling, simulation, ...</small>
+					<small>cryptographic systems, gambling applications, statistical sampling, simulation, ...</small>
 
 					<aside class="notes">
 From cryptographic systems to gambling applications, statistical sampling, simulation, ...					
@@ -908,10 +909,10 @@ From cryptographic systems to gambling applications, statistical sampling, simul
 				
 				<section>
 					<p>Various applications $ \rightarrow $ Various requirements</p>
-					<ul>
-						<li class="fragment">Crypto-secure RNGs for security applications</li>
-						<li class="fragment">Outputs uniqueness for shuffling methods</li>
-						<li class="fragment">...</li>
+					<ul class="fragment">
+						<li>Crypto-secure RNGs for security applications</li>
+						<li>Outputs uniqueness for shuffling methods</li>
+						<li>...</li>
 					</ul>
 
 					<aside class="notes">
@@ -926,10 +927,12 @@ From cryptographic systems to gambling applications, statistical sampling, simul
 				<section>
 					<ul>
 						<li>RNGs $ \rightarrow $ ~ safer but less abundant</li>
-						<li class="fragment">PRNGs $ \rightarrow $ ~ weaker but lighter</li>
+						<li>PRNGs $ \rightarrow $ ~ weaker but lighter</li>
 						<li class="fragment">RNGs seeded by a strong PRNG</li>
 					</ul>
-
+					<p>
+					<img class="fragment" src="https://sslimgs.xkcd.com/comics/random_number.png" title="xkcd - Random Number" />
+					</p>
 					<aside class="notes">
 <ul>
 <li>Some require qualities mostly found in physical RNGs</li>
@@ -939,7 +942,8 @@ From cryptographic systems to gambling applications, statistical sampling, simul
 					</aside>
 				</section>
 			</section>
-
+		
+<!-- -->
 			<section>
 				<section>
 					<h1 id="testing-randomness">Testing Randomness</h1>
@@ -987,7 +991,8 @@ checking every construction</li>
 </ul>				
 					</aside>
 				</section>
-				
+		
+<!-- -->				
 				<section>
 					<h3>Solutions</h3>
 					<ul>
@@ -1018,7 +1023,8 @@ Solutions: statistical tests or complexity evaluations (Kolmogorov)<br/>
 </ul>				
 					</aside>
 				</section>
-
+		
+<!-- -->
 				<section>
 					<h2 id="common-tests">Common Tests</h2>
 
@@ -1036,7 +1042,7 @@ Solutions: statistical tests or complexity evaluations (Kolmogorov)<br/>
 					<blockquote class="fragment">birthday spacings, overlapping permutations, ranks of 31x31 and 32x32 matrices, ranks of 6x8 matrices, monkey tests, count the 1's, parking lot, minimum distance, random spheres, squeeze, overlapping sums, runs, and craps</blockquote>
 
 					<aside class="notes">
-<ul style="font-size:.6em; line-height:60%;"><li>15 tests, which are run over a large file containing the sequence, provided by the user</li>
+<ul style="font-size:.9em;"><li>15 tests, which are run over a large file containing the sequence, provided by the user</li>
 <li>Birthday spacings: Choose random points on a large interval. The spacings between the points should be asymptotically exponentially distributed.[clarification needed] The name is based on the birthday paradox.</li>
 <li>Overlapping permutations: Analyze sequences of five consecutive random numbers. The 120 possible orderings should occur with statistically equal probability.</li>
 <li>Ranks of matrices: Select some number of bits from some number of random numbers to form a matrix over {0,1}, then determine the rank of the matrix. Count the ranks.</li>
@@ -1068,7 +1074,8 @@ Solutions: statistical tests or complexity evaluations (Kolmogorov)<br/>
 				</section>
 			</section>
 				
-				
+		
+<!-- -->				
 			<section>
 					
 				<section>
@@ -1081,48 +1088,28 @@ Solutions: statistical tests or complexity evaluations (Kolmogorov)<br/>
 					
 				<section>
 					<h4 id="definition_1">Definition</h4>
-
-					<aside class="notes">
 					
-					</aside>
-				</section>
-					
-				<section>
-					<ul>
-						<li>Algo, not really a test</li>
-						<li class="fragment">Created by Elwyn Berlekamp to decode BCH codes</li>
-						<li class="fragment">Adapted + simplified by James Massey</li>
-					</ul>
-
-					<aside class="notes">
-Algo, not really a test. Used to find in a field Fk the min poly of linearly recurrent sequences, - Invented by Elwyn Berlekamp in 1967 for decoding BCH codes			
-					</aside>
-				</section>
-				
-				<section>
 					<ul>
 						<li class="fragment">Find the min poly of linearly recurrent sequences in $\mathbb{F}_n$</li>
-						<li class="fragment">Find min degree $L$ + annihilator $F(x)$ of the seq $S$</li>
+						<li class="fragment">Find min degree $L$ and annihilator $F(x)$ of the seq $S$</li>
 					</ul>
 
 					<aside class="notes">
-<ul><li>Adapted + simplified by James Massey</li>
+<ul>
+<li>Invented by Elwyn Berlekamp in 1967 for decoding BCH codes</li>
+<li>Adapted + simplified by James Massey</li>
+<li>Algo, not really a test. Used to find in a field Fk the min poly of linearly recurrent sequences</li>
 <li>Determine minimal degree L + annihilator (or inverse feedback) polynomial F(x) of the given sequence S</li>
 </ul>						
 					</aside>
 				</section>
-					
+		
+<!-- -->					
 				<section>
 					<h4 id="algorithm">Algorithm</h4>
-
-					<aside class="notes">
 					
-					</aside>
-				</section>
-					
-				<section>
 					<ul>
-						<li>$F(x)$ uniquely determined by the first $2L$ elements of $S$</li>
+						<li class="fragment">$F(x)$ uniquely determined by the first $2L$ elements of $S$</li>
 						<li class="fragment">Requires to solve a set of $L$ linear equations</li>
 					</ul>
 
@@ -1135,6 +1122,8 @@ Algo, not really a test. Used to find in a field Fk the min poly of linearly rec
 				</section>
 					
 				<section>
+					<h4 id="algorithm">Algorithm</h4>
+					
 					<ul>
 						<li>At each iteration $l$:<ul>
 							<li>Evaluate the <i>discrepancy</i></li>
@@ -1162,7 +1151,8 @@ polynomial, L should be updated, otherwise the discrepancies will reach 0 before
 </ul>					
 					</aside>
 				</section>
-					
+		
+<!-- -->					
 				<section>
 					<h4 id="implementation">Implementation</h4>
 
@@ -1289,7 +1279,8 @@ Not the same operation in JS on Array (no concatenate, no comprehension)<br/>
 Heavier syntax.		
 					</aside>
 				</section>
-				
+			
+<!-- -->			
 				<section>
 					<h5>Let's play</h5>
 					<textarea id="berle-seq" name="berle-seq" style="width:25em;height:4em;font-size:1em;border-radius:10px;margin:1em;"></textarea><br/>
@@ -1425,7 +1416,8 @@ $("#berle-stop").click(function(){
 					</aside>
 				</section>
 			</section>
-
+		
+<!-- -->
 			<section>
 				<section>
 					<h1 id="conclusion">Conclusion</h1>
@@ -1479,6 +1471,38 @@ $("#berle-stop").click(function(){
 				<h4>Questions?</h4>
 				<small><a href="https://twitter.com/b_aldream">@b_aldream</a> | <a href="https://github.com/Aldream">git:Aldream</a> | <a href="http://aldream.net">aldream.net</a></small>
 			</section>
+			
+			<section>
+				<section>
+					<h1>Annexe</h1>
+				</section>
+				
+				<section>
+					<h3>Berlekamp-Massey Algorithm <small>Alternate explanation</small></h3>
+					<small>$S$ sequence, $F(x)$ polynomial, $ \beta_i^j(S_1, S_2) $ discrepancy</small>
+					<ul>
+						<li>Make a first guess for $F(x)$ (ex: $F(x) = 1$)</li>
+						<li>At each iteration $l$:<ul>
+							<li>Generate $S_l'$ of $l$ elements, from $F(x)$</li>
+							<li>Compare $S$ and $S_l'$: $ \beta_0^l(S, S_l') $</li>
+							<li>We know $S_l'$ correct up to the $(l-1)^{th}$ symbol</li>
+							<li> If $l^{th}$ symbol not correct, ie $ \beta_0^l(S, S_l') = (0,0,0,...,1) $:<ul>
+								<li>Last iteration $m$ when this happened, we had $ \beta_0^m(S, S_m') = (0,0,0,...,1) $</li>
+								<li>So $ \beta_0^l(S, S_l') + \beta_{l-m}^l(S, S_m') = (0,0,0,...,0) \to$ correction to apply</li>
+								<li>$F(x) \gets F(x) + x^mF_l(x)$ </li>
+							</ul></li>
+					</ul>
+
+					<aside class="notes">
+<ul>
+<li>At each iteration, it evaluates the discrepancy (difference between things that should be the same)</li>
+<li>If beta = 0, F(x) and L are still currently correct -&gt; go next iteration</li>
+<li>If beta != 0, F(x) should be concordantly adjusted, by shifting + scaling the syndromes added since the last update of L </li>
+<li>In order to keep track of the number of errors and current degree of the
+polynomial, L should be updated, otherwise the discrepancies will reach 0 before l grows bigger than 2L.</li>
+</ul>					
+					</aside>
+				</section>
 
 			</div>
 
