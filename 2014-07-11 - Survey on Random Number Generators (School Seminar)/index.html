@@ -24,7 +24,7 @@
 		<script>
 			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
 		</script>
-		<script src="../js/jquery-1.10.2.min.js"></script>
+		<script src="js/jquery-1.10.2.min.js"></script>
 
 		<!--[if lt IE 9]>
 		<script src="lib/js/html5shiv.js"></script>
@@ -37,8 +37,10 @@
 
 		<!-- Any section element inside of this container is displayed as a slide -->
 		<div class="slides">
+		
+<!-- -->
 			<section>
-				<h1>Random<br/>Number<br/>Generators</h1>
+				<h1>Random Number<br/>Generators</h1>
 				<h4>The Art of Mathematical Computing</h4>
 				<p>
 					<small>by <a href="http://aldream.net">Benjamin (Bill) Planche</a><br/>
@@ -47,22 +49,23 @@
 				</p>
 
 				<aside class="notes">
-				
+				<p>Benjamin (Bill) Planche - French - Last year</p>
 				</aside>
 			</section>
 				
-				
+		
+<!-- -->				
 			<section>
 				<section data-background="img/random-word-wall.jpg">
-				</section>
-				<section>
-					<h1>Randomness</h1>
-					<h4 class="fragment" id="subject">... and Random Numbers</h4>
-				</section>
-				<section>
-					<h1>Overview</h1>
-					<h3>Requirements, Solutions, Tests</h3>
-				</section>
+				
+					<aside class="notes">
+		<ul>
+<li>Generation of random numbers = important operation for various computational tasks</li>
+<li>Not all applications have the same requirements about randomness</li>
+</ul>			
+					</aside>
+				</section>		
+<!-- -->
 
 				<section>
 					<h1 id="structure">Structure</h1>
@@ -71,54 +74,106 @@
 						<li>RNGs & PRNGs <small>- defs + implementation</small></li>
 						<li>Test Tools <small>- suites + implementation</small></li>
 					</ol>
+
+					<aside class="notes">
+Overview of the most common requirements, solutions, test tools
+					
+					</aside>
 				</section>
 			</section>
 
-
+		
+<!-- -->
 			<section>
 				<section>
 					<h1 id="randomness">Randomness</h1>
+
+					<aside class="notes">
+					
+					</aside>
 				</section>
 
 
 				<section>
 					<p><i>Lack of pattern, predictability or determinism in events.</i></p>
+
+					<aside class="notes">
+Lack of pattern, predictability or determinism in events.					
+					</aside>
 				</section>
 				
 				<section>
 					<p><b>However.</b></p>
 					<p class="fragment" ><i>Is it really random?</i></p>
 					<p class="fragment" ><i>Or are we  simply ignorant of the underlying pattern?</i></p>
+
+					<aside class="notes">
+Is a structure really random, or are we  simply ignorant of a hidden underlying pattern?					
+					</aside>
 				</section>
-					
+		
+<!-- -->					
 				<section>
 					<h2>Random Sequences</h2>
 					<h4>Information Theory</h4>
-				</section>
-				
-				<section>
-					<blockquote>"Sequence of independent random variables"</blockquote>
-					<ul>
-						<li class="fragment">Basic definition</li>
-						<li class="fragment">Formal definition...?</li>
+					
+					<div class="fragment">Basic definition
+						<blockquote>Sequence of independent random variables</blockquote>
+					</div>
+					
+					<div class="fragment" style="margin-top:1em;">Formal definition
+						<blockquote>???</blockquote>
+					</div>
+					<aside class="notes">
+<ul>
+<li>Studied in Information Theory</li>
+<li>Simple Def: Sequence of independent random variables</li>
+<li>Formal/Mathematical Def -&gt; Subject of many debates and studies during the last century.</li>
+</ul>					
+					</aside>
 					</ul>
 				</section>
-					
-				<section>
-					<p>Various propositions over the last century...</p>
-				</section>
-
+		
+<!-- -->
 				<section>
 					<h2 id="definition-by-von-mises">Definition by Von Mises</h2>
+
+					<aside class="notes">
+1st attempt at defining algorithmic randomness by Richard Edler von Mises (1883-1953)					
+					</aside>
 				</section>
 
 				<section>
-						<p>Based on <b>Theory of Large Numbers</b></p>
-						<p class="fragment">An infinite sequence can be considered random if:</p>
+						<small>Based on <b>Theory of Large Numbers</b></small>
+						<p>An infinite sequence can be considered random if:</p>
 						<ul>
-							<li class="fragment">It has the <i>Frequency Stability Property</i></li>
-							<li class="fragment">Any sub-seq. selected by a <i>proper method</i> isn't biased too</li>
+							<li class="fragment"><b>It has the <i>Frequency Stability Property</i></b><ul>
+								<li>$S \in \mathbb{A}^n$ with $\mathbb{A}$ alphabet of $m$ symbols</li>
+								<li>$\forall a \in \mathbb{A}, \lim_{n \to \infty} |\{s, s \in S \land s = a\}| = \frac{1}{m}$</li>
+							</ul></li>
+							<li class="fragment"><b>Any sub-seq. selected by a <i>proper method</i> isn't biased too.</b> ex:<ul>
+								<li>$ S = (1,0,1,0,1,0,1,0) $ not biased</li>
+								<li>$f(X) \to (X^i | \forall i \leq |X| \land i \equiv 0 \pmod 2)$</li>
+								<li> $\implies f(S) \to (1,1,1,1)$ biased</li>
+							</ul></li>
 						</ul>
+
+					<aside class="notes">
+<ul>
+<li>Th of Large Numbers (AVG of results from a large nb of trials -&gt; Exp Val.)</li>
+<li>
+An infinite sequence of symbols can be considered random if :
+<ul>
+<li>Has Frequency stability property (the appearance frequencies of the symbols aren't biased /goes to the same expected value)</li>
+<li>any sub-sequence selected by a "proper method" isn't biased too.<ul>
+<li>Fundamental in this definition.</li>
+<li>Ex: 10101010 is not biased, but we obtain the biased sub-sequence 0000 by selecting only the even positions.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>				
+					</aside>
 				</section>
 
 				<section>
@@ -128,10 +183,22 @@
 							<li class="fragment">How to mathematize this <i>proper method</i> of selection?</li>
 							<li class="fragment">Yields an empty set (demo by Jean Ville in 1939)</li>
 						</ul>
-				</section>
 
+					<aside class="notes">
+<p>But unsatisfying :</p>
+<ul>
+<li>How to mathematize what the "proper method of selection" was.</li>
+<li>Demonstration by Jean Ville in 1939, proving that such a definition only yields an empty set.</li>
+</ul>					
+					</aside>
+				</section>
+		
+<!-- -->
 				<section>
 					<h2 id="definition-by-martin-lof">Definition by Martin-Löf</h2>
+					<aside class="notes">
+Swedish statistician Per Martin-Löf. Def in 1966
+					</aside>
 				</section>
 
 				<section>
@@ -143,10 +210,23 @@
 						<li class="fragment">Frequency / measure-theoretic</li>
 						<li class="fragment">Quite satisfactory</li>
 					</ul>
-				</section>
 
+					<aside class="notes">
+<ul>
+<li>has no "exceptional and effectively verifiable" property</li>
+<li>i.e. has no properties we can verify by a recursive algorithm</li>
+<li>Most satisfactory frequency / measure-theoretic approach to randomness</li>
+</ul>					
+					</aside>
+				</section>
+		
+<!-- -->
 				<section>
 					<h2 id="definition-by-levinchaitin">Definition by Levin/Chaitin</h2>
+
+					<aside class="notes">
+Leonid Anatolievich Levin (1948) and Gregory Chaitin (1947), in 1975				
+					</aside>
 				</section>
 
 				<section>
@@ -156,67 +236,119 @@
 					</ul>
 					
 					<blockquote class="fragment">Length of the shortest program able to generate the sequence.</blockquote>
+
+					<aside class="notes">
+<ul>
+<li>Ray Solomonoff (1926-2009) and Andre Nikolaevitch Kolmogorov (1903-1987), in the 60's</li>
+<li>Important measure for Information Theory: complexity of Kolmogorov</li>
+<li>Def: the length of the shortest program (independently of the machine) able to generate the evaluated sequence.</li>
+</ul>				
+					</aside>
 				</section>
 					
 				<section>
 					<h3 id="complixity-compressibility-def-of-randomness">Resulting Definition</h3>
 					
-					<blockquote class="fragment">A finite string is random if it requires a program at least as long as itself to be computed</blockquote>
+					<blockquote>A finite string is random<br/>if it requires a program at least as long as itself to be computed</blockquote>
+					<p> $\exists c \geq 0$, such as $H(S_0^n) \geq n - c$<br/>with $H$ complexity of Kolmogorov</p>
 					<ul>
 						<li class="fragment">"<i>Incomprehensible informational content</i>"</li>
 						<li class="fragment">Complexity / Compressibility approach</li>
 					</ul>
+					
+					<aside class="notes">
+<ul>
+<li>Levin/Chaitin</li>
+<li>Def: random finite string = string which requires a program at least as long as itself to be computed</li>
+<li>Another way to express it is: "a random sequence must have an incomprehensible informational content"
+    -&gt; Impossible to make any sense of it, and thus to use a shorter sequence or program to describe it.</li>
+<li>Approach is considered as a complexity / compressibility one.</li>
+<li>Not really complexity of Kolmogorov, but of Chatain (condition: program must be auto-delimited</li>
+</ul>				
+					</aside>
 				</section>
-
+		
+<!-- -->
 				<section>
 					<h2 id="definition-by-schnorr">Definition by Schnorr</h2>
+
+					<aside class="notes">
+Claus-Peter Schnorr [1943), in 1971					
+					</aside>
 				</section>
 
 				<section>
-					<blockquote>A random sequence must not be predictable. No effective strategy should lead to an infinite gain if we bet on the symbols of the sequence.</blockquote>
+					<blockquote>A random sequence must not be predictable.<br/>No effective strategy should lead to an infinite gain if we bet on its symbols.</blockquote>
 					<ul>
 						<li class="fragment">Predictability approach</li>
 					</ul>
-				</section>
 
+					<aside class="notes">
+<ul>
+<li>Predictability approach</li>
+<li>"random sequence must not be predictable. No effective strategy should lead to an infinite gain if we bet on the symbols of the sequence"</li>
+</ul>				
+					</aside>
+				</section>
+		
+<!-- -->
+
+				<section>
+					<h2>Statistical Randomness</h2>
+					<blockquote class="fragment">A sequence is statistically random if it has no <b>recognizable</b> patterns.</blockquote>
+					<ul class="fragment">
+						<li>Less strict than previous definitions</li>
+						<li>Doesn't imply objective unpredictability</li>		
+					</ul>
+
+					<aside class="notes">
+Numeric sequence = statistically random if it contains no recognizable patterns or regularities.				
+					</aside>
+				</section>
+				
+				<section>
+					<p>... leaves room to the concept of ...</p>
+
+					<aside class="notes">
+Less strict than prev. defs &amp;  doesn't imply objective unpredictability -&gt; leaves room to the concept of pseudo-randomness.				
+					</aside>
+				</section>
 				<section>
 					<h2 id="pseudorandomness">Pseudo-Randomness</h2>
-				</section>
-
-				<section>
-					<h3>Statistical Randomness</h3>
-				</section>
-
-				<section>
-					<blockquote>A numeric sequence is statistically random if it contains no recognizable patterns or regularities.</blockquote>
-					<ul>
-						<li class="fragment">Less strict than previous definitions</li>
-						<li class="fragment">Doesn't imply objective unpredictability</li>		
-					</ul>
-				</section>
-				
-				<section>
-					<p>... leaves room to the concept of pseudo-randomness.</p>
-				</section>
-				
-				<section>
-					<h3>Pseudo-Random Sequence</h3>
+					<h4>and Pseudo-Random Sequence</h4>
 					<p class="fragment">Exhibits statistical randomness...</p>
 					<p class="fragment">... though generated by a deterministic causal method.</p>
+
+					<aside class="notes">
+<ul>
+<li>Pseudo-random sequence exhibits statistical randomness while being generated by an entirely deterministic causal method.</li>
+<li>Largely used in computer science, to simulate random behaviors (truly random values can be too costly)</li>
+<li>Algorithmically generated -&gt; can be used in a much simpler and frequent way.</li>
+</ul>				
+					</aside>
 				</section>
 			</section>
-
+		
+<!-- -->
 			<section>
 				<section>
 					<h1 id="random-number-generators">Random Number Generators</h1>
+
+					<aside class="notes">
+A seen, mediums to generate random sequences have been used for a long time in various
+domains, from politics to cryptology.<br/>
+However, they are not all equal / have bias which can be a problem depending on the usages.
+					</aside>
 				</section>
 				
 				<section>
 					<h2 id="definition">Definition</h2>
-				</section>
 
-				<section>
 					<blockquote>Device which can produce a sequence of random numbers, i.e. a without deterministic properties and patterns.</blockquote>
+
+					<aside class="notes">
+RNG = device which can produce a sequence of random numbers, i.e. a without determinist properties and patterns.
+					</aside>
 				</section>
 
 				<section>
@@ -226,14 +358,27 @@
 						<li class="fragment">Computations (pseudo-randomness)</li>
 						<li class="fragment">Mix of both</li>
 					</ul>
+
+					<aside class="notes">
+<ul>
+<li>Can use physical interactions, computations, or a mix of both, to achieve it.</li>
+<li>Purely random sequences can't be described/generated by an algorithm (not recursive)</li>
+<li>Computational methods can only create pseudorandom seq -&gt; PNRG</li>
+</ul>		
+					</aside>
 				</section>
 			</section>
-				
+			
+<!-- -->			
 				
 			<section>
 
 				<section>
 					<h2 id="categories">Categories</h2>
+
+					<aside class="notes">
+					
+					</aside>
 				</section>
 			</section>
 				
@@ -242,73 +387,132 @@
 
 				<section>
 					<h3 id="generators-based-on-physical-phenomena">Generators based on physical phenomena</h3>
+
+					<aside class="notes">
+					
+					</aside>
 				</section>
 
 
 				<section>
 					<h4 id="traditionnal-methods">Traditionnal Methods</h4>
-					<p class="fragment">Dice tossing, coin flipping, bird trajectories, ...</p>
+					<p><small>Dice tossing, coin flipping, bird trajectories, ...</small></p>
 					<ul>
 						<li class="fragment">Often only random in appearances</li>
 						<li class="fragment"><i>Cheating</i> by knowing the rules / initial state</li>
 					</ul>
+
+					<aside class="notes">
+Coin flipping -&gt; dynamics rules applied to the trajectory<br/>
+Seem random only because we can't simply measure the variables of the toss to solve the system.<br/>
+<Meager hints about the initial conditions can still help deducing outcome<br/>
+ex: the face on top before the coin is tossed may have more chances to be the resulting one				
+					</aside>
 				</section>
 					
 				<section>
 					<h4 id="quantic-phenomena">Quantic Phenomena</h4>
-					<p class="fragment">Nuclear decay,<br/>Behavior of photons hitting a semi-transparent mirror,<br/>...</p>
+					<p><small>Nuclear decay, Behavior of photons hitting a semi-transparent mirror, ...</small></p>
 					<ul>
 						<li class="fragment">Golden solutions</li>
 						<li class="fragment">Globally too costly to be democratized</li>
 					</ul>
+
+					<aside class="notes">
+<ul>
+<li>Best phenomena to use as input for RNG = thus  possessing quantum mechanical physical randomness<ul>
+<li>Found  in quantum mechanics at the atomic or sub-atomic level.</li>
+<li>ex of methods impl.:<ul>
+<li>measuring the nuclear decay with a Geiger counter</li>
+<li>printing 0/1 when a photon is reflected/transmitted by a semi-transparent mirror</li>
+</ul></li></ul>
+Golden solutions, they are globally too costly to be democratized.			
+					</aside>
 				</section>
 					
 				<section>
 					<h4 id="noisy-phenomena">Noisy Phenomena</h4>
-					<p class="fragment">Thermal signal from transistor,<br/>radio noise,<br/>Analog-to-digital conversion noise,<br/>...</p>
+					<p><small>Thermal signal from transistor, radio noise, Analog-to-digital conversion noise, ...</small></p>
 					<ul>
 						<li class="fragment">Easier to detect</li>
 						<li class="fragment">Offer good results</li>
 					</ul>
+
+					<aside class="notes">
+<ul>
+<li>Easier to detect and offer good results.</li>
+<li>Ex:<ul>
+<li>amplifying the thermal signal from a transistor or from an atmospheric radio receiver</li>
+<li>comparison of pictures from an agitated scene</li>
+<li>noise from analog-to-digital converter, etc</li>
+</ul>
+</li>
+</ul>					
+					</aside>
 				</section>
-					
+		
+<!-- -->					
 				<section>
 					<h4 id="os-solutions">OS Implementations</h4>
-					<p class="fragment">Based on the unpredictable IO + behavior of the users</p>
+					<ul>
+					<li class="fragment">Based on the unpredictable IO + behavior of the users</li>
+					<li class="fragment">Harvest <b>entropy</b>, Output random bytes</li>
+					</ul>
+					<aside class="notes">
+					
+					</aside>
 				</section>
 					
 				<section>
 					<h5>Unix Systems</h5>
 					<ul>
-						<li class="fragment">$/dev/urandom$ & $/dev/random$</li>
-						<li class="fragment">Device files probing analog sources
-							<ul><li>mouse, keyboard, disk accesses, etc.</li></ul></li>
-						<li class="fragment">Harvest <b>entropy</b>, Output random bytes</li>
-				</section>
-					
-				<section>
+						<li>$/dev/urandom$ & $/dev/random$</li>
+						<li>Device files probing analog sources <small>(mouse, keyboard, disk accesses, etc.)</small></li>
+					</ul>
+					<div  class="fragment" style="margin-top:1.5em;">
 					<h5>Windows Systems</h5>
 					<ul>
-						<li class="fragment">$CryptGenRandom$</li>
-						<li class="fragment">Gather though CPU counters, env. var, threads IDs, etc.</li>
+						<li>$CryptGenRandom$</li>
+						<li>Gather through system state <small>(CPU counters, env. var, threads IDs, etc.)</small></li>
+					</ul>
+					</div>
+
+					<aside class="notes">
+Device files probing analog sources (mouse, keyboard, disk acc, etc.)<br/>
+Gather entropy though CPU counters, environment variables, threads IDs, etc.					
+					</aside>
 				</section>
 					
 				<section>
-						<p>In both cases, entropy decrease during <i>inactivity</i></p>
-						<p class="fragment"><b>... Shortages.</b></p>
+					<p>In both cases, entropy decreases during <i>inactivity</i></p>
+					<p class="fragment"><b>... Shortages.</b></p>
+
+					<aside class="notes">
+					
+entropy decreases during inactivity -&gt; shortages
+					</aside>
 				</section>
 			</section>
 				
-				
+		
+<!-- -->				
 			<section>
 					
 				<section>
 					<h3 id="pseudo-random-number-generators">Pseudo-Random Number Generators</h3>
+
+					<aside class="notes">
+PRNG are generators based on algorithms.				
+					</aside>
 				</section>
 					
 				<section>
 					<p>Ramdomness through Determinism...??</p>
-					<img class="fragment" style="border:none; box-shadow:none;" src="http://i.imgur.com/Tx5Ai.png" alt="WTF?!">
+					<img class="fragment" style="border:none; box-shadow:none; background:none;text-shadow:none;" src="http://i.imgur.com/Tx5Ai.png" alt="WTF?!">
+
+					<aside class="notes">
+Seem paradoxical to associate randomness with algorithms, by definition deterministic					
+					</aside>
 				</section>
 				
 				<section>
@@ -320,17 +524,29 @@
 							<li><i>State</i></li>
 							<li><i>Seed</i></li></ul></li>
 					</ul>
+
+					<aside class="notes">
+<ul>
+<li>But some clever implementation -&gt; pseudo-random seq with periods long enough for their uses</li>
+<li>Because PRNG deterministic, output sequences totally defined by init config -&gt; state</li>
+<li>Key variable of state = seed (or random seed): number/vector which should be kept secret. </li>
+</ul>				
+					</aside>
 				</section>
 			</section>
 				
-				
+		
+<!-- -->				
 			<section>
 					
 				<section>
-					<h4 id="lfsr">LFSR</h4>
+					<h2 id="lfsr">LFSR</h2>
+				</section>
+				<section>
+					<h4 id="lfsr">Linear Feedback Shift Register</h4>
 					<ul>
 						<li>Sequential shift register</li>
-						<li>Input bit = linear function of its previous state</li>
+						<li>New bit = linear function of previous state</li>
 						<li>Combinational logic</li>
 						<li>$\mathfrak{F}$ mapping in vector space of binary $n$-tuples</li>
 						<li>$f$ feedback function = boolean operation of $n$ variables</li>
@@ -338,6 +554,15 @@
 					
 					<p>$$\mathfrak{F}:\mathbb{F}_2^n \to \mathbb{F}_2^n$$
 					$$\mathfrak{F}:(x_1, x_2, ..., x_n)\mapsto (x_2, x_3, ..., x_n, f((x_1, x_2, ..., x_n))$$</p>
+
+					<aside class="notes">
+<ul>
+	<li>LFSR = sequential shift register whose input bit is a linear function of its previous state</li>
+	<li>Combinational logic that causes it to pseudo-randomly cycle through a sequence of bin val</li>
+	<li>Mapping Fn2 -&gt; Fn2 (vector space of all binary n-tuples)</li>
+	<li>f = feedback function = Boolean operation of n variables</li>
+</ul>				
+					</aside>
 				</section>
 				
 				<section>
@@ -351,16 +576,40 @@
 							<li>Using a relatively-prime set of taps</li>
 						</ul></li>
 					</ul>
+
+					<aside class="notes">
+<ul>
+	<li>The feedback function can be expressed in finite field arithmetic as a poly mod 2<ul>
+		<li>Feedback polynomial or reciprocal characteristic polynomial</li>
+	</ul>
+	<li>Taps = bits of the register used in the linear operation (generally XOR)</li>
+	</li>
+	<li>To obtain a maximal-length LFSR (period 2^n-1), conditions must be met by the feedback func:<ul>
+		<li>Having an even number of taps</li>
+		<li>Using a relatively-prime set of taps ( no divisor other than 1 common to all taps )</li>
+	</ul>
+	</li>
+</ul>						
+					</aside>
 				</section>
 				
 				<section>
 					<h5>Example</h5>
-					<p class="fragment">$f(x) = x_{16} + x_{14} + x_{13} + x_{11} + 1$ <small>cf <a href="https://en.wikipedia.org/wiki/LFSR">wikipedia</a></small></p>
-					<img class="fragment" alt="lfsr" src="https://upload.wikimedia.org/wikipedia/commons/1/16/LFSR-F16.gif" width=500/>
+					<p>$f(x) = x_{16} + x_{14} + x_{13} + x_{11} + 1$</p>
+					<img alt="lfsr" src="img/lfsr.png" style="border:none; box-shadow:none; background:none;text-shadow:none;" />
+
+					<aside class="notes">
+					
+					</aside>
 				</section>
-				
+		
+<!-- -->				
 				<section>
 					<h5>Implementation</h5>
+
+					<aside class="notes">
+					
+					</aside>
 				</section>
 				
 				<section>
@@ -387,6 +636,10 @@
             it += 1
             yield value
     return lfsrGen</code></pre>
+
+					<aside class="notes">
+Quite Straightforward -> registers = sequence, bool op, closure+yield for generator
+					</aside>
 				</section>
 				
 				<section>
@@ -413,8 +666,14 @@
         }
     }
 }</code></pre>
+
+					<aside class="notes">
+Porting Python to JS here (ECMAScript 6 / JS 1.7) - Closure, yield & generator)<br/>
+Only syntax sugar
+					</aside>
 				</section>
-				
+		
+<!-- -->				
 				<section>
 					<h5>Let's play</h5>
 					<input id="lfsr-poly" name="lfsr-poly" type="text" placeholder="Polynomial" style="width:10em;height:2em;font-size:1.2em;text-align:center;border-radius:10px;margin-right:1em;" />
@@ -449,30 +708,56 @@ $("#lfsr-stop").click(function(){
 	if (lfsrInterval) { clearInterval(lfsrInterval); }
 });
 					</script>
+
+					<aside class="notes">
+x^4 + x^1 + 1<br/>
+x^16 + x^14 + x^13 + x^11 + 1<br/>
+The 'one' in the polynomial does not correspond to a tap – it corresponds to the input to the first bit 	
+					</aside>
 				</section>
 			</section>
 				
-				
+		
+<!-- -->				
 			<section>
 					
+					
 				<section>
-					<h4 id="nlfsr">NLFSR</h4>
+					<h2 id="lfsr">NLFSR</h2>
+				</section>
+				<section>
+					<h4 id="lfsr">Non-Linear Feedback Shift Register</h4>
 					<p class="fragment">Same theory as for LFSRs</p>
+
+					<aside class="notes">
+Same theory as for LFSRs				
+					</aside>
 				</section>
 				
 				<section>
-						<p>Only one difference</p>
-						<p class="fragment"><b>The feedback function $f$ is non-linear</b></p>
-						<p class="fragment">ex: $f(x) = x^4 + x^3 + x^2  + x^1 \cdot x^2 + 1$</p>
-				</section>
-				
-				<section>
-					<ul>
+					<p>Only one difference</p>
+					<p class="fragment"><b>The feedback function $f$ is non-linear</b></p>
+					<p class="fragment">ex: $f(x) = x^4 + x^1 \cdot x^2 + 1$<br/>
+						<img alt="nlfsr" src="img/nlfsr.png" style="border:none; box-shadow:none; background:none;text-shadow:none;" />
+					</p>
+					
+					<ul class="fragment">
 						<li>Makes NLFSRs harder to predict than LFSRs</li>
-						<li class="fragment">Makes it harder to ensure a max period of $2^n-1$ bits.</li>
+						<li>Makes it harder to ensure a max period of $2^n-1$ bits.</li>
 					</ul>
+
+					<aside class="notes">
+<ul>
+<li>
+Only difference: the feedback function f is non-linear</li>
+<li>It makes NLFSRs harder to predict than LFSRs</li>
+<li>But also imposes extensive carefulness to ensure a maximal period of 2^n-1 bits.</li>
+<li>Lot of papers simply defining those conditions or listing the right config.</li>
+</ul>					
+					</aside>
 				</section>
-				
+			
+<!-- -->			
 				<section>
 					<h5>Implementation</h5>
 				</section>
@@ -509,6 +794,11 @@ $("#lfsr-stop").click(function(){
             it += 1
             yield value
     return nlfsrGen</code></pre>
+					<aside class="notes">
+Almost same as LFSR<br/>
+Just one more loop to do the multiplication of the non-linear syndromes.<br/>
+Small trick for binary multiplication.				
+					</aside>
 				</section>
 				
 				<section>
@@ -545,8 +835,12 @@ $("#lfsr-stop").click(function(){
         }
     }
 }</code></pre>
+					<aside class="notes">
+Same o' same					
+					</aside>
 				</section>
-				
+		
+<!-- -->				
 				<section>
 					<h5>Let's play</h5>
 					<input id="nlfsr-poly" name="nlfsr-poly" type="text" placeholder="Polynomial" style="width:10em;height:2em;font-size:1.2em;text-align:center;border-radius:10px;margin-right:1em;" />
@@ -582,54 +876,103 @@ $("#nlfsr-stop").click(function(){
 	if (nlfsrInterval) { clearInterval(nlfsrInterval); }
 });
 					</script>
+
+					<aside class="notes">
+Check algo by runing same LFSR x^4 + x + 1<br/>
+Bad config: x^4*x^4*x^3 + x^1*x^2 + x^1*x^3 + 1<br/>
+Better config: x^4 + x^3 + x^2  + x^1*x^2 + 1	
+					</aside>
 				</section>
 			</section>
 				
-				
+		
+<!-- -->				
 			<section>
 
 				<section>
 					<h2 id="applications-and-uses">Applications and Uses</h2>
+
+					<aside class="notes">
+					
+					</aside>
 				</section>
 
 				<section>
 					<p>Applications in every area<br/>where unpredictable behavior is desirable/required</p>
-					<small class="fragment">cryptographic systems, gambling applications, statistical sampling, simulation, ...</small>
+					<small>cryptographic systems, gambling applications, statistical sampling, simulation, ...</small>
+
+					<aside class="notes">
+From cryptographic systems to gambling applications, statistical sampling, simulation, ...					
+					</aside>
 				</section>
 				
 				<section>
 					<p>Various applications $ \rightarrow $ Various requirements</p>
-					<ul>
-						<li class="fragment">Crypto-secure RNGs for security applications</li>
-						<li class="fragment">Outputs uniqueness for shuffling methods</li>
-						<li class="fragment">...</li>
+					<ul class="fragment">
+						<li>Crypto-secure RNGs for security applications</li>
+						<li>Outputs uniqueness for shuffling methods</li>
+						<li>...</li>
 					</ul>
+
+					<aside class="notes">
+<ul>
+<li>Various properties can be required from the generators:<ul>
+<li>Security application will need a cryptographically-secure RNG</li>
+<li>Shuffling method will require uniqueness of the returned values</li>
+</ul>				
+					</aside>
 				</section>
 				
 				<section>
 					<ul>
 						<li>RNGs $ \rightarrow $ ~ safer but less abundant</li>
-						<li class="fragment">PRNGs $ \rightarrow $ ~ weaker but lighter</li>
+						<li>PRNGs $ \rightarrow $ ~ weaker but lighter</li>
 						<li class="fragment">RNGs seeded by a strong PRNG</li>
 					</ul>
+					<p>
+					<img class="fragment" src="https://sslimgs.xkcd.com/comics/random_number.png" title="xkcd - Random Number" />
+					</p>
+					<aside class="notes">
+<ul>
+<li>Some require qualities mostly found in physical RNGs</li>
+<li>Others are satisfied with weaker forms of randomness (faster and lighter)</li>
+<li>Common to use a RNG to seed a strong PRNG, to increase the entropy</li>
+</ul>					
+					</aside>
 				</section>
 			</section>
-
+		
+<!-- -->
 			<section>
 				<section>
 					<h1 id="testing-randomness">Testing Randomness</h1>
+
+					<aside class="notes">			
+					</aside>
 				</section>
 
 				<section>
 					<p>The definition of randomness is complex and application-dependent...</p>
+
+					<aside class="notes">
+Def of randomness is complex and app-dependent, so are the tests designed for RNGs.	
+					</aside>
 				</section>
 				
 				<section>
 					<p>... so are the tests designed for RNGs.</p>
+
+					<aside class="notes">
+					
+					</aside>
 				</section>
 
 				<section>
 					<h2 id="about-the-difficulty-to-test-randomness">About the Difficulty to Test Randomness</h2>
+
+					<aside class="notes">
+					
+					</aside>
 				</section>
 
 				<section>
@@ -638,8 +981,17 @@ $("#nlfsr-stop").click(function(){
 						<li class="fragment">Def. depending on the field $ \rightarrow $ <i>Which one to test?</i></li>
 						<li class="fragment">Large number of possibilities $ \rightarrow $ Impossible to fully cover</li>
 					</ul>
+
+					<aside class="notes">
+<ul><li>"Random sequence" -&gt; various meanings depending on the field, so difficult to test</li>
+<li>Like for Crypto, large number of possibilities -&gt; impossible to fully cover<ul>
+<li>ex: checking if a sequence has indeed no shorter construction is impossible without
+checking every construction</li>
+</ul>				
+					</aside>
 				</section>
-				
+		
+<!-- -->				
 				<section>
 					<h3>Solutions</h3>
 					<ul>
@@ -647,6 +999,11 @@ $("#nlfsr-stop").click(function(){
 						<li class="fragment">Battery of tests to identify statistical bias</li>
 						<li class="fragment">Checking hypothesis of <i>perfect behavior</i></li>
 					</ul>
+
+					<aside class="notes">
+Solutions: statistical tests or complexity evaluations (Kolmogorov)<br/>
+"Perfect Behavior" : values of the sequences "imitate independent random var from the uniform distribution"		
+					</aside>
 				</section>
 				
 				<section>
@@ -656,10 +1013,23 @@ $("#nlfsr-stop").click(function(){
 						<li class="fragment">Impossible to fully cover $ \rightarrow $ no universal battery of tests</li>
 						<li class="fragment">Good RNGs $ \approx $ pass complicated or numerous tests</li>
 					</ul>
-				</section>
 
+					<aside class="notes">
+<ul>
+<li>Different tests will thus detect different problems, various statistical behaviors</li>
+<li>Impossible to full cover -&gt; no universal battery of tests</li>
+<li>So good RNGs are then those which pass complicated or numerous tests</li>
+</ul>				
+					</aside>
+				</section>
+		
+<!-- -->
 				<section>
 					<h2 id="common-tests">Common Tests</h2>
+
+					<aside class="notes">
+					
+					</aside>
 				</section>
 
 				<section>
@@ -669,6 +1039,23 @@ $("#nlfsr-stop").click(function(){
 						<li class="fragment">15 tests run over a large file containing the sequence</li>
 					</ul>
 					<blockquote class="fragment">birthday spacings, overlapping permutations, ranks of 31x31 and 32x32 matrices, ranks of 6x8 matrices, monkey tests, count the 1's, parking lot, minimum distance, random spheres, squeeze, overlapping sums, runs, and craps</blockquote>
+
+					<aside class="notes">
+<ul style="font-size:.9em;"><li>15 tests, which are run over a large file containing the sequence, provided by the user</li>
+<li>Birthday spacings: Choose random points on a large interval. The spacings between the points should be asymptotically exponentially distributed.[clarification needed] The name is based on the birthday paradox.</li>
+<li>Overlapping permutations: Analyze sequences of five consecutive random numbers. The 120 possible orderings should occur with statistically equal probability.</li>
+<li>Ranks of matrices: Select some number of bits from some number of random numbers to form a matrix over {0,1}, then determine the rank of the matrix. Count the ranks.</li>
+<li>Monkey tests: Treat sequences of some number of bits as "words". Count the overlapping words in a stream. The number of "words" that don't appear should follow a known distribution. The name is based on the infinite monkey theorem.</li>
+<li>Count the 1s: Count the 1 bits in each of either successive or chosen bytes. Convert the counts to "letters", and count the occurrences of five-letter "words".</li>
+<li>Parking lot test: Randomly place unit circles in a 100 x 100 square. If the circle overlaps an existing one, try again. After 12,000 tries, the number of successfully "parked" circles should follow a certain normal distribution.</li>
+<li>Minimum distance test: Randomly place 8,000 points in a 10,000 x 10,000 square, then find the minimum distance between the pairs. The square of this distance should be exponentially distributed with a certain mean.</li>
+<li>Random spheres test: Randomly choose 4,000 points in a cube of edge 1,000. Center a sphere on each point, whose radius is the minimum distance to another point. The smallest sphere's volume should be exponentially distributed with a certain mean.</li>
+<li>The squeeze test: Multiply 231 by random floats on (0,1) until you reach 1. Repeat this 100,000 times. The number of floats needed to reach 1 should follow a certain distribution.</li>
+<li>Overlapping sums test: Generate a long sequence of random floats on (0,1). Add sequences of 100 consecutive floats. The sums should be normally distributed with characteristic mean and sigma.</li>
+<li>Runs test: Generate a long sequence of random floats on (0,1). Count ascending and descending runs. The counts should follow a certain distribution.</li>
+<li>The craps test: Play 200,000 games of craps, counting the wins and the number of throws per game. Each count should follow a certain distribution.</li>
+</ul>		
+					</aside>
 				</section>
 					
 				<section>
@@ -679,47 +1066,63 @@ $("#nlfsr-stop").click(function(){
 						<li class="fragment">Classical stat tests + others from literature + original ones</li>
 						<li class="fragment">Tools to implement specific stat tests.</li>
 					</ul>
+
+					<aside class="notes">
+					
+					</aside>
 				</section>
 			</section>
 				
-				
+		
+<!-- -->				
 			<section>
 					
 				<section>
 					<h3 id="berlekamp-massey-algorithm">Berlekamp-Massey Algorithm</h3>
+
+					<aside class="notes">
+					
+					</aside>
 				</section>
 					
 				<section>
 					<h4 id="definition_1">Definition</h4>
-				</section>
 					
-				<section>
-					<ul>
-						<li>Algo, not really a test</li>
-						<li class="fragment">Created by Elwyn Berlekamp to decode BCH codes</li>
-						<li class="fragment">Adapted + simplified by James Massey</li>
-					</ul>
-				</section>
-				
-				<section>
 					<ul>
 						<li class="fragment">Find the min poly of linearly recurrent sequences in $\mathbb{F}_n$</li>
-						<li class="fragment">Find min degree $L$ + annihilator $F(x)$ of the seq $S$</li>
+						<li class="fragment">Find min degree $L$ and annihilator $F(x)$ of the seq $S$</li>
 					</ul>
+
+					<aside class="notes">
+<ul>
+<li>Invented by Elwyn Berlekamp in 1967 for decoding BCH codes</li>
+<li>Adapted + simplified by James Massey</li>
+<li>Algo, not really a test. Used to find in a field Fk the min poly of linearly recurrent sequences</li>
+<li>Determine minimal degree L + annihilator (or inverse feedback) polynomial F(x) of the given sequence S</li>
+</ul>						
+					</aside>
+				</section>
+		
+<!-- -->					
+				<section>
+					<h4 id="algorithm">Algorithm</h4>
+					
+					<ul>
+						<li class="fragment">$F(x)$ uniquely determined by the first $2L$ elements of $S$</li>
+						<li class="fragment">Requires to solve a set of $L$ linear equations</li>
+					</ul>
+
+					<aside class="notes">
+<ul>
+<li>Finding this minimal polynomial requires to solve a set of L linear equations</li>
+<li>F(x) being indeed uniquely determined by the 1st 2L elements of S</li>
+</ul>					
+					</aside>
 				</section>
 					
 				<section>
 					<h4 id="algorithm">Algorithm</h4>
-				</section>
 					
-				<section>
-					<ul>
-						<li>$F(x)$ uniquely determined by the first $2L$ elements of $S$</li>
-						<li class="fragment">Requires to solve a set of $L$ linear equations</li>
-					</ul>
-				</section>
-					
-				<section>
 					<ul>
 						<li>At each iteration $l$:<ul>
 							<li>Evaluate the <i>discrepancy</i></li>
@@ -736,10 +1139,25 @@ $("#nlfsr-stop").click(function(){
 							</ul></li>
 						</ul></li>
 					</ul>
+
+					<aside class="notes">
+<ul>
+<li>At each iteration, it evaluates the discrepancy (difference between things that should be the same)</li>
+<li>If beta = 0, F(x) and L are still currently correct -&gt; go next iteration</li>
+<li>If beta != 0, F(x) should be concordantly adjusted, by shifting + scaling the syndromes added since the last update of L </li>
+<li>In order to keep track of the number of errors and current degree of the
+polynomial, L should be updated, otherwise the discrepancies will reach 0 before l grows bigger than 2L.</li>
+</ul>					
+					</aside>
 				</section>
-					
+		
+<!-- -->					
 				<section>
 					<h4 id="implementation">Implementation</h4>
+
+					<aside class="notes">
+					
+					</aside>
 				</section>
 				
 				<section>
@@ -788,6 +1206,12 @@ $("#nlfsr-stop").click(function(){
             else: delta += 1
         else: delta += 1
     return F[:L+1] # output the polynomial</code></pre>
+
+					<aside class="notes">
+Trickier.<br/>
+Poly represented by list -> Using list operations (shift, concatenation, ...)<br/>
+List comprehension				
+					</aside>
 				</section>
 				
 				<section>
@@ -847,8 +1271,15 @@ $("#nlfsr-stop").click(function(){
 	for (var k = L+1; k < N; k++) { F.pop(); }
     return F; // output the polynomial
 }</code></pre>
+
+					<aside class="notes">
+Porting npt straightforward.<br/>
+Not the same operation in JS on Array (no concatenate, no comprehension)<br/>
+Heavier syntax.		
+					</aside>
 				</section>
-				
+			
+<!-- -->			
 				<section>
 					<h5>Let's play</h5>
 					<textarea id="berle-seq" name="berle-seq" style="width:25em;height:4em;font-size:1em;border-radius:10px;margin:1em;"></textarea><br/>
@@ -978,12 +1409,21 @@ $("#berle-stop").click(function(){
 	if (berleInterval) { clearInterval(berleInterval); }
 });
 					</script>
+
+					<aside class="notes">
+					
+					</aside>
 				</section>
 			</section>
-
+		
+<!-- -->
 			<section>
 				<section>
 					<h1 id="conclusion">Conclusion</h1>
+
+					<aside class="notes">
+					
+					</aside>
 				</section>
 				
 				<section>
@@ -995,6 +1435,10 @@ $("#berle-stop").click(function(){
 							<li class="fragment">... especially for crypto!</li>
 							<li class="fragment">... but if you try, test test test!</li></ul></li>
 					</ul>
+
+					<aside class="notes">
+								
+					</aside>
 				</section>
 			</section>
 
@@ -1026,6 +1470,38 @@ $("#berle-stop").click(function(){
 				<h4>Questions?</h4>
 				<small><a href="https://twitter.com/b_aldream">@b_aldream</a> | <a href="https://github.com/Aldream">git:Aldream</a> | <a href="http://aldream.net">aldream.net</a></small>
 			</section>
+			
+			<section>
+				<section>
+					<h1>Annexe</h1>
+				</section>
+				
+				<section>
+					<h3>Berlekamp-Massey Algorithm <small>Alternate explanation</small></h3>
+					<small>$S$ sequence, $F(x)$ polynomial, $ \beta_i^j(S_1, S_2) $ discrepancy</small>
+					<ul>
+						<li>Make a first guess for $F(x)$ (ex: $F(x) = 1$)</li>
+						<li>At each iteration $l$:<ul>
+							<li>Generate $S_l'$ of $l$ elements, from $F(x)$</li>
+							<li>Compare $S$ and $S_l'$: $ \beta_0^l(S, S_l') $</li>
+							<li>We know $S_l'$ correct up to the $(l-1)^{th}$ symbol</li>
+							<li> If $l^{th}$ symbol not correct, ie $ \beta_0^l(S, S_l') = (0,0,0,...,1) $:<ul>
+								<li>Last iteration $m$ when this happened, we had $ \beta_0^m(S, S_m') = (0,0,0,...,1) $</li>
+								<li>So $ \beta_0^l(S, S_l') + \beta_{l-m}^l(S, S_m') = (0,0,0,...,0) \to$ correction to apply</li>
+								<li>$F(x) \gets F(x) + x^mF_l(x)$ </li>
+							</ul></li>
+					</ul>
+
+					<aside class="notes">
+<ul>
+<li>At each iteration, it evaluates the discrepancy (difference between things that should be the same)</li>
+<li>If beta = 0, F(x) and L are still currently correct -&gt; go next iteration</li>
+<li>If beta != 0, F(x) should be concordantly adjusted, by shifting + scaling the syndromes added since the last update of L </li>
+<li>In order to keep track of the number of errors and current degree of the
+polynomial, L should be updated, otherwise the discrepancies will reach 0 before l grows bigger than 2L.</li>
+</ul>					
+					</aside>
+				</section>
 
 			</div>
 
