@@ -14,7 +14,7 @@ Who am I?
 
 Benjamin (Bill) Planche
 CS M2 | Computer Graphics + Web + Pervasive Computing
-aldream.net | github.com/Aldream | flickr.com/billeroux | twitter.com/b_aldream
+aldream.net | github.com/Aldream | flickr.com/billleroux | twitter.com/b_aldream
 
 (
 Hey! I'm Benjamin Planche, more commonly called Bill.
